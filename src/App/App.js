@@ -4,10 +4,11 @@ import Header from '../Header/Header';
 import MainScreen from '../MainScreen/MainScreen';
 import InfoFooter from '../InfoFooter/InfoFooter';
 import GameplayScreen from '../GameplayScreen/GameplayScreen';
+import AlienBuilder from '../GameplayScreen/AlienBuilder/AlienBuilder';
+import AlienStructuresBuilder from '../GameplayScreen/AlienStructuresBuilder/AlienStructuresBuilder';
 import TaskFooter from '../TaskManager/TaskFooter';
-import AlienBuilder from '../AlienBuilder/AlienBuilder';
-import AlienStructuresBuilder from '../AlienStructuresBuilder/AlienStructuresBuilder';
-import TaskManager from '../TaskManager/TaskManager';
+import TaskFooterDisabled from '../TaskManager/TaskFooterDisabled';
+import TaskMaster from '../TaskManager/TaskMaster';
 import Reactions from '../Reactions/Reactions';
 import './App.css';
 
@@ -18,6 +19,10 @@ class App extends Component {
       <>
         <Route exact path={'/'} component={MainScreen} />
         <Route path={'/gameplay'} component={GameplayScreen} />
+        <Route path={'/build-aliens'} component={AlienBuilder} />
+        <Route path={'/build-structures'} component={AlienStructuresBuilder} />
+        <Route path={'/task-master'} component={TaskMaster} />
+        <Route path={'/reaction'} component={Reactions} />
       </>
     );
   };
@@ -27,10 +32,10 @@ class App extends Component {
       <>
         <Route exact path={'/'} component={InfoFooter} />
         <Route path={'/gameplay'} component={TaskFooter} />
-        <Route exact path={'/gameplay/build-aliens'} component={AlienBuilder} />
-        <Route exact path={'/gameplay/build-structures'} component={AlienStructuresBuilder} />
-        <Route path={'/gameplay/task-manager'} component={TaskManager} />
-        <Route path={'/gameplay/reaction'} component={Reactions} />
+        <Route path={'/build-aliens'} component={TaskFooterDisabled} />
+        <Route path={'/build-structures'} component={TaskFooterDisabled} />
+        <Route path={'/task-master'} component={TaskFooterDisabled} />
+        <Route path={'/reaction'} component={TaskFooterDisabled} />
       </>
     );
   };

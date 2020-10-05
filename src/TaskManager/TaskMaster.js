@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import './GameplayScreen.css';
+import './TaskMaster.css';
 
-class GameplayScreen extends Component {
-
+class TaskMaster extends Component {
   render() {
     return(
       <section className='gameplay-style reaction-mode'>
@@ -14,7 +13,7 @@ class GameplayScreen extends Component {
           <li>4 Worker Drones</li>
           <li>2 Warrior Drones</li>
         </ul>
-        <Link to="build-aliens"><button class='build-button'>Spawn Aliens</button></Link>
+        <button class='build-button' disabled>Spawn Aliens</button>
       </div>
       <div class="right alien-structures-box">
         <h2>Alien Stuctures</h2>
@@ -23,11 +22,20 @@ class GameplayScreen extends Component {
           <li>3 Watcher Orbs</li>
           <li>1 Spawning Pit</li>
         </ul>
-        <Link to="/build-structures"><button class='build-button'>Build Alien Stuctures</button></Link>
+        <button class='build-button' disabled>Build Alien Stuctures</button>
+      </div>
+      <div class="builder-box">
+        <h2>Tasks</h2>
+        <div class="inner-builder-task-mode">
+          <button class="tasks">Process Biomass</button>
+          <button class="tasks">Harvest Trees</button>
+          <button class="tasks">Attack Settlement</button>
+       </div>
+        <Link to="/reaction"><button class='builder-button'>COMMIT TASKS</button></Link>
       </div>
     </section>
     );
   };
 };
 
-export default GameplayScreen;
+export default TaskMaster;

@@ -1,10 +1,14 @@
-Figure out components
+WIP
+    Create Database
+
+DONE
+    Figure out components
 
 
-header
-main screen
-gameplay screen
-alien builder
-alien structures builder
-task manager
-reaction
+    header
+    main screen
+    gameplay screen
+    alien builder
+    alien structures builder
+    task manager
+    reaction

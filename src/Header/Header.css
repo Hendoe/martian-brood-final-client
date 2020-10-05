@@ -1,0 +1,21 @@
+.nav-style {
+  border-style: solid;
+  border-width: 0px 2px 4px 2px;
+  display: flex;
+  flex: 1;
+}
+
+.left {
+  flex: 1;
+  justify-content: left;
+}
+
+.center {
+  flex: 1;
+  justify-content: center;
+}
+
+.right {
+  flex: 1;
+  justify-content: right;
+}

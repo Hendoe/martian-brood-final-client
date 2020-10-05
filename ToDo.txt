@@ -1,0 +1,10 @@
+Figure out components
+
+
+header
+main screen
+gameplay screen
+alien builder
+alien structures builder
+task manager
+reaction

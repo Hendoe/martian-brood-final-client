@@ -6,43 +6,28 @@ class Alien extends Component {
     const { name, hp, atk, cost, synapse, desc, features } = this.props
     console.log(this.props)
     return (
-      <section>
-        <div className='Alien'>
-          <p className='Alien__name'>
-            {name}
-          </p>
-        </div>
-        <div className='Alien'>
-          <p className='Alien__hp'>
-            {hp}
-          </p>
-        </div>
-        <div className='Alien'>
-          <p className='Alien__atk'>
-            {atk}
-          </p>
-        </div>
-        <div className='Alien'>
-          <p className='Alien__cost'>
-            {cost}
-          </p>
-        </div>
-        <div className='Alien'>
-          <p className='Alien__synapse'>
-            {synapse}
-          </p>
-        </div>
-        <div className='Alien'>
-          <p className='Alien__desc'>
-            {desc}
-          </p>
-        </div>
-        <div className='Alien'>
-          <p className='Alien__features'>
-            {features}
-          </p>
-        </div>
-      </section>
+      <div>
+        <span><h3>Name: {name}</h3></span>
+        <span><h3>Description: {desc}</h3></span>
+        <section className='stats'>
+          <div className='builder-column'>
+            <h3>Hitpoints</h3>
+            <p>{hp}</p>
+          </div>
+          <div className='builder-column'>
+            <h3>Attack</h3>
+            <p>{atk}</p>
+          </div>
+          <div className='builder-column'>
+            <h3>Biomass Cost</h3>
+            <p>{cost}</p>
+          </div>
+         <div className='builder-column'>
+            <h3>Synapse Required</h3>
+            <p>{synapse}</p>
+          </div>
+        </section>
+      </div>
     );
   };
 };

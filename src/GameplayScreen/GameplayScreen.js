@@ -5,7 +5,6 @@ import AlienBuilder from './AlienBuilder/AlienBuilder';
 import StructuresBuilder from './StructuresBuilder/StructuresBuilder';
 import Tasks from './Tasks/Tasks';
 import './GameplayScreen.css';
-import Alien from './Alien/Alien';
 
 class GameplayScreen extends Component {
   constructor(props) {
@@ -26,6 +25,7 @@ class GameplayScreen extends Component {
           special_features: null,
         }
       ],
+      statusAPI: {},
       status: {
         userid: 0,
         brood_name: 'starter',
@@ -41,7 +41,10 @@ class GameplayScreen extends Component {
           },
         ]
       },
+      buildOrders: {},
+      biomass: 45,
       cost: 0,
+      count: 0,
       toBuild: 0,
     };
   };
@@ -73,6 +76,20 @@ class GameplayScreen extends Component {
   handleTaskModeChange() {
     this.props.taskModeChange();
   };
+
+  handleUpdateTotalBiomass() {
+    let oldBiomass = this.state.biomass;
+    const newBiomass = oldBiomass - this.state.cost;
+    this.setState({biomass: newBiomass})
+    this.setState({cost: 0})
+  }
+
+  handleUpdateAlienCount() {
+    let oldCount = this.state.count;
+    const newCount = oldCount + this.state.toBuild;
+    this.setState({count: newCount});
+    this.setState({toBuild: 0});
+  }
 
   //ALL HANDLERS FOR SPAWNING ALIENS
   handleClickAlienBuilder = () => {
@@ -127,6 +144,8 @@ class GameplayScreen extends Component {
 
   handleCommitTasks = () => {
     this.handleTaskModeChange();
+    this.handleUpdateTotalBiomass();
+    this.handleUpdateAlienCount();
   };
 
   renderGameplay() {
@@ -137,11 +156,11 @@ class GameplayScreen extends Component {
             <span className='left'>
               <span className='row'>
                 <h4>
-                  Biomass: {this.state.status.biomass}
+                  Biomass: {this.state.biomass}
                 </h4>
                 <br />
                 <h4 className='red'>
-                  - {this.state.status.cost}
+                  - {this.state.cost}
                 </h4>
                 </span>
             </span>
@@ -155,15 +174,15 @@ class GameplayScreen extends Component {
           <section className='gameplay-style reaction-mode'>
             <div className='left aliens-box'>
             <h2>Aliens</h2>
-              <AlienList aliens={this.state.aliens} alienInventory={this.state.status.alienInventory} />
-              {/* <AlienList  aliens={this.state.aliensAPI} /> */}
+              {/* <AlienList aliens={this.state.aliens} alienInventory={this.state.status.alienInventory} count={this.state.count} toBuild={this.state.toBuild} /> */}
+              <AlienList alienInventory={this.state.status.alienInventory} count={this.state.count} toBuild={this.state.toBuild} />
               <button className='build-aliens-button' disabled>Spawn Aliens</button>
             </div>
             <div className='right alien-structures-box'>
               <h2>Alien Stuctures</h2>
               <ul>
-                <li>2 Synapse Clusters </li>
-                <li>3 Watcher Orbs</li>
+                <li>1 Synapse Cluster</li>
+                {/* <li>3 Watcher Orbs</li> */}
                 <li>1 Spawning Pit</li>
               </ul>
               <button className='build-structures-button' disabled>Build Alien Stuctures</button>
@@ -180,11 +199,11 @@ class GameplayScreen extends Component {
               {/* {this.state.status.map(status => ( */}
                 <span className='row'>
                   <h4>
-                    Biomass: {this.state.status.biomass}
+                    Biomass: {this.state.biomass}
                   </h4>
                   <br />
                   <h4 className='red'>
-                    - {this.state.status.cost}
+                    - {this.state.cost}
                   </h4>
                 </span>
              {/* ))} */}
@@ -203,15 +222,15 @@ class GameplayScreen extends Component {
           <section className='gameplay-style'>
             <div className="left aliens-box">
             <h2>Aliens</h2>
-              <AlienList aliens={this.state.aliens} alienInventory={this.state.status.alienInventory} />
-              {/* <AlienList aliens={this.state.aliensAPI} /> */}
+              {/* <AlienList aliens={this.state.aliens} alienInventory={this.state.status.alienInventory} count={this.state.count} toBuild={this.state.toBuild} /> */}
+              <AlienList alienInventory={this.state.status.alienInventory} count={this.state.count} toBuild={this.state.toBuild} />
               <button className='build-aliens-button' onClick={() => this.handleClickAlienBuilder()}>Spawn Aliens</button>
             </div>
             <div className="right alien-structures-box">
               <h2>Alien Structures</h2>
               <ul>
-                <li>2 Synapse Clusters </li>
-                <li>3 Watcher Orbs</li>
+                <li>1 Synapse Cluster</li>
+                {/* <li>3 Watcher Orbs</li> */}
                 <li>1 Spawning Pit</li>
               </ul>
               <button className='build-structures-button' onClick={() => this.handleClickStructureBuilder()}>Build Alien Stuctures</button>
@@ -226,10 +245,12 @@ class GameplayScreen extends Component {
   renderBuilders() {
     if (this.state.buildAliens === true) {
       return (
-        <AlienBuilder aliens={this.state.aliens} cost={this.state.cost} toBuild={this.state.toBuild}
+        // <AlienBuilder aliens={this.state.aliens} cost={this.state.cost} toBuild={this.state.toBuild}
+        //   handleClickAdd={this.handleAddBuild} handleClickSubtract={this.handleSubtractBuild} handleClickSpawn={this.handleClickSpawn}
+        // />
+        <AlienBuilder  aliens={this.state.aliensAPI} cost={this.state.cost} toBuild={this.state.toBuild}
           handleClickAdd={this.handleAddBuild} handleClickSubtract={this.handleSubtractBuild} handleClickSpawn={this.handleClickSpawn}
         />
-        // <AlienBuilder  aliens={this.state.aliensAPI} handleClickSpawn={this.handleClickSpawn}/>
       );
     } else if (this.state.buildStructures === true) {
       return (

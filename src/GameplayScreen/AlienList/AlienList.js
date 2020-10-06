@@ -4,6 +4,8 @@ import './AlienList.css';
 class AlienList extends Component {
   render() {
     const { alienInventory=[] } = this.props
+    const count = this.props.count
+    const toBuild = this.props.toBuild
     console.log(alienInventory)
     console.log(this.props)
 
@@ -12,8 +14,8 @@ class AlienList extends Component {
         {alienInventory.map(alien => (
           <ul className='left-list'>
             <li className='item'>Name: {alien.alien_name}</li>
-            <li className='item'>Count: {alien.count}</li>
-            <li className='item'>To Spawn: {alien.toSpawn}</li>
+            <li className='item'>Count: {count}</li>
+            <li className='item'>To Spawn: {toBuild}</li>
           </ul>
         ))}
       </div>

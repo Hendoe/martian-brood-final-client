@@ -12,11 +12,10 @@
   height: 32rem;
 }
 
-.inner-builder-task-mode {
+.inner-builder {
   display: flex;
   flex: 2;
   flex-direction: row;
-  justify-content: center;
 }
 
 .left-builder {
@@ -42,7 +41,7 @@
 .builder-button {
   margin-top: 1rem;
   height: 2.5rem;
-  width: 5rem;
+  width: 7.5rem;
 }
 
 .tasks {

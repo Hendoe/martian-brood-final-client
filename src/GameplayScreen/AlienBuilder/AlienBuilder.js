@@ -13,36 +13,18 @@ class AlienBuilder extends Component {
       <div className='builder-box'>
         <h2>Alien Spawner</h2>
         <hr />
-          <span>{aliens.map(alien => (
-            <h3>Name: {alien.alien_name}</h3>))}
-          </span>
-          <span>{aliens.map(alien => (
-            <h3>Description: {alien.description}</h3>))}
-          </span>
-
-          <section className='stats'>
-            <div className='builder-column'>
-              <h3>Hitpoints</h3>
-              {aliens.map(alien => (
-              <p>{alien.hp}</p>))}
-            </div>
-            <div className='builder-column'>
-              <h3>Attack</h3>
-              {aliens.map(alien => (
-              <p>{alien.atk}</p>))}
-            </div>
-            <div className='builder-column'>
-              <h3>Biomass Cost</h3>
-              {aliens.map(alien => (
-              <p>{alien.biomass_cost}</p>))}
-            </div>
-            <div className='builder-column'>
-              <h3>Synapse Required</h3>
-              {aliens.map(alien => (
-              <p>{alien.synapse_required}</p>))}
-            </div>
-          </section>
-
+          {aliens.map(alien => (
+            <Alien 
+              id={alien.id}
+              name={alien.alien_name}
+              hp={alien.hp}
+              atk={alien.atk}
+              cost={alien.biomass_cost}
+              synapse={alien.synapse_required}
+              desc={alien.description}
+              features={alien.features}
+            />
+          ))}
         <div className='build-buttons'>
           <button className='builder-button' onClick={() => this.props.handleClickSpawn()}>SET SPAWNS</button>
           <span className='row center'>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import config from '../config';
+import AlienList from './AlienList/AlienList';
 import AlienBuilder from './AlienBuilder/AlienBuilder';
 import StructuresBuilder from './StructuresBuilder/StructuresBuilder';
 import './GameplayScreen.css';
@@ -10,7 +11,10 @@ class GameplayScreen extends Component {
     this.state = {
       buildStructures: false,
       buildAliens: false,
-      aliens: [],
+      aliensAPI: [],
+      aliens: [
+        {alien_name: "Worker Drone"}
+      ],
     };
   };
 
@@ -25,8 +29,8 @@ class GameplayScreen extends Component {
           aliensRes.json(),
         ])
       })
-      .then(([aliens]) => {
-        this.setState({ aliens })
+      .then(([aliensAPI]) => {
+        this.setState({ aliensAPI })
       })
       .catch(error => {
         console.log({error})
@@ -63,11 +67,12 @@ class GameplayScreen extends Component {
       <section className='gameplay-style reaction-mode'>
         <div className='left aliens-box'>
         <h2>Aliens</h2>
-          <ul>
+        <AlienList  aliens={this.state.aliens} />
+          {/* <ul>
             <li>1 Primarch</li>
             <li>4 Worker Drones</li>
             <li>2 Warrior Drones</li>
-          </ul>
+          </ul> */}
           <button className='build-aliens-button' disabled>Spawn Aliens</button>
         </div>
         <div className='right alien-structures-box'>
@@ -87,11 +92,12 @@ class GameplayScreen extends Component {
         <section className='gameplay-style'>
           <div className="left aliens-box">
           <h2>Aliens</h2>
-            <ul>
-              <li>1 Primarch</li>
-              <li>4 Worker Drones</li>
-              <li>2 Warrior Drones</li>
-            </ul>
+            <AlienList aliens={this.state.aliens} />
+          {/* <ul>
+            <li>1 Primarch</li>
+            <li>4 Worker Drones</li>
+            <li>2 Warrior Drones</li>
+          </ul> */}
             <button className='build-aliens-button' onClick={() => this.handleClickAlienBuilder()}>Spawn Aliens</button>
           </div>
           <div className="right alien-structures-box">
@@ -125,7 +131,7 @@ class GameplayScreen extends Component {
 
   render() {
     console.log(this.state.aliens)
-    console.log(this.props.buildMode)
+    console.log(this.state.aliensAPI)
     return(
       <div>{this.renderGameplay()}</div>
     );

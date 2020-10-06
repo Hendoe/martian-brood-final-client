@@ -4,8 +4,6 @@ import Header from '../Header/Header';
 import MainScreen from '../MainScreen/MainScreen';
 import InfoFooter from '../InfoFooter/InfoFooter';
 import GameplayScreen from '../GameplayScreen/GameplayScreen';
-import AlienBuilder from '../GameplayScreen/AlienBuilder/AlienBuilder';
-import AlienStructuresBuilder from '../GameplayScreen/AlienStructuresBuilder/AlienStructuresBuilder';
 import TaskFooter from '../TaskManager/TaskFooter';
 import TaskFooterDisabled from '../TaskManager/TaskFooterDisabled';
 import TaskMaster from '../TaskManager/TaskMaster';
@@ -13,14 +11,45 @@ import Reactions from '../Reactions/Reactions';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      buildMode: false,
+    };
+  };
+
+  buildModeChange = () => {
+    if (this.state.buildMode === true) {
+      this.setState({buildMode: false})
+    } else if (this.state.buildMode === false) {
+      this.setState({buildMode: true})
+    };
+  };
+
+  NewGameplayScreen = props => {
+    return (
+      <GameplayScreen
+        buildMode={this.state.buildMode}
+        buildModeChange={this.buildModeChange}
+        {...props}
+      /> 
+    );
+  };
+
+  NewTaskScreen = props => {
+    return (
+      <TaskFooter
+        buildMode={this.state.buildMode}
+        {...props}
+      /> 
+    );
+  };
 
   renderMainRoutes() {
     return (
       <>
         <Route exact path={'/'} component={MainScreen} />
-        <Route path={'/gameplay'} component={GameplayScreen} />
-        <Route path={'/build-aliens'} component={AlienBuilder} />
-        <Route path={'/build-structures'} component={AlienStructuresBuilder} />
+        <Route path={'/gameplay'} render={this.NewGameplayScreen} />
         <Route path={'/task-master'} component={TaskMaster} />
         <Route path={'/reaction'} component={Reactions} />
       </>
@@ -31,9 +60,7 @@ class App extends Component {
     return (
       <>
         <Route exact path={'/'} component={InfoFooter} />
-        <Route path={'/gameplay'} component={TaskFooter} />
-        <Route path={'/build-aliens'} component={TaskFooterDisabled} />
-        <Route path={'/build-structures'} component={TaskFooterDisabled} />
+        <Route path={'/gameplay'} component={this.NewTaskScreen} />
         <Route path={'/task-master'} component={TaskFooterDisabled} />
         <Route path={'/reaction'} component={TaskFooterDisabled} />
       </>

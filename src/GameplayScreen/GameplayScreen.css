@@ -7,6 +7,10 @@
   margin-bottom: 12.5rem;
 }
 
+.reaction-mode {
+  position: relative;
+}
+
 .aliens-box {
   flex: 2;
   justify-content: left;
@@ -27,7 +31,13 @@
   height: 30rem;
 }
 
-.build-button {
+.build-aliens-button {
+  margin-top: 15rem;
+  height: 3rem;
+  width: 10rem;
+}
+
+.build-structures-button {
   margin-top: 15rem;
   height: 3rem;
   width: 10rem;

@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
-import Alien from '../Alien/Alien';
 import './AlienList.css';
 
 class AlienList extends Component {
   render() {
-    const aliens = this.props.aliens
+    const { alienInventory=[] } = this.props
+    console.log(alienInventory)
+    console.log(this.props)
 
     return (
-      <div>
-    <ul>
-      {aliens.map(alien =>
-        <li key={alien.alienid}>
-          <Alien
-            id={alien.alienid}
-            name={alien.alien_name}
-          />
-       </li>
-      )}
-    </ul>
+      <div className='list-box'>
+        {alienInventory.map(alien => (
+          <ul className='left-list'>
+            <li className='item'>Name: {alien.alien_name}</li>
+            <li className='item'>Count: {alien.count}</li>
+            <li className='item'>To Spawn: {alien.toSpawn}</li>
+          </ul>
+        ))}
       </div>
-    );
+    )   
   };
 };
+
+
 
 export default AlienList;

@@ -5,35 +5,27 @@
   top: 0; right: 0; bottom: 0; left: 40rem;
   background-color: black;
   border-style: solid;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   width: 40rem;
-  height: 25rem;
+  height: 32rem;
 }
 
-.inner-builder {
+.stats {
   display: flex;
-  flex: 2;
+  flex: 3;
   flex-direction: row;
 }
 
-.left-builder {
+.builder-column {
   flex: 1;
-  border-style: solid;
-  height: 16rem;
+  flex-direction: column;
 }
 
-.left-builder > h3 {
-  text-decoration: underline;
-}
-
-.right-builder {
-  flex: 1;
-  border-style: solid;
-  height: 16rem;
-}
-
-.right-builder > h3 {
-  text-decoration: underline;
+.build-buttons {
+  flex: 3;
+  flex-direction: row;
+  justify-content: center;
+  align-items: space-between;
 }
 
 .builder-button {
@@ -42,6 +34,23 @@
   width: 5rem;
 }
 
+.arrow-buttons {
+  flex: 3;
+  flex-direction: row;
+  justify-content: center;
+  align-items: space-between;
+}
+
+.arrow-button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 5rem;
+}
+
 .spawn-button {
   margin: 5px 25px 8px 0px;
+}
+
+hr {
+  border-color: #00F010;
 }

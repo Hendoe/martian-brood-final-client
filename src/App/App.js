@@ -16,6 +16,7 @@ class App extends Component {
     super(props);
     this.state = {
       buildMode: false,
+      taskMode: false,
     };
   };
 
@@ -27,11 +28,21 @@ class App extends Component {
     };
   };
 
+  taskModeChange = () => {
+    if (this.state.taskMode === true) {
+      this.setState({taskMode: false})
+    } else if (this.state.taskMode === false) {
+      this.setState({taskMode: true})
+    };
+  };
+
   NewGameplayScreen = props => {
     return (
       <GameplayScreen
         buildMode={this.state.buildMode}
+        taskMode={this.state.taskMode}
         buildModeChange={this.buildModeChange}
+        taskModeChange={this.taskModeChange}
         {...props}
       /> 
     );
@@ -41,6 +52,8 @@ class App extends Component {
     return (
       <TaskFooter
         buildMode={this.state.buildMode}
+        taskMode={this.state.taskMode}
+        taskModeChange={this.taskModeChange}
         {...props}
       /> 
     );
@@ -52,7 +65,6 @@ class App extends Component {
         <Route exact path={'/'} component={MainScreen} />
         <Route path={'/login'} component={Login} />
         <Route path={'/gameplay'} render={this.NewGameplayScreen} />
-        <Route path={'/task-master'} component={TaskMaster} />
         <Route path={'/reaction'} component={Reactions} />
       </>
     );
@@ -64,7 +76,6 @@ class App extends Component {
         <Route exact path={'/'} component={InfoFooter} />
         <Route path={'/login'} component={InfoFooter} />
         <Route path={'/gameplay'} component={this.NewTaskScreen} />
-        <Route path={'/task-master'} component={this.NewTaskScreen} />
         <Route path={'/reaction'} component={this.NewTaskScreen} />
       </>
     );

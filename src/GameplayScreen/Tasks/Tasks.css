@@ -1,17 +1,15 @@
-/* BUILDER */
-
 .reaction-mode {
   position: relative;
 }
 
-.reaction-box {
+.builder-box {
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 40rem;
   background-color: black;
   border-style: solid;
   margin-top: 2rem;
   width: 40rem;
-  height: 25rem;
+  height: 32rem;
 }
 
 .inner-builder-task-mode {
@@ -47,8 +45,7 @@
   width: 5rem;
 }
 
-.reaction-button {
-    margin-top: 3rem;
-    height: 2.5rem;
-    width: 5rem;
+.tasks {
+  height: 2rem;
+  margin: 5px 25px 8px 0px;
 }

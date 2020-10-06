@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+import config from '../config';
 import Header from '../Header/Header';
 import MainScreen from '../MainScreen/MainScreen';
+import Login from '../Login/Login';
 import InfoFooter from '../InfoFooter/InfoFooter';
 import GameplayScreen from '../GameplayScreen/GameplayScreen';
 import TaskFooter from '../TaskManager/TaskFooter';
-import TaskFooterDisabled from '../TaskManager/TaskFooterDisabled';
 import TaskMaster from '../TaskManager/TaskMaster';
 import Reactions from '../Reactions/Reactions';
 import './App.css';
@@ -49,6 +50,7 @@ class App extends Component {
     return (
       <>
         <Route exact path={'/'} component={MainScreen} />
+        <Route path={'/login'} component={Login} />
         <Route path={'/gameplay'} render={this.NewGameplayScreen} />
         <Route path={'/task-master'} component={TaskMaster} />
         <Route path={'/reaction'} component={Reactions} />
@@ -60,14 +62,16 @@ class App extends Component {
     return (
       <>
         <Route exact path={'/'} component={InfoFooter} />
+        <Route path={'/login'} component={InfoFooter} />
         <Route path={'/gameplay'} component={this.NewTaskScreen} />
-        <Route path={'/task-master'} component={TaskFooterDisabled} />
-        <Route path={'/reaction'} component={TaskFooterDisabled} />
+        <Route path={'/task-master'} component={this.NewTaskScreen} />
+        <Route path={'/reaction'} component={this.NewTaskScreen} />
       </>
     );
   };
 
   render() {
+    console.log(this.state.aliens)
     return (
       <div className='App'>
         <header className='App-header'>

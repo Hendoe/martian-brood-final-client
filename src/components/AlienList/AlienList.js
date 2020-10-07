@@ -6,8 +6,6 @@ class AlienList extends Component {
     const { alienInventory=[] } = this.props
     const count = this.props.count
     const toBuild = this.props.toBuild
-    console.log(alienInventory)
-    console.log(this.props)
 
     return (
       <div className='list-box'>

@@ -7,7 +7,6 @@ class AlienBuilder extends Component {
     const { aliens=[] } = this.props
     const cost = this.props.cost
     const toBuild = this.props.toBuild
-    console.log(this.props.cost)
     
     return (
       <div className='builder-box'>

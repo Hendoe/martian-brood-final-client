@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import config from '../config';
-import AlienList from './AlienList/AlienList';
-import AlienBuilder from './AlienBuilder/AlienBuilder';
-import StructuresBuilder from './StructuresBuilder/StructuresBuilder';
-import Tasks from './Tasks/Tasks';
+import ConditionalsContext from '../contexts/ConditionalsContext';
+import AlienList from '../components/AlienList/AlienList';
+import AlienBuilder from '../components/AlienBuilder/AlienBuilder';
+import StructuresBuilder from '../components/StructuresBuilder/StructuresBuilder';
+import Tasks from '../components/Tasks/Tasks';
 import './GameplayScreen.css';
 
 class GameplayScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      buildStructures: false,
-      buildAliens: false,
+      buildAliensMode: false,
+      buildStructuresMode: false,
       aliensAPI: [],
       aliens: [
         {
@@ -49,6 +50,8 @@ class GameplayScreen extends Component {
     };
   };
 
+  static contextType = ConditionalsContext
+
   componentDidMount() {
     Promise.all([
       fetch(`${config.API_ENDPOINT}/aliens`)
@@ -77,6 +80,8 @@ class GameplayScreen extends Component {
     this.props.taskModeChange();
   };
 
+  //ALL HANDLERS FOR UPDATING PLAYER STATUS
+
   handleUpdateTotalBiomass() {
     let oldBiomass = this.state.biomass;
     const newBiomass = oldBiomass - this.state.cost;
@@ -93,7 +98,8 @@ class GameplayScreen extends Component {
 
   //ALL HANDLERS FOR SPAWNING ALIENS
   handleClickAlienBuilder = () => {
-    this.setState({buildAliens: true});
+    this.setState({buildAliensMode: true});
+    // this.context.handleBuildAliensModeChange();
     this.handleBuildModeChange();
   };
 
@@ -118,7 +124,8 @@ class GameplayScreen extends Component {
   };
 
   handleClickSpawn = () => {
-    this.setState({buildAliens: false});
+    this.setState({buildAliensMode: false});
+    // this.context.handleBuildAliensModeChange();
     let newCount = this.state.toBuild;
     let aliens = this.state.aliens;
     aliens[0] = {...aliens[0], toBuild: newCount} 
@@ -128,12 +135,12 @@ class GameplayScreen extends Component {
 
   //ALL HANDLERS FOR STRUCTURE CONSTRUCTION
   handleClickStructureBuilder = () => {
-    this.setState({buildStructures: true});
+    this.setState({buildStructuresMode: true});
     this.handleBuildModeChange();
   };
 
   handleClickConstruct = () => {
-    this.setState({buildStructures: false});
+    this.setState({buildStructuresMode: false});
     this.handleBuildModeChange();
   };
 
@@ -196,7 +203,6 @@ class GameplayScreen extends Component {
         <div>
           <header className='status-bar'>
             <span className='left'>
-              {/* {this.state.status.map(status => ( */}
                 <span className='row'>
                   <h4>
                     Biomass: {this.state.biomass}
@@ -206,17 +212,12 @@ class GameplayScreen extends Component {
                     - {this.state.cost}
                   </h4>
                 </span>
-             {/* ))} */}
             </span>
             <span className='center'>
-              {/* {this.state.status.map(status => ( */}
               <h3>Brood Name: {this.state.status.brood_name}</h3>
-              {/* ))} */}
             </span>
             <span className='right'>
-              {/* {this.state.status.map(status => ( */}
               <h4>Synapse: {this.state.status.synapse}</h4>
-              {/* ))} */}
             </span>
           </header>
           <section className='gameplay-style'>
@@ -243,7 +244,7 @@ class GameplayScreen extends Component {
   };
 
   renderBuilders() {
-    if (this.state.buildAliens === true) {
+    if (this.state.buildAliensMode === true) {
       return (
         // <AlienBuilder aliens={this.state.aliens} cost={this.state.cost} toBuild={this.state.toBuild}
         //   handleClickAdd={this.handleAddBuild} handleClickSubtract={this.handleSubtractBuild} handleClickSpawn={this.handleClickSpawn}
@@ -252,7 +253,7 @@ class GameplayScreen extends Component {
           handleClickAdd={this.handleAddBuild} handleClickSubtract={this.handleSubtractBuild} handleClickSpawn={this.handleClickSpawn}
         />
       );
-    } else if (this.state.buildStructures === true) {
+    } else if (this.state.buildStructuresMode === true) {
       return (
         <StructuresBuilder handleClickConstruct={this.handleClickConstruct} />
       );

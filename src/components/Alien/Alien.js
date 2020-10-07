@@ -8,7 +8,10 @@ class Alien extends Component {
     return (
       <div>
         <span><h3>Name: {name}</h3></span>
-        <span><h3>Description: {desc}</h3></span>
+        <span><h3>Description:</h3></span>
+          <span><p>{desc}</p></span>
+        <span><h3>Special Features:</h3></span>
+          <span><p>{features}</p></span>
         <section className='stats'>
           <div className='builder-column'>
             <h3>Hitpoints</h3>

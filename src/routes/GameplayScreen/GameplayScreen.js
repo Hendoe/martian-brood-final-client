@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import config from '../config';
-import ConditionalsContext from '../contexts/ConditionalsContext';
-import AlienList from '../components/AlienList/AlienList';
-import AlienBuilder from '../components/AlienBuilder/AlienBuilder';
-import StructuresBuilder from '../components/StructuresBuilder/StructuresBuilder';
-import Tasks from '../components/Tasks/Tasks';
+import config from '../../config';
+import ConditionalsContext from '../../contexts/ConditionalsContext';
+import AliensContext from '../../contexts/AliensContext'
+import AliensApiService from '../../services/aliens-api-service';
+import AlienList from '../../components/AlienList/AlienList';
+import AlienBuilder from '../../components/AlienBuilder/AlienBuilder';
+import StructuresBuilder from '../../components/StructuresBuilder/StructuresBuilder';
+import Tasks from '../../components/Tasks/Tasks';
 import './GameplayScreen.css';
 
 class GameplayScreen extends Component {
@@ -50,26 +52,32 @@ class GameplayScreen extends Component {
     };
   };
 
-  static contextType = ConditionalsContext
+  static contextType = AliensContext
 
   componentDidMount() {
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/aliens`)
-    ])
-      .then(([aliensRes]) => {
-        if (!aliensRes.ok)
-          return aliensRes.json().then(event => Promise.reject(event))
-        return Promise.all([
-          aliensRes.json(),
-        ])
-      })
-      .then(([aliensAPI]) => {
-        this.setState({ aliensAPI })
-      })
-      .catch(error => {
-        console.log({error})
-      });
+    AliensApiService.getAliens()
+      .then(this.context.setAliens)
+      .then(console.log(this.context))
+      .catch(this.context.setError)
   };
+
+  //   Promise.all([
+  //     fetch(`${config.API_ENDPOINT}/aliens`)
+  //   ])
+  //     .then(([aliensRes]) => {
+  //       if (!aliensRes.ok)
+  //         return aliensRes.json().then(event => Promise.reject(event))
+  //       return Promise.all([
+  //         aliensRes.json(),
+  //       ])
+  //     })
+  //     .then(([aliensAPI]) => {
+  //       this.setState({ aliensAPI })
+  //     })
+  //     .catch(error => {
+  //       console.log({error})
+  //     });
+  // };
 
   //ALL HANDLERS FOR CONDITIONAL CHANGES
   handleBuildModeChange() {
@@ -127,7 +135,7 @@ class GameplayScreen extends Component {
     this.setState({buildAliensMode: false});
     // this.context.handleBuildAliensModeChange();
     let newCount = this.state.toBuild;
-    let aliens = this.state.aliens;
+    let aliens = this.context.aliens;
     aliens[0] = {...aliens[0], toBuild: newCount} 
     this.setState({ aliens })
     this.handleBuildModeChange();
@@ -244,12 +252,13 @@ class GameplayScreen extends Component {
   };
 
   renderBuilders() {
+    const { aliens = [] } = this.context
     if (this.state.buildAliensMode === true) {
       return (
         // <AlienBuilder aliens={this.state.aliens} cost={this.state.cost} toBuild={this.state.toBuild}
         //   handleClickAdd={this.handleAddBuild} handleClickSubtract={this.handleSubtractBuild} handleClickSpawn={this.handleClickSpawn}
         // />
-        <AlienBuilder  aliens={this.state.aliensAPI} cost={this.state.cost} toBuild={this.state.toBuild}
+        <AlienBuilder aliens={aliens} cost={this.state.cost} toBuild={this.state.toBuild}
           handleClickAdd={this.handleAddBuild} handleClickSubtract={this.handleSubtractBuild} handleClickSpawn={this.handleClickSpawn}
         />
       );
@@ -259,7 +268,7 @@ class GameplayScreen extends Component {
       );
     } else if (this.props.taskMode === true) {
       return (
-        <Tasks aliens={this.state.aliens}
+        <Tasks aliens={this.context.aliens}
           handleClickCancel={this.handleCancelTasks} handleClickCommit={this.handleCommitTasks}/>
       );
     } else {
@@ -268,6 +277,7 @@ class GameplayScreen extends Component {
   };
 
   render() {
+    console.log(this.context.aliens)
     return (
       <div>{this.renderGameplay()}</div>
     );

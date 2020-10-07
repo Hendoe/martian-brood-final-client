@@ -3,17 +3,6 @@ import React, { Component } from 'react';
 const ConditionalsContext = React.createContext({
   buildAliens: false,
   buildStructures: false,
-
-
-  // article: nullArticle,
-  // comments: [],
-  // error: null,
-  // setError: () => {},
-  // clearError: () => { },
-  // setArticle: () => {},
-  // clearArticle: () => {},
-  // setComments: () => {},
-  // addComment: () => {},
 })
 
 export default ConditionalsContext;

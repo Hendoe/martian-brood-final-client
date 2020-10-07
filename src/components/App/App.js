@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import config from '../config';
 import Header from '../Header/Header';
-import MainScreen from '../MainScreen/MainScreen';
-import Login from '../Login/Login';
+import MainScreen from '../../routes/MainScreen/MainScreen';
+import Login from '../../routes/Login/Login';
 import InfoFooter from '../InfoFooter/InfoFooter';
-import GameplayScreen from '../GameplayScreen/GameplayScreen';
-import TaskFooter from '../TaskManager/TaskFooter';
-import TaskMaster from '../TaskManager/TaskMaster';
-import Reactions from '../Reactions/Reactions';
+import GameplayScreen from '../../routes/GameplayScreen/GameplayScreen';
+import TaskFooter from '../TaskFooter/TaskFooter';
+import Reactions from '../../Reactions/Reactions';
 import './App.css';
 
 class App extends Component {

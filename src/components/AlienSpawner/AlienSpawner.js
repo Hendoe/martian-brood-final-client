@@ -9,9 +9,10 @@ class AlienSpawner extends Component {
     this.state = {
       alienCost: 0,
       aliensToSpawn: 0,
+      aliensSynapse: 0,
       spawnPlan: {
-        alien_name: 'Warrior Drone',
-        totalToSpawn: 0,
+        alien_name: 'Worker Drone',
+        total_to_spawn: 0,
         biomass_cost: 0,
         synapse_required: 0
       },
@@ -23,6 +24,7 @@ class AlienSpawner extends Component {
     spawning += 1;
     this.setState({aliensToSpawn: spawning});
     this.updateAlienCost(spawning);
+    this.updateAliensSynapse(spawning);
   };
 
   subtractToSpawn() {
@@ -34,6 +36,7 @@ class AlienSpawner extends Component {
     };
     this.setState({aliensToSpawn: spawning});
     this.updateAlienCost(spawning);
+    this.updateAliensSynapse(spawning);
   };
   
   updateAlienCost(spawning) {
@@ -41,14 +44,22 @@ class AlienSpawner extends Component {
     this.setState({alienCost: newCost})
   };
 
+  updateAliensSynapse(spawning) {
+    let newSynapse = (1 * spawning);
+    this.setState({aliensSynapse: newSynapse})
+  };
+
   setSpawnPlan() {
+    const toSpawn = this.state.aliensToSpawn;
     const biomass_cost = this.state.alienCost;
-    const toSpawn = this.state.toSpawn;
+    const synapse_required = this.state.aliensSynapse;
     let newPlan = this.state.spawnPlan;
-    newPlan.totalToSpawn = toSpawn;
+    newPlan.total_to_spawn = toSpawn;
     newPlan.biomass_cost = biomass_cost;
+    newPlan.synapse_required = synapse_required;
     this.setState({spawnPlan: newPlan});
     this.postPlans(newPlan);
+    console.log(newPlan)
   };
   
 
@@ -60,8 +71,9 @@ class AlienSpawner extends Component {
         },
         body: JSON.stringify({
           alien_name: plans.alien_name,
-          total_to_spawn: plans.totalToSpawn,
-          biomass_cost: plans.biomass_cost
+          total_to_spawn: plans.total_to_spawn,
+          biomass_cost: plans.biomass_cost,
+          synapse_required: plans.synapse_required
         }),
       })
         .then(res =>
@@ -80,7 +92,6 @@ class AlienSpawner extends Component {
   render() {
     const { aliens } = this.props
     const { aliensToSpawn, alienCost } = this.state 
-    console.log(this.props)
 
     return (
       <div className='builder-box'>

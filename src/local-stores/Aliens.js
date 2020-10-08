@@ -16,4 +16,4 @@ const Aliens = [
     },
 ];
 
-export default Aliens;
+export default Aliens

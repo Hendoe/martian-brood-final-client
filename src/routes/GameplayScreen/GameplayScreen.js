@@ -48,10 +48,6 @@ class GameplayScreen extends Component {
 
   handleClickSpawn = () => {
     this.setState({buildAliensMode: false});
-    // let newCount = this.state.toBuild;
-    // let aliens = this.context.aliens;
-    // aliens[0] = {...aliens[0], toBuild: newCount} 
-    // this.setState({ aliens })
     this.handleBuildModeChange();
   };
 
@@ -77,6 +73,7 @@ class GameplayScreen extends Component {
     this.handleUpdateAlienCount();
   };
 
+  //FUNCTIONS FOR RENDERING
   renderSpawnerButton() {
     if (this.props.buildMode === true || this.props.taskMode === true) {
       return (<button className='build-aliens-button' disabled>Spawn Aliens</button>);
@@ -119,7 +116,6 @@ class GameplayScreen extends Component {
 
   render() {
     const { status } = this.state
-    console.log(status)
 
     return (
       <div>

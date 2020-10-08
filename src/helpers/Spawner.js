@@ -8,6 +8,7 @@ const Spawner = {
         Status.setState({biomass: newBiomass});
         Aliens.setState({toSpawn: 0});
     },
+
     updateSpawnCount(event) {
         const power = event.target.val();
         let oldCount = Aliens.plan_count;
@@ -15,10 +16,15 @@ const Spawner = {
         Status.setState({count: newCount});
         this.setState({toBuild: 0});
     },
-    updateToSpawn(event) {
-        const power = event.target.val();
-        let spawning = (Aliens.toSpawn + parseInt(power));
-        Aliens.setState({toSpawn: spawning});
+
+    subtractToSpawn() {
+        let spawning = Aliens.toSpawn;
+        if (spawning === 0) {
+            alert('You cannot spawn less than 0 aliens')
+        } else {
+            spawning -= 1;
+        };
+        this.props.Aliens.updateToSpawn(spawning);
     },
 };
 

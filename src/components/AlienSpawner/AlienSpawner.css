@@ -31,7 +31,6 @@
   flex: 3;
   flex-direction: row;
   justify-content: center;
-  align-items: space-between;
 }
 
 .arrow-button {

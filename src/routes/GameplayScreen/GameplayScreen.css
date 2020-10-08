@@ -1,10 +1,42 @@
+.status-bar {
+  border-style: solid;
+  border-width: 0px 2px 4px 2px;
+  display: flex;
+  flex: 2;
+}
+  
+.left {
+  flex: 1;
+  justify-content: left;
+}
+  
+.row {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.center {
+  flex: 1;
+  justify-content: center;
+}
+  
+.right {
+  flex: 1;
+  justify-content: right;
+}
+
 .gameplay-style {
   display: flex;
   flex: 6;
   justify-content: center;
   flex-direction: row;
   margin-top: 4rem;
-  margin-bottom: 12.5rem;
+  margin-bottom: 10rem;
+}
+
+.reaction-mode {
+  position: relative;
 }
 
 .aliens-box {
@@ -27,7 +59,13 @@
   height: 30rem;
 }
 
-.build-button {
+.build-aliens-button {
+  margin-top: 15rem;
+  height: 3rem;
+  width: 10rem;
+}
+
+.build-structures-button {
   margin-top: 15rem;
   height: 3rem;
   width: 10rem;
@@ -35,4 +73,8 @@
 
 ul {
   list-style-type: none;
+}
+
+.red {
+  color: #FF6E0B;
 }

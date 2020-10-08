@@ -48,12 +48,12 @@ class AlienSpawner extends Component {
     newPlan.totalToSpawn = toSpawn;
     newPlan.biomass_cost = biomass_cost;
     this.setState({spawnPlan: newPlan});
-    this.postPlans();
+    this.postPlans(newPlan);
   };
   
 
   postPlans(plans) {
-      return fetch(`${config.API_ENDPOINT}/spawnPlans`, {
+      return fetch(`${config.API_ENDPOINT}/spawnPlan`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -80,6 +80,7 @@ class AlienSpawner extends Component {
   render() {
     const { aliens } = this.props
     const { aliensToSpawn, alienCost } = this.state 
+    console.log(this.props)
 
     return (
       <div className='builder-box'>

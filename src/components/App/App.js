@@ -46,17 +46,6 @@ class App extends Component {
     );
   };
 
-  NewTaskScreen = props => {
-    return (
-      <TaskFooter
-        buildMode={this.state.buildMode}
-        taskMode={this.state.taskMode}
-        taskModeChange={this.taskModeChange}
-        {...props}
-      /> 
-    );
-  };
-
   renderMainRoutes() {
     return (
       <>
@@ -73,8 +62,6 @@ class App extends Component {
       <>
         <Route exact path={'/'} component={InfoFooter} />
         <Route path={'/login'} component={InfoFooter} />
-        <Route path={'/gameplay'} component={this.NewTaskScreen} />
-        <Route path={'/reaction'} component={this.NewTaskScreen} />
       </>
     );
   };

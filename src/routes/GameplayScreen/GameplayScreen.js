@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import config from '../../config';
-import Status from '../../local-stores/Status';
-import Aliens from '../../local-stores/Aliens';
-import Structures from '../../local-stores/Structures';
 import Spawner from '../../helpers/Spawner';
 import AlienList from '../../components/AlienList/AlienList';
 import StructureList from '../../components/StructureList/StructureList';
 import AlienSpawner from '../../components/AlienSpawner/AlienSpawner';
 import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
+import TaskFooter from '../../components/TaskFooter/TaskFooter';
 import Tasks from '../../components/Tasks/Tasks';
 import './GameplayScreen.css';
 
@@ -15,8 +13,11 @@ class GameplayScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      buildAliensMode: false,
-      buildStructuresMode: false,
+      buildMode: false,
+      taskMode: false,
+      spawnAliensMode: false,
+      constructStructuresMode: false,
+      commitTasksMode: false,
       status: [],
       aliens: [],
       structures: [],
@@ -78,16 +79,24 @@ class GameplayScreen extends Component {
   };
 
   //ALL HANDLERS FOR CONDITIONAL CHANGES
-  handleBuildModeChange() {
-    this.props.buildModeChange();
+  handleBuildModeChange = () => {
+    if (this.state.buildMode === true) {
+      this.setState({buildMode: false})
+    } else if (this.state.buildMode === false) {
+      this.setState({buildMode: true})
+    };
   };
 
-  handleTaskModeChange() {
-    this.props.taskModeChange();
+  handleTaskModeChange = () => {
+    if (this.state.taskMode === true) {
+      this.setState({taskMode: false})
+    } else if (this.state.taskMode === false) {
+      this.setState({taskMode: true})
+    };
   };
 
   handleClickAlienSpawner = () => {
-    this.setState({buildAliensMode: true});
+    this.setState({spawnAliensMode: true});
     this.handleBuildModeChange();
   };
 
@@ -97,30 +106,25 @@ class GameplayScreen extends Component {
   };
 
   handleClickSpawn = () => {
-    this.setState({buildAliensMode: false});
+    this.setState({spawnAliensMode: false});
     this.handleBuildModeChange();
   };
 
   handleClickCancel = () => {
-    this.setState({buildAliensMode: false});
-    this.setState({buildStructuresMode: false});
+    this.setState({spawnAliensMode: false});
+    this.setState({constructStructuresMode: false});
     this.handleBuildModeChange();
   };
 
   //ALL HANDLERS FOR STRUCTURE CONSTRUCTION
-  handleClickStructureBuilder = () => {
-    this.setState({buildStructuresMode: true});
+  handleClickStructureConstructor = () => {
+    this.setState({constructStructuresMode: true});
     this.handleBuildModeChange();
   };
 
   handleClickConstruct = () => {
-    this.setState({buildStructuresMode: false});
+    this.setState({constructStructuresMode: false});
     this.handleBuildModeChange();
-  };
-
-  //ALL HANDLERS FOR TASKS
-  handleCancelTasks = () => {
-    this.handleTaskModeChange();
   };
 
   handleCommitTasks = () => {
@@ -131,7 +135,7 @@ class GameplayScreen extends Component {
 
   //FUNCTIONS FOR RENDERING
   renderSpawnerButton() {
-    if (this.props.buildMode === true || this.props.taskMode === true) {
+    if (this.state.buildMode === true || this.state.taskMode === true) {
       return (<button className='build-aliens-button' disabled>Spawn Aliens</button>);
     } else {
       return (<button className='build-aliens-button' onClick={() => this.handleClickAlienSpawner()}>Spawn Aliens</button>);
@@ -139,34 +143,42 @@ class GameplayScreen extends Component {
   };
 
   renderConstructorButton() {
-    if (this.props.buildMode === true || this.props.taskMode === true) {
+    if (this.state.buildMode === true || this.state.taskMode === true) {
       return (<button className='build-structures-button' disabled>Build Alien Stuctures</button>);
     } else {
-      return (<button className='build-structures-button' onClick={() => this.handleClickStructureBuilder()}>Build Alien Stuctures</button>);
+      return (<button className='build-structures-button' onClick={() => this.handleClickStructureConstructor()}>Build Alien Stuctures</button>);
     };
   };
 
-  renderTasksButton() {
-    if (this.props.buildMode === true || this.props.taskMode === true) {}
+  renderTaskButton() {
+    if (this.state.buildMode === true || this.state.taskMode === true) {
+      return (
+        <button className='task-button' disabled>Set Tasks</button>
+      )
+    } else {
+      return (
+        <button className='task-button' onClick={() =>  this.handleTaskModeChange()}>Set Tasks</button>
+      );
+    };
   };
 
   renderBuilders() {
-    if (this.state.buildAliensMode === true) {
+    if (this.state.spawnAliensMode === true) {
       return (
-        <AlienSpawner aliens={this.state.aliens} handleClickSpawn={this.handleClickSpawn} updateTotalBiomass={this.updateTotalBiomass}
+        <AlienSpawner aliens={this.state.aliens} handleClickSpawn={this.handleClickSpawn}
           handleClickCancel={this.handleClickCancel}
         />
       );
-    } else if (this.state.buildStructuresMode === true) {
+    } else if (this.state.constructStructuresMode === true) {
       return (
         <StructureConstructor structures={this.state.structures} handleClickConstruct={this.handleClickConstruct} 
           handleClickCancel={this.handleClickCancel}
         />
       );
-    } else if (this.props.taskMode === true) {
+    } else if (this.state.taskMode === true) {
       return (
-        <Tasks aliens={this.state.aliens}
-          handleClickCancel={this.handleCancelTasks} handleClickCommit={this.handleCommitTasks}/>
+        <Tasks handleClickAlienSpawner={this.handleClickAlienSpawner()} handleClickStructureConstructor={this.handleClickStructureConstructor()} 
+          handleClickCancel={this.handleClickCancel()} handleClickCommit={this.handleCommitTasks}/>
       );
     } else {
       return
@@ -194,7 +206,7 @@ class GameplayScreen extends Component {
         <section className='gameplay-style reaction-mode'>
           <div className='left aliens-box'>
           <h2>Aliens</h2>
-            <AlienList aliens={aliens} />
+            <AlienList aliens={aliens} status={status} />
             <span>{this.renderSpawnerButton()}</span>
           </div>
           <div className='right alien-structures-box'>
@@ -204,6 +216,7 @@ class GameplayScreen extends Component {
           </div>
           <div>{this.renderBuilders()}</div>
         </section>
+        <footer>{this.renderTaskButton()}</footer>
       </div>
     )
   };

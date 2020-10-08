@@ -3,15 +3,14 @@ import './Tasks.css';
 
 class Tasks extends Component {
   render() {
-    const { aliens=[] } = this.props
 
     return(
       <div class="builder-box-tasks">
         <h3>Task List</h3>
           <div className='task-row-1'>
-            <span><button className='tasks'>Spawn Plans</button></span>
+            <span><button className='tasks'onClick={() => this.props.handleClickAlienSpawner()}>Spawn Plans</button></span>
             <span><button className='tasks'>Gather Biomass</button></span>
-            <span><button className='tasks'>Construction Orders</button></span>
+            <span><button className='tasks' onClick={() => this.props.handleClickStructureConstructor()}>Construction Orders</button></span>
           </div>
           <br />
           <br />

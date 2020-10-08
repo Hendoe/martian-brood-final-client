@@ -3,7 +3,7 @@ import './AlienList.css';
 
 class AlienList extends Component {
   render() {
-    const { aliens } = this.props
+    const { aliens, status } = this.props
 
     return (
       <div className='list-box-aliens'>
@@ -20,7 +20,7 @@ class AlienList extends Component {
           </ul>
         ))}
         <div className='bottom-row'>
-          <h4>Biomass Cost</h4>
+          <h4>Biomass Cost: {status.spawning_cost}</h4>
           <h4>Synapse Required</h4>
         </div>
       </div>

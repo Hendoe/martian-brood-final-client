@@ -6,14 +6,23 @@ class AlienList extends Component {
     const { aliens } = this.props
 
     return (
-      <div className='list-box'>
+      <div className='list-box-aliens'>
+        <div className='top-row'>
+          <span><h4>Name</h4></span>
+          <span><h4>Count</h4></span>
+          <span><h4>To Spawn</h4></span>
+        </div>
         {aliens.map(alien => (
           <ul className='left-list'>
-            <li className='item'>Name: {alien.alien_name}</li>
-            <li className='item'>Count: {alien.brood_count}</li>
-            <li className='item'>To Spawn: {alien.spawn_count}</li>
+            <li className='item'>{alien.alien_name}</li>
+            <li className='item'>{alien.brood_count}</li>
+            <li className='item'>{alien.spawning_count}</li>
           </ul>
         ))}
+        <div className='bottom-row'>
+          <h4>Biomass Cost</h4>
+          <h4>Synapse Required</h4>
+        </div>
       </div>
     )   
   };

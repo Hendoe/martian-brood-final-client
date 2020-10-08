@@ -41,7 +41,6 @@
 
 .aliens-box {
   flex: 2;
-  justify-content: left;
   text-align: center;
   border-style: solid;
   margin-left: 15rem;
@@ -51,7 +50,6 @@
 
 .alien-structures-box {
   flex: 2;
-  justify-content: right;
   text-align: center;
   border-style: solid;
   margin-left: 15rem;

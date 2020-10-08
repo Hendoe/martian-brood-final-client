@@ -8,6 +8,11 @@ class AlienSpawner extends Component {
     this.state = {
       alienCost: 0,
       aliensToSpawn: 0,
+      spawnPlan: {
+        alien_name: 'Warrior Drone',
+        totalCost: 0,
+        totalToSpawn: 0
+      },
     };
   };
 
@@ -35,10 +40,40 @@ class AlienSpawner extends Component {
     this.setState({alienCost: newCost})
   };
 
-  componentWillUnmount() {
-    this.setState({alienCost: 0});
-    this.setState({aliensToSpawn: 0});
+  setSpawnPlan() {
+    const cost = this.state.aliensCost;
+    const toSpawn = this.state.toSpawn;
+    let newPlan = this.state.spawnPlan;
+    newPlan.totalCost = cost;
+    newPlan.totalToSpawn = toSpawn;
+    this.setState({spawnPlan: newPlan});
   };
+  
+  postComment(articleId, text) {
+    return fetch(`${config.API_ENDPOINT}/comments`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${TokenService.getAuthToken()}`,
+      },
+      body: JSON.stringify({
+        article_id: articleId,
+        text,
+      }),
+    })
+      .then(res =>
+        (!res.ok)
+          ? res.json().then(e => Promise.reject(e))
+          : res.json()
+      )
+  }
+}
+
+
+  // componentWillUnmount() {
+  //   this.setState({alienCost: 0});
+  //   this.setState({aliensToSpawn: 0});
+  // };
 
   render() {
     const { aliens } = this.props
@@ -64,14 +99,16 @@ class AlienSpawner extends Component {
                 />
               ))
           }
+          <span className='row center'>
+            <p className='red'>COST: {alienCost}</p>
+            <p className='red'>SPAWNING: {aliensToSpawn}</p>
+          </span>
           <div className='buttons'>
             <button className='arrow-button' onClick={() => this.props.handleMoveLeft()} disabled>LEFT</button>
-            <button className='builder-button' onClick={() => this.props.handleSpawn()}>SPAWN</button>
+            <button className='builder-button' onClick={() => this.setSpawnPlan()}>SPAWN</button>
             <button className='builder-button' onClick={() => this.addToSpawn()}>+</button>
-              <p className='red'>COST: {alienCost}</p>
-              <p className='red'>SPAWNING: {aliensToSpawn}</p>
             <button className='builder-button' onClick={() => this.subtractToSpawn()}>-</button>
-            <button className='builder-button' onClick={() => this.props.cancelSpawn()}>CANCEL</button>
+            <button className='builder-button' onClick={() => this.props.handleClickCancel()}>CANCEL</button>
             <button className='arrow-button' onClick={() => this.props.handleMoveRight()} disabled>RIGHT</button>
           </div>
         </div>

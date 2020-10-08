@@ -17,9 +17,51 @@ class GameplayScreen extends Component {
     this.state = {
       buildAliensMode: false,
       buildStructuresMode: false,
-      status: Status,
-      aliens: Aliens,
-      structures: Structures
+      status: [
+        { 
+          brood_name: 'Vlagiums',
+          solar_day: 1,
+          aliens: 1,
+          structures: 0,
+          biomass: 25,
+          aliens_cost: 0,
+          synapse: 0,
+        },
+      ],
+      aliens: [
+        { 
+          alien_name: 'Worker Drone',
+          spawnable: true,
+          spawning: true,
+          active: true,
+          toSpawn: 0,
+          spawning_count: 0,
+          brood_count: 0,
+          hp: 1,
+          atk: 1,
+          biomass_cost: 5,
+          synapse_required: 1,
+          description: 'A simple alien. Gathers Biomass for the growth of the Brood.',
+          special_features: 'Able to do many tasks.'
+        },
+      ],
+      structures: [
+        {
+          structure_name: 'Spawning Pit',
+          constructable: true,
+          constructing: false,
+          active: true,
+          toConstruct: 0,
+          constructing_count: 0,
+          brood_count: 1,
+          hp: 20,
+          atk: 0,
+          biomass_cost: 20,
+          synapse_produced: 0, 
+          description: 'A large pit dug into the ground that gets filled with Biomass for creating Aliens.',
+          special_features: 'Can build Worker Drones'
+        },
+      ],
     };
   };
 
@@ -37,17 +79,19 @@ class GameplayScreen extends Component {
     this.handleBuildModeChange();
   };
 
-  //ALL HANDLER FOR UPDATING PLAYER STATUS
-  handleUpdateTotalBiomass() {
-    Spawner.updateTotalBiomass();
-  };
-
+  //ALL FUNCTIONS FOR UPDATING PLAYER STATUS
   handleUpdateAlienCount() {
     Spawner.updateAlienCount();
   };
 
   handleClickSpawn = () => {
     this.setState({buildAliensMode: false});
+    this.handleBuildModeChange();
+  };
+
+  handleClickCancel = () => {
+    this.setState({buildAliensMode: false});
+    this.setState({buildStructuresMode: false});
     this.handleBuildModeChange();
   };
 
@@ -97,7 +141,8 @@ class GameplayScreen extends Component {
   renderBuilders() {
     if (this.state.buildAliensMode === true) {
       return (
-        <AlienSpawner aliens={Aliens} handleClickSpawn={this.handleClickSpawn}
+        <AlienSpawner aliens={Aliens} handleClickSpawn={this.handleClickSpawn} updateTotalBiomass={this.updateTotalBiomass}
+          handleClickCancel={this.handleClickCancel}
         />
       );
     } else if (this.state.buildStructuresMode === true) {

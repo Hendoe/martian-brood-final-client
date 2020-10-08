@@ -1,10 +1,10 @@
-.list-box {
+.list-box-structures {
     display: flex;
     flex: 2;
     flex-direction: row;
   }
   
-  .left-list {
+  .right-list {
     flex: 1;
     text-align: left;
   }

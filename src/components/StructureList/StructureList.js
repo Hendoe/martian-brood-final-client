@@ -6,7 +6,7 @@ class StructureList extends Component {
     const { structures } = this.props
 
     return (
-      <div className='list-box'>
+      <div className='list-box-structures'>
         {structures.map(structure => (
           <ul className='left-list'>
             <li className='item'>Name: {structure.alien_name}</li>

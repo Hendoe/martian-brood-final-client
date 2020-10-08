@@ -24,7 +24,6 @@ class GameplayScreen extends Component {
           aliens: 1,
           structures: 0,
           biomass: 25,
-          aliens_cost: 0,
           synapse: 0,
         },
       ],
@@ -49,7 +48,7 @@ class GameplayScreen extends Component {
         {
           structure_name: 'Spawning Pit',
           constructable: true,
-          constructing: false,
+          constructing: true,
           active: true,
           toConstruct: 0,
           constructing_count: 0,
@@ -147,7 +146,9 @@ class GameplayScreen extends Component {
       );
     } else if (this.state.buildStructuresMode === true) {
       return (
-        <StructureConstructor structures={Structures} handleClickConstruct={this.handleClickConstruct} />
+        <StructureConstructor structures={Structures} handleClickConstruct={this.handleClickConstruct} 
+          handleClickCancel={this.handleClickCancel}
+        />
       );
     } else if (this.props.taskMode === true) {
       return (
@@ -160,7 +161,7 @@ class GameplayScreen extends Component {
   };
 
   render() {
-    const { status } = this.state
+    const { status, aliens, structures } = this.state
 
     return (
       <div>
@@ -180,12 +181,12 @@ class GameplayScreen extends Component {
         <section className='gameplay-style reaction-mode'>
           <div className='left aliens-box'>
           <h2>Aliens</h2>
-            <AlienList aliens={Aliens} />
+            <AlienList aliens={aliens} />
             <span>{this.renderSpawnerButton()}</span>
           </div>
           <div className='right alien-structures-box'>
             <h2>Structures</h2>
-              <StructureList structures={Structures} />
+              <StructureList structures={structures} />
               <span>{this.renderConstructorButton()}</span>
           </div>
           <div>{this.renderBuilders()}</div>

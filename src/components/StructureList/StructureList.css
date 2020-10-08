@@ -1,12 +1,33 @@
 .list-box-structures {
     display: flex;
     flex: 2;
-    flex-direction: row;
+    flex-direction: column;
   }
-  
-  .right-list {
+
+  .top-row {
+    border-style: solid;
+    border-width: 1px, 0px;
+    display: flex;
     flex: 1;
-    text-align: left;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .right-list {
+    display: flex;
+    flex: 4;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: 15rem;
+  }
+
+  .bottom-row {
+    border-style: solid;
+    border-width: 1px, 0px, 0px, 0px;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-evenly;
   }
   
   ul {

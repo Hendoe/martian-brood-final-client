@@ -24,24 +24,20 @@
 .builder-button {
   margin-top: 1rem;
   height: 2.5rem;
-  width: 5rem;
+  width: 10rem;
 }
 
 .buttons {
   flex: 3;
   flex-direction: row;
   justify-content: center;
-  align-items: space-between;
+  align-items: space-evenly;
 }
 
 .arrow-button {
   margin-top: 1rem;
   height: 2.5rem;
-  width: 5rem;
-}
-
-.spawn-button {
-  margin: 5px 25px 8px 0px;
+  width: 4rem;
 }
 
 hr {

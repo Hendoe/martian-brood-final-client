@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import config from '../../config';
 import Alien from '../Alien/Alien';
 import './AlienSpawner.css';
 
@@ -10,8 +11,9 @@ class AlienSpawner extends Component {
       aliensToSpawn: 0,
       spawnPlan: {
         alien_name: 'Warrior Drone',
-        totalCost: 0,
-        totalToSpawn: 0
+        totalToSpawn: 0,
+        biomass_cost: 0,
+        synapse_required: 0
       },
     };
   };
@@ -35,39 +37,39 @@ class AlienSpawner extends Component {
   };
   
   updateAlienCost(spawning) {
-    console.log(this.state.aliensToSpawn)
     let newCost = (5 * spawning);
     this.setState({alienCost: newCost})
   };
 
   setSpawnPlan() {
-    const cost = this.state.aliensCost;
+    const biomass_cost = this.state.alienCost;
     const toSpawn = this.state.toSpawn;
     let newPlan = this.state.spawnPlan;
-    newPlan.totalCost = cost;
     newPlan.totalToSpawn = toSpawn;
+    newPlan.biomass_cost = biomass_cost;
     this.setState({spawnPlan: newPlan});
+    this.postPlans();
   };
   
-  postComment(articleId, text) {
-    return fetch(`${config.API_ENDPOINT}/comments`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `bearer ${TokenService.getAuthToken()}`,
-      },
-      body: JSON.stringify({
-        article_id: articleId,
-        text,
-      }),
-    })
-      .then(res =>
-        (!res.ok)
-          ? res.json().then(e => Promise.reject(e))
-          : res.json()
-      )
-  }
-}
+
+  postPlans(plans) {
+      return fetch(`${config.API_ENDPOINT}/spawnPlans`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          alien_name: plans.alien_name,
+          total_to_spawn: plans.totalToSpawn,
+          biomass_cost: plans.biomass_cost
+        }),
+      })
+        .then(res =>
+          (!res.ok)
+            ? res.json().then(e => Promise.reject(e))
+            : res.json()
+        )
+  };
 
 
   // componentWillUnmount() {
@@ -77,8 +79,7 @@ class AlienSpawner extends Component {
 
   render() {
     const { aliens } = this.props
-    const { aliensToSpawn, alienCost } =this.state
-    console.log(aliensToSpawn)    
+    const { aliensToSpawn, alienCost } = this.state 
 
     return (
       <div className='builder-box'>

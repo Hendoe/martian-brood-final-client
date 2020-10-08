@@ -4,7 +4,7 @@ import './Structure.css';
 class Structure extends Component {
   render() {
     const { name, hp, atk, cost, synapse, desc, features } = this.props
-    console.log(this.props)
+    
     return (
       <div>
         <span><h3>Name: {name}</h3></span>

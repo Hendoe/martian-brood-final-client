@@ -9,7 +9,7 @@ class AlienList extends Component {
       <div className='list-box-aliens'>
         <div className='top-row'>
           <span><h4>Name</h4></span>
-          <span><h4>Count</h4></span>
+          <span><h4>Brood Count</h4></span>
           <span><h4>To Spawn</h4></span>
         </div>
         {aliens.map(alien => (

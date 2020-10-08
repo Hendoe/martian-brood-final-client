@@ -2,7 +2,7 @@ const Structures = [
     {
         structure_name: 'Spawning Pit',
         constructable: true,
-        constructing: false,
+        constructing: true,
         active: true,
         toConstruct: 0,
         constructing_count: 0,

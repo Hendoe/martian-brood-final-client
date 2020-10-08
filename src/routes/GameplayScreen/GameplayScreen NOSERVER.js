@@ -17,64 +17,51 @@ class GameplayScreen extends Component {
     this.state = {
       buildAliensMode: false,
       buildStructuresMode: false,
-      status: [],
-      aliens: [],
-      structures: [],
+      status: [
+        { 
+          brood_name: 'Vlagiums',
+          solar_day: 1,
+          aliens: 1,
+          structures: 0,
+          biomass: 25,
+          synapse: 0,
+        },
+      ],
+      aliens: [
+        { 
+          alien_name: 'Worker Drone',
+          spawnable: true,
+          spawning: true,
+          active: true,
+          toSpawn: 0,
+          spawning_count: 0,
+          brood_count: 0,
+          hp: 1,
+          atk: 1,
+          biomass_cost: 5,
+          synapse_required: 1,
+          description: 'A simple alien. Gathers Biomass for the growth of the Brood.',
+          special_features: 'Able to do many tasks.'
+        },
+      ],
+      structures: [
+        {
+          structure_name: 'Spawning Pit',
+          constructable: true,
+          constructing: true,
+          active: true,
+          toConstruct: 0,
+          constructing_count: 0,
+          brood_count: 1,
+          hp: 20,
+          atk: 0,
+          biomass_cost: 20,
+          synapse_produced: 0, 
+          description: 'A large pit dug into the ground that gets filled with Biomass for creating Aliens.',
+          special_features: 'Can build Worker Drones'
+        },
+      ],
     };
-  };
-
-  componentDidMount() {
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/status`)
-    ])
-      .then(([statusRes]) => {
-        if (!statusRes.ok)
-          return statusRes.json().then(event => Promise.reject(event))
-        return Promise.all([
-          statusRes.json(),
-        ])
-      })
-      .then(([status]) => {
-        this.setState({ status })
-      })
-      .catch(error => {
-        console.log({error})
-      })
-
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/aliens`)
-    ])
-      .then(([aliensRes]) => {
-        if (!aliensRes.ok)
-          return aliensRes.json().then(event => Promise.reject(event))
-        return Promise.all([
-          aliensRes.json(),
-        ])
-      })
-      .then(([aliens]) => {
-        this.setState({ aliens })
-      })
-      .catch(error => {
-        console.log({error})
-      })
-
-      Promise.all([
-        fetch(`${config.API_ENDPOINT}/structures`)
-      ])
-        .then(([structuresRes]) => {
-          if (!structuresRes.ok)
-            return structuresRes.json().then(event => Promise.reject(event))
-          return Promise.all([
-            structuresRes.json(),
-          ])
-        })
-        .then(([structures]) => {
-          this.setState({ structures })
-        })
-        .catch(error => {
-          console.log({error})
-        })
-
   };
 
   //ALL HANDLERS FOR CONDITIONAL CHANGES
@@ -153,19 +140,19 @@ class GameplayScreen extends Component {
   renderBuilders() {
     if (this.state.buildAliensMode === true) {
       return (
-        <AlienSpawner aliens={this.state.aliens} handleClickSpawn={this.handleClickSpawn} updateTotalBiomass={this.updateTotalBiomass}
+        <AlienSpawner aliens={Aliens} handleClickSpawn={this.handleClickSpawn} updateTotalBiomass={this.updateTotalBiomass}
           handleClickCancel={this.handleClickCancel}
         />
       );
     } else if (this.state.buildStructuresMode === true) {
       return (
-        <StructureConstructor structures={this.state.structures} handleClickConstruct={this.handleClickConstruct} 
+        <StructureConstructor structures={Structures} handleClickConstruct={this.handleClickConstruct} 
           handleClickCancel={this.handleClickCancel}
         />
       );
     } else if (this.props.taskMode === true) {
       return (
-        <Tasks aliens={this.state.aliens}
+        <Tasks aliens={this.context.aliens}
           handleClickCancel={this.handleCancelTasks} handleClickCommit={this.handleCommitTasks}/>
       );
     } else {

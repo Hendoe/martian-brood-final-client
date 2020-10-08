@@ -16,7 +16,7 @@ class StructureList extends Component {
           <ul className='left-list'>
             <li className='item'>{structure.structure_name}</li>
             <li className='item'>{structure.brood_count}</li>
-            <li className='item'>{structure.toConstruct}</li>
+            <li className='item'>{structure.constructing_count}</li>
           </ul>
         ))}
          <div className='bottom-row'>

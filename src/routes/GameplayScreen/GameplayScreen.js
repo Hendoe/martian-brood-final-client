@@ -5,6 +5,7 @@ import StructureList from '../../components/StructureList/StructureList';
 import AlienSpawner from '../../components/AlienSpawner/AlienSpawner';
 import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
 import Tasks from '../../components/Tasks/Tasks';
+import Reactions from '../../components/Reactions/Reactions';
 import './GameplayScreen.css';
 
 class GameplayScreen extends Component {
@@ -91,11 +92,18 @@ class GameplayScreen extends Component {
       this.setState({spawnMode: false});
       this.setState({constructMode: false});
       this.setState({taskMode: true});
-    } else if (changing === 'cancel') {
+    } else if (changing === 'reactions') {
+      this.setState({disableButtons: true});
+      this.setState({spawnMode: false});
+      this.setState({constructMode: false});
+      this.setState({taskMode: false});
+      this.setState({reactionMode: true});
+    }else if (changing === 'cancel') {
       this.setState({disableButtons: false});
       this.setState({spawnMode: false});
       this.setState({constructMode: false});
       this.setState({taskMode: false});
+      this.setState({reactionMode: false});
     } else {
       alert('check your conditionals');
     };
@@ -116,6 +124,11 @@ class GameplayScreen extends Component {
     this.handleChangeCondition(changing);
   };
 
+  handleClickCommit = () => {
+    let changing = 'reactions';
+    this.handleChangeCondition(changing);
+  };
+
   handleClickCancel = () => {
     let changing = 'cancel';
     this.handleChangeCondition(changing);
@@ -124,7 +137,8 @@ class GameplayScreen extends Component {
   //UPDATE PLAYER STATUS
   setSpawns = (toSpawn) => {
     this.setState( prevState => {
-      let toSpawnAlien = prevState.aliens.find(alien => alien.alien_name === 'Worker Drone')
+      // let toSpawnAlien = prevState.aliens.find(alien => alien.alien_name === 'Worker Drone')
+      let toSpawnAlien = prevState.aliens[0]
         toSpawnAlien.spawning_count = toSpawn;
         return {
           aliens: [toSpawnAlien]
@@ -133,16 +147,28 @@ class GameplayScreen extends Component {
     this.handleClickCancel();
   };
 
+  resetSpawns() {
+    this.setState( prevState => {
+      // let toSpawnAlien = prevState.aliens.find(alien => alien.alien_name === 'Worker Drone')
+      let zeroAlien = prevState.aliens[0]
+        zeroAlien.spawning_count = 0;
+        return {
+          aliens: [zeroAlien]
+        }
+      })
+    this.handleClickCancel();
+  };
+
   finalSpawning = (spawning) => {
     this.setState( prevState => {
-      let spawningAlien = prevState.aliens.find(alien => alien.alien_name === 'Worker Drone')
-        console.log(spawning)
-        spawningAlien.brood_count = spawning;
+      // let spawningAlien = prevState.aliens.find(alien => alien.alien_name === 'Worker Drone')
+      let spawningAlien = prevState.aliens[0]
+        spawningAlien.brood_count += spawning;
         return {
           aliens: [spawningAlien]
         }
       })
-    this.handleClickCancel();
+    this.resetSpawns();
   };
 
   //RENDERING FUNCTIONS
@@ -187,7 +213,12 @@ class GameplayScreen extends Component {
       return (
         <Tasks status={this.state.status} aliens={this.state.aliens} finalSpawning={this.finalSpawning}
           handleClickSpawner={this.handleClickSpawner} handleClickConstructor={this.handleClickConstructor} 
-            handleClickCancel={this.handleClickCancel} handleClickCommit={this.handleCommitTasks}/>
+            handleClickCancel={this.handleClickCancel} handleClickCommit={this.handleClickCommit} />
+      );
+    } else if (this.state.reactionMode === true) {
+      return (
+        <Reactions status={this.state.status} aliens={this.state.aliens} finalSpawning={this.finalSpawning}
+            handleClickCancel={this.handleClickCancel} />
       );
     } else {
       return

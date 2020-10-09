@@ -4,12 +4,25 @@ import './Tasks.css';
 
 class Tasks extends Component {
 
-  handleCommit = event => {
+  clickCommit = (event) => {
     event.preventDefault();
-    this.props.finalSpawning()
-    this.commitStatus();
-    let spawning = this.props.aliens.spawning_count
-    this.commitAliens(spawning);
+    this.finalSpawnPlan();
+    // this.props.finalSpawning()
+    // this.commitStatus();
+    // let spawning = this.props.aliens.spawning_count
+    // this.commitAliens(spawning);
+  };
+
+  finalSpawnPlan() {
+    const spawning = this.props.aliens[0].spawning_count;
+    // const biomass_cost = this.state.alienCost;
+    // const synapse_required = this.state.aliensSynapse;
+            // let newPlan = this.state.spawnPlan;
+            // newPlan.total_to_spawn = toSpawn;
+            // newPlan.biomass_cost = biomass_cost;
+            // newPlan.synapse_required = synapse_required;
+            // this.setState({spawnPlan: newPlan});
+    this.props.finalSpawning(spawning);
   };
 
   commitStatus() {
@@ -37,22 +50,22 @@ class Tasks extends Component {
     console.log(this.props)
     const { aliens } = this.props
     console.log(aliens)
-    {aliens.map( newAliens => (
-    fetch(config.API_ENDPOINT + `/commit/aliens`, {
-      method: 'PATCH',
-      body: JSON.stringify(newAliens),
-      headers: {
-        'content-type': 'application/json',
-      },
-    })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(error => Promise.reject(error))
-      })
-      .catch(error => {
-      console.error(error)
-      })
-    ))};
+    // {aliens.map( newAliens => (
+    // fetch(config.API_ENDPOINT + `/commit/aliens`, {
+    //   method: 'PATCH',
+    //   body: JSON.stringify(newAliens),
+    //   headers: {
+    //     'content-type': 'application/json',
+    //   },
+    // })
+    //   .then(res => {
+    //     if (!res.ok)
+    //       return res.json().then(error => Promise.reject(error))
+    //   })
+    //   .catch(error => {
+    //   console.error(error)
+    //   })
+    // ))};
   };
 
 
@@ -83,7 +96,7 @@ class Tasks extends Component {
           <br />
           <br />
         <button className='builder-button' onClick={() => this.props.handleClickCancel()}>CANCEL</button>
-        <button className='builder-button' onClick={(event) => this.handleCommit(event)}>COMMIT</button>
+        <button className='builder-button' onClick={(e) => this.clickCommit(e)}>COMMIT</button>
       </div>
     );
   };

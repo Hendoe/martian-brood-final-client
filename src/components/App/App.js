@@ -6,7 +6,6 @@ import Login from '../../routes/Login/Login';
 import InfoFooter from '../InfoFooter/InfoFooter';
 import GameplayScreen from '../../routes/GameplayScreen/GameplayScreen';
 import TaskFooter from '../TaskFooter/TaskFooter';
-import Reactions from '../../Reactions/Reactions';
 import './App.css';
 
 class App extends Component {
@@ -52,7 +51,6 @@ class App extends Component {
         <Route exact path={'/'} component={MainScreen} />
         <Route path={'/login'} component={Login} />
         <Route path={'/gameplay'} render={this.NewGameplayScreen} />
-        <Route path={'/reaction'} component={Reactions} />
       </>
     );
   };

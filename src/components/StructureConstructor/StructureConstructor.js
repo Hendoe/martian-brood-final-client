@@ -9,9 +9,10 @@ class StructureConstructor extends Component {
     this.state = {
       structureCost: 0,
       structuresToConstruct: 0,
+      structuresSynapse: 0,
       constructionOrders: {
-        structure_name: 'Warrior Drone',
-        totalToConstruct: 0,
+        structure_name: 'Spawning Pit',
+        total_to_construct: 0,
         biomass_cost: 0,
         synapse_produced: 0
       },
@@ -23,6 +24,7 @@ class StructureConstructor extends Component {
     constructing += 1;
     this.setState({structuresToConstruct: constructing});
     this.updateStructureCost(constructing);
+    this.updateStructureSynapse(constructing);
   };
 
   subtractToConstruct() {

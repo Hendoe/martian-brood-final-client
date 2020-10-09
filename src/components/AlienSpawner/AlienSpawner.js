@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import config from '../../config';
 import Alien from '../Alien/Alien';
 import './AlienSpawner.css';
 
@@ -58,37 +57,9 @@ class AlienSpawner extends Component {
     newPlan.biomass_cost = biomass_cost;
     newPlan.synapse_required = synapse_required;
     this.setState({spawnPlan: newPlan});
-    this.postPlans(newPlan);
-    console.log(newPlan)
+    this.props.setSpawns(toSpawn);
   };
   
-
-  postPlans(plans) {
-      return fetch(`${config.API_ENDPOINT}/spawnPlan`, {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          alien_name: plans.alien_name,
-          total_to_spawn: plans.total_to_spawn,
-          biomass_cost: plans.biomass_cost,
-          synapse_required: plans.synapse_required
-        }),
-      })
-        .then(res =>
-          (!res.ok)
-            ? res.json().then(e => Promise.reject(e))
-            : res.json()
-        )
-  };
-
-
-  // componentWillUnmount() {
-  //   this.setState({alienCost: 0});
-  //   this.setState({aliensToSpawn: 0});
-  // };
-
   render() {
     const { aliens } = this.props
     const { aliensToSpawn, alienCost } = this.state 

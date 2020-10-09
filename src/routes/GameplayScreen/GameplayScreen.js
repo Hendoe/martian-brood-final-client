@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import config from '../../config';
-import Spawner from '../../helpers/Spawner';
 import AlienList from '../../components/AlienList/AlienList';
 import StructureList from '../../components/StructureList/StructureList';
 import AlienSpawner from '../../components/AlienSpawner/AlienSpawner';
 import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
-import TaskFooter from '../../components/TaskFooter/TaskFooter';
 import Tasks from '../../components/Tasks/Tasks';
 import './GameplayScreen.css';
 
@@ -13,17 +11,18 @@ class GameplayScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      buildMode: false,
+      disableButtons: false,
+      spawnMode: false,
+      constructMode: false,
       taskMode: false,
-      spawnAliensMode: false,
-      constructStructuresMode: false,
-      commitTasksMode: false,
       status: [],
       aliens: [],
       structures: [],
     };
   };
 
+
+  //GET OUR DATABASES
   componentDidMount() {
     Promise.all([
       fetch(`${config.API_ENDPOINT}/status`)
@@ -75,101 +74,110 @@ class GameplayScreen extends Component {
         .catch(error => {
           console.log({error})
         })
-
   };
 
-  //ALL HANDLERS FOR CONDITIONAL CHANGES
-  handleBuildModeChange = () => {
-    if (this.state.buildMode === true) {
-      this.setState({buildMode: false})
-    } else if (this.state.buildMode === false) {
-      this.setState({buildMode: true})
+  //CHANGING THE CONDITIONALS
+  handleChangeCondition(changing) {
+    if (changing === 'spawning') {
+      this.setState({disableButtons: true});
+      this.setState({spawnMode: true});
+      this.setState({constructMode: false});
+    } else if (changing === 'constructing') {
+      this.setState({disableButtons: true});
+      this.setState({spawnMode: false});
+      this.setState({constructMode: true});
+    } else if (changing === 'tasks') {
+      this.setState({disableButtons: true});
+      this.setState({spawnMode: false});
+      this.setState({constructMode: false});
+      this.setState({taskMode: true});
+    } else if (changing === 'cancel') {
+      this.setState({disableButtons: false});
+      this.setState({spawnMode: false});
+      this.setState({constructMode: false});
+      this.setState({taskMode: false});
+    } else {
+      alert('check your conditionals');
     };
   };
 
-  handleTaskModeChange = () => {
-    if (this.state.taskMode === true) {
-      this.setState({taskMode: false})
-    } else if (this.state.taskMode === false) {
-      this.setState({taskMode: true})
-    };
+  handleClickSpawner = () => {
+    let changing = 'spawning';
+    this.handleChangeCondition(changing);
   };
 
-  handleClickAlienSpawner = () => {
-    this.setState({spawnAliensMode: true});
-    this.handleBuildModeChange();
+  handleClickConstructor = () => {
+    let changing = 'constructing';
+    this.handleChangeCondition(changing);
   };
 
-  //ALL FUNCTIONS FOR UPDATING PLAYER STATUS
-  handleUpdateAlienCount() {
-    Spawner.updateAlienCount();
-  };
-
-  handleClickSpawn = () => {
-    this.setState({spawnAliensMode: false});
-    this.handleBuildModeChange();
+  handleClickTasks = () => {
+    let changing = 'tasks';
+    this.handleChangeCondition(changing);
   };
 
   handleClickCancel = () => {
-    this.setState({spawnAliensMode: false});
-    this.setState({constructStructuresMode: false});
-    this.handleBuildModeChange();
+    let changing = 'cancel';
+    this.handleChangeCondition(changing);
   };
 
-  //ALL HANDLERS FOR STRUCTURE CONSTRUCTION
-  handleClickStructureConstructor = () => {
-    this.setState({constructStructuresMode: true});
-    this.handleBuildModeChange();
+  //UPDATE PLAYER STATUS
+  setSpawns = (toSpawn) => {
+    this.setState( prevState => {
+      let toSpawnAlien = prevState.aliens.find(alien => alien.alien_name === 'Worker Drone')
+        toSpawnAlien.spawning_count = toSpawn;
+        return {
+          aliens: [toSpawnAlien]
+        }
+      })
+    this.handleClickCancel();
   };
 
-  handleClickConstruct = () => {
-    this.setState({constructStructuresMode: false});
-    this.handleBuildModeChange();
+  finalSpawning = (spawning) => {
+    this.setState( prevState => {
+      let spawningAlien = prevState.aliens.find(alien => alien.alien_name === 'Worker Drone')
+        console.log(spawning)
+        spawningAlien.brood_count = spawning;
+        return {
+          aliens: [spawningAlien]
+        }
+      })
+    this.handleClickCancel();
   };
 
-  handleCommitTasks = () => {
-    this.handleTaskModeChange();
-    this.handleUpdateTotalBiomass();
-    this.handleUpdateAlienCount();
-  };
-
-  //FUNCTIONS FOR RENDERING
+  //RENDERING FUNCTIONS
   renderSpawnerButton() {
-    if (this.state.buildMode === true || this.state.taskMode === true) {
+    if (this.state.disableButtons === true) {
       return (<button className='build-aliens-button' disabled>Spawn Aliens</button>);
     } else {
-      return (<button className='build-aliens-button' onClick={() => this.handleClickAlienSpawner()}>Spawn Aliens</button>);
+      return (<button className='build-aliens-button' onClick={() => this.handleClickSpawner()}>Spawn Aliens</button>);
     };
   };
 
   renderConstructorButton() {
-    if (this.state.buildMode === true || this.state.taskMode === true) {
+    if (this.state.disableButtons === true) {
       return (<button className='build-structures-button' disabled>Build Alien Stuctures</button>);
     } else {
-      return (<button className='build-structures-button' onClick={() => this.handleClickStructureConstructor()}>Build Alien Stuctures</button>);
+      return (<button className='build-structures-button' onClick={() => this.handleClickConstructor()}>Build Alien Stuctures</button>);
     };
   };
 
   renderTaskButton() {
-    if (this.state.buildMode === true || this.state.taskMode === true) {
-      return (
-        <button className='task-button' disabled>Set Tasks</button>
-      )
+    if (this.state.disableButtons === true) {
+      return (<button className='task-button' disabled>Set Tasks</button>)
     } else {
-      return (
-        <button className='task-button' onClick={() =>  this.handleTaskModeChange()}>Set Tasks</button>
-      );
+      return (<button className='task-button' onClick={() =>  this.handleClickTasks()}>Set Tasks</button>);
     };
   };
 
   renderBuilders() {
-    if (this.state.spawnAliensMode === true) {
+    if (this.state.spawnMode === true) {
       return (
-        <AlienSpawner aliens={this.state.aliens} handleClickSpawn={this.handleClickSpawn}
+        <AlienSpawner aliens={this.state.aliens} setSpawns={this.setSpawns}
           handleClickCancel={this.handleClickCancel}
         />
       );
-    } else if (this.state.constructStructuresMode === true) {
+    } else if (this.state.constructMode === true) {
       return (
         <StructureConstructor structures={this.state.structures} handleClickConstruct={this.handleClickConstruct} 
           handleClickCancel={this.handleClickCancel}
@@ -177,14 +185,16 @@ class GameplayScreen extends Component {
       );
     } else if (this.state.taskMode === true) {
       return (
-        <Tasks handleClickAlienSpawner={this.handleClickAlienSpawner()} handleClickStructureConstructor={this.handleClickStructureConstructor()} 
-          handleClickCancel={this.handleClickCancel()} handleClickCommit={this.handleCommitTasks}/>
+        <Tasks status={this.state.status} aliens={this.state.aliens} finalSpawning={this.finalSpawning}
+          handleClickSpawner={this.handleClickSpawner} handleClickConstructor={this.handleClickConstructor} 
+            handleClickCancel={this.handleClickCancel} handleClickCommit={this.handleCommitTasks}/>
       );
     } else {
       return
     }
   };
 
+  //MAIN RENDER
   render() {
     const { status, aliens, structures } = this.state
 

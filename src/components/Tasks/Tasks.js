@@ -3,10 +3,13 @@ import config from '../../config';
 import './Tasks.css';
 
 class Tasks extends Component {
-
   clickCommit = () => {
-    this.finalSpawnPlan();
-    this.finalBiomassCost();
+      this.finalSpawnPlan();
+      this.finalBiomassCost();
+      this.adjustSynapse();
+      this.props.updateSolarDay();
+      this.POSTmaster();
+      this.runGET();
   };
 
   finalSpawnPlan() {
@@ -15,14 +18,30 @@ class Tasks extends Component {
   };
 
   finalBiomassCost() {
-    const biomass = this.props.aliensCost;
-    this.props.finalBiomass(biomass);
+    const aliensBiomass = this.props.aliensCost;
+    const structuresBiomass = this.props.structuresCost;
+    let totalBiomass = (aliensBiomass + structuresBiomass)
+    if (totalBiomass > this.props.status[0].biomass) {
+      alert('There is not enough Biomass available for your plans');
+    } else {
+      this.props.finalBiomass(totalBiomass);
+      return 'true'
+    };
   };
 
-  
+  adjustSynapse() {
+    const synapseProduced = this.props.structuresSynapse;
+    const synapseRequired = this.props.aliensSynapse;
+    this.props.finalSynapse(synapseRequired, synapseProduced);
+  };
 
+  POSTmaster() {
+    this.commitStatus();
+    this.commitAliens();
+    this.commitStructures();
+  };
+    
   commitStatus() {
-    console.log(this.props)
     const { status } = this.props
     status.map( newStatus => (
       fetch(config.API_ENDPOINT + `/commit/status`, {
@@ -32,39 +51,55 @@ class Tasks extends Component {
           'content-type': 'application/json',
         },
       })
-        .then(res => {
-          if (!res.ok)
-            return res.json().then(error => Promise.reject(error))
-        })
-        .catch(error => {
-          console.error(error)
-        })
+      .then(res => {
+        if (!res.ok)
+          return res.json().then(error => Promise.reject(error))
+      })
+      .catch(error => {
+        console.error(error)
+      })
     ));
   };
 
   commitAliens() {
-    console.log(this.props)
     const { aliens } = this.props
-    console.log(aliens)
-    // {aliens.map( newAliens => (
-    // fetch(config.API_ENDPOINT + `/commit/aliens`, {
-    //   method: 'PATCH',
-    //   body: JSON.stringify(newAliens),
-    //   headers: {
-    //     'content-type': 'application/json',
-    //   },
-    // })
-    //   .then(res => {
-    //     if (!res.ok)
-    //       return res.json().then(error => Promise.reject(error))
-    //   })
-    //   .catch(error => {
-    //   console.error(error)
-    //   })
-    // ))};
+    aliens.map( newAliens => (
+      fetch(config.API_ENDPOINT + `/commit/aliens`, {
+        method: 'PATCH',
+        body: JSON.stringify(newAliens),
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(res => {
+        if (!res.ok)
+          return res.json().then(error => Promise.reject(error))
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    ))
   };
 
-
+  commitStructures() {
+    const { structures } = this.props
+    structures.map( newStatus => (
+      fetch(config.API_ENDPOINT + `/commit/structures`, {
+        method: 'PATCH',
+        body: JSON.stringify(newStatus),
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(res => {
+        if (!res.ok)
+          return res.json().then(error => Promise.reject(error))
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    ));
+  };
 
   render() {
     return(

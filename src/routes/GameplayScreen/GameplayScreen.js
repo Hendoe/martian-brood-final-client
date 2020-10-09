@@ -23,14 +23,19 @@ class GameplayScreen extends Component {
       structures: [],
       structuresCost: 0,
       structuresSynapse: 0,
-      synapseProduced: 0,
-      synapseRequired: 0,
+      reactionsSpawn: 0,
+      reactionsConstruct: 0
     };
   };
 
 
   //GET OUR DATABASES
   componentDidMount() {
+    this.GETmaster();
+  };
+
+  //GETS IT
+  GETmaster() {
     Promise.all([
       fetch(`${config.API_ENDPOINT}/status`)
     ])
@@ -65,23 +70,27 @@ class GameplayScreen extends Component {
         console.log({error})
       })
 
-      Promise.all([
-        fetch(`${config.API_ENDPOINT}/structures`)
-      ])
-        .then(([structuresRes]) => {
-          if (!structuresRes.ok)
-            return structuresRes.json().then(event => Promise.reject(event))
-          return Promise.all([
-            structuresRes.json(),
-          ])
-        })
-        .then(([structures]) => {
-          this.setState({ structures })
-        })
-        .catch(error => {
-          console.log({error})
-        })
+    Promise.all([
+      fetch(`${config.API_ENDPOINT}/structures`)
+    ])
+      .then(([structuresRes]) => {
+        if (!structuresRes.ok)
+          return structuresRes.json().then(event => Promise.reject(event))
+        return Promise.all([
+          structuresRes.json(),
+        ])
+      })
+      .then(([structures]) => {
+        this.setState({ structures })
+      })
+      .catch(error => {
+        console.log({error})
+      })
   };
+
+  runGET = () => {
+    this.GETmaster();
+ };
 
   //CHANGING THE CONDITIONALS
   handleChangeCondition(changing) {
@@ -141,6 +150,17 @@ class GameplayScreen extends Component {
   };
 
   //UPDATE PLAYER STATUS
+  //SOLAR DAY
+  updateSolarDay = () => {
+    this.setState( prevState => {
+      let newDay = prevState.status[0]
+        newDay.solar_day += 1;
+        return {
+          status: [newDay]
+        }
+      });
+  };
+
   //SPAWNING
   setSpawns = (toSpawn) => {
     this.setState( prevState => {
@@ -164,6 +184,10 @@ class GameplayScreen extends Component {
       this.handleClickCommit();
   };
 
+  reactionsSpawn(spawning) {
+    this.setState({reactionsSpawn: spawning})
+  };
+
   finalSpawning = (spawning) => {
     console.log('spawn')
     this.setState( prevState => {
@@ -173,6 +197,7 @@ class GameplayScreen extends Component {
           aliens: [spawningAlien]
         }
       });
+    this.reactionsSpawn(spawning);
     this.resetSpawns();
   };
 
@@ -188,6 +213,10 @@ class GameplayScreen extends Component {
     this.handleClickCancel();
   };
 
+  reactionsConstruct(constructing) {
+    this.setState({reactionsConstruct: constructing})
+  };
+
   //BIOMASS COSTS
   setBiomass = (biomass) => {
     this.setState({aliensCost: biomass});
@@ -198,7 +227,6 @@ class GameplayScreen extends Component {
   };
 
   finalBiomass = (biomass) => {
-    console.log('bio')
     this.setState( prevState => {
       let newStatus = prevState.status[0]
         newStatus.biomass -= biomass;
@@ -237,6 +265,22 @@ class GameplayScreen extends Component {
     this.setState({structuresSynapse: synapse});
   };
 
+  resetSynapses() {
+    this.setState({aliensSynapse: 0});
+    this.setState({structuresSynapse: 0});
+  };
+
+  finalSynapse = (required, produced) => {
+    this.setState( prevState => {
+      let newStatus = prevState.status[0]
+        newStatus.synapse_required += required;
+        newStatus.synapse_produced += produced;
+        return {
+          status: [newStatus]
+        }
+      });
+    this.resetSynapses();
+  };
 
   //RENDERING FUNCTIONS
   renderSpawnerButton() {
@@ -278,15 +322,18 @@ class GameplayScreen extends Component {
       );
     } else if (this.state.taskMode === true) {
       return (
-        <Tasks status={this.state.status} aliens={this.state.aliens} aliensCost={this.state.aliensCost}
-          finalSpawning={this.finalSpawning} finalBiomass={this.finalBiomass}
-            handleClickSpawner={this.handleClickSpawner} handleClickConstructor={this.handleClickConstructor} 
-              handleClickCancel={this.handleClickCancel} />
+        <Tasks status={this.state.status} aliens={this.state.aliens} aliensCost={this.state.aliensCost} structuresCost={this.state.structuresCost}
+          aliensSynapse={this.state.aliensSynapse} structuresSynapse={this.state.structuresSynapse} updateSolarDay={this.updateSolarDay} 
+            finalSpawning={this.finalSpawning} finalBiomass={this.finalBiomass} finalSynapse={this.finalSynapse}
+              handleClickSpawner={this.handleClickSpawner} handleClickConstructor={this.handleClickConstructor} 
+                handleClickCancel={this.handleClickCancel} GETmaster={this.runGET}
+        />
       );
     } else if (this.state.reactionMode === true) {
       return (
-        <Reactions status={this.state.status} aliens={this.state.aliens} finalSpawning={this.finalSpawning}
-            handleClickCancel={this.handleClickCancel} />
+        <Reactions status={this.state.status} aliens={this.state.aliens} reactionsSpawn={this.state.reactionsSpawn}
+            handleClickCancel={this.handleClickCancel}
+        />
       );
     } else {
       return
@@ -309,7 +356,11 @@ class GameplayScreen extends Component {
               <h3>Solar Day: {report.solar_day}</h3>
             </span>
             <span className='right'>
-              <h4>Synapse: {report.synapse}</h4>
+              <span>
+                <h4>Synapse:</h4>
+                <p className='orange'>{report.synapse_required}</p>
+                <p className='gold'>{report.synapse_produced}</p>
+              </span>
             </span>
           </header>
         ))}
@@ -321,7 +372,7 @@ class GameplayScreen extends Component {
           </div>
           <div className='right alien-structures-box'>
           <h2>Structures</h2>
-            <StructureList structures={structures} status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse}/>
+            <StructureList structures={structures} status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} />
             <span>{this.renderConstructorButton()}</span>
           </div>
           <div>{this.renderBuilders()}</div>

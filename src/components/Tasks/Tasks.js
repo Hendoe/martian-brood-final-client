@@ -4,26 +4,22 @@ import './Tasks.css';
 
 class Tasks extends Component {
 
-  clickCommit = (event) => {
-    event.preventDefault();
+  clickCommit = () => {
     this.finalSpawnPlan();
-    // this.props.finalSpawning()
-    // this.commitStatus();
-    // let spawning = this.props.aliens.spawning_count
-    // this.commitAliens(spawning);
+    this.finalBiomassCost();
   };
 
   finalSpawnPlan() {
     const spawning = this.props.aliens[0].spawning_count;
-    // const biomass_cost = this.state.alienCost;
-    // const synapse_required = this.state.aliensSynapse;
-            // let newPlan = this.state.spawnPlan;
-            // newPlan.total_to_spawn = toSpawn;
-            // newPlan.biomass_cost = biomass_cost;
-            // newPlan.synapse_required = synapse_required;
-            // this.setState({spawnPlan: newPlan});
     this.props.finalSpawning(spawning);
   };
+
+  finalBiomassCost() {
+    const biomass = this.props.aliensCost;
+    this.props.finalBiomass(biomass);
+  };
+
+  
 
   commitStatus() {
     console.log(this.props)
@@ -95,8 +91,8 @@ class Tasks extends Component {
           <br />
           <br />
           <br />
+        <button className='builder-button' onClick={() => this.clickCommit()}>COMMIT</button>
         <button className='builder-button' onClick={() => this.props.handleClickCancel()}>CANCEL</button>
-        <button className='builder-button' onClick={(e) => this.clickCommit(e)}>COMMIT</button>
       </div>
     );
   };

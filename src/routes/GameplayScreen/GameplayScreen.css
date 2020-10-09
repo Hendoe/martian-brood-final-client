@@ -73,6 +73,10 @@ ul {
   list-style-type: none;
 }
 
-.red {
-  color: #FF6E0B;
+.orange {
+  color: #FF6400;
+}
+
+.gold {
+  color: #FFC800;
 }

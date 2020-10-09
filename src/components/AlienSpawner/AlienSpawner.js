@@ -6,6 +6,7 @@ class AlienSpawner extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      aliens: this.props.aliens,
       alienCost: 0,
       aliensToSpawn: 0,
       aliensSynapse: 0,
@@ -18,29 +19,50 @@ class AlienSpawner extends Component {
     };
   };
 
-  addToSpawn() {
-    let spawning = this.state.aliensToSpawn
-    spawning += 1;
-    this.setState({aliensToSpawn: spawning});
-    this.updateAlienCost(spawning);
-    this.updateAliensSynapse(spawning);
+  generateSpawning() {
+    return this.state.aliens[0].spawning_count;
   };
 
-  subtractToSpawn() {
-    let spawning = this.state.aliensToSpawn;
-    if (spawning === 0) {
+  generateCost() {
+    let spawning =  this.state.aliens[0].spawning_count;
+    let cost = this.state.aliens[0].biomass_cost
+    let alienCost = (spawning * cost)
+    return alienCost
+  };
+
+  generateSynapse() {
+    let spawning =  this.state.aliens[0].spawning_count;
+    let synapse =  this.state.aliens[0].synapse_required;
+    let synapseRequired = (spawning * synapse);
+    return synapseRequired;
+  };
+
+  addSpawning() {
+    let spawnCount = this.state.aliens[0].spawning_count;
+    let newCount = (spawnCount += 1);
+    this.setState( prevState => {
+      let newSpawning = prevState.aliens[0]
+        newSpawning.spawning_count = newCount;
+        return {
+          aliens: [newSpawning]
+        }
+    });
+  };
+
+  subtractSpawning() {
+    let spawnCount = this.state.aliens[0].spawning_count;
+    if (spawnCount === 0) {
       alert('You cannot spawn less than 0 aliens')
     } else {
-        spawning -= 1;
+        let newCount = (spawnCount -= 1);
+        this.setState( prevState => {
+          let newSpawning = prevState.aliens[0]
+            newSpawning.spawning_count = newCount;
+            return {
+              aliens: [newSpawning]
+            }
+        });
     };
-    this.setState({aliensToSpawn: spawning});
-    this.updateAlienCost(spawning);
-    this.updateAliensSynapse(spawning);
-  };
-  
-  updateAlienCost(spawning) {
-    let newCost = (5 * spawning);
-    this.setState({alienCost: newCost})
   };
 
   updateAliensSynapse(spawning) {
@@ -49,49 +71,53 @@ class AlienSpawner extends Component {
   };
 
   setSpawnPlan() {
-    const toSpawn = this.state.aliensToSpawn;
-    const biomass_cost = this.state.alienCost;
-    const synapse_required = this.state.aliensSynapse;
+    const toSpawn = this.state.aliens[0].spawning_count;
+    const biomass = this.generateCost();
+    const synapse = this.generateSynapse();
     let newPlan = this.state.spawnPlan;
     newPlan.total_to_spawn = toSpawn;
-    newPlan.biomass_cost = biomass_cost;
-    newPlan.synapse_required = synapse_required;
+    newPlan.biomass_cost = biomass;
+    newPlan.synapse_required = synapse;
     this.setState({spawnPlan: newPlan});
     this.props.setSpawns(toSpawn);
+    this.props.setBiomass(biomass);
+    this.props.setSynapse(synapse);
   };
   
   render() {
-    const { aliens } = this.props
-    const { aliensToSpawn, alienCost } = this.state 
+    const { aliens } = this.state
 
     return (
       <div className='builder-box'>
         <h2>Alien Spawner</h2>
         <hr />
-          {aliens.filter(spawnableAlien => spawnableAlien.spawnable === true)
-            .filter(spawningAlien => spawningAlien.spawning === true)
-              .map(alien => (
-                <Alien 
-                  id={alien.id}
-                  name={alien.alien_name}
-                  hp={alien.hp}
-                  atk={alien.atk}
-                  cost={alien.biomass_cost}
-                  synapse={alien.synapse_required}
-                  desc={alien.description}
-                  features={alien.special_features}
-                />
+          {/* {aliens.filter(spawnableAlien => spawnableAlien.spawnable === true)
+            .filter(spawningAlien => spawningAlien.spawning === true) */}
+              {aliens.map(alien => (
+                <form>                
+                  <Alien 
+                    id={alien.id}
+                    name={alien.alien_name}
+                    hp={alien.hp}
+                    atk={alien.atk}
+                    cost={alien.biomass_cost}
+                    synapse={alien.synapse_required}
+                    desc={alien.description}
+                    features={alien.special_features}
+                  />
+                  <span className='row center'>
+                    <p className='red'>COST: {this.generateCost()}</p>
+                    <p className='red'>SPAWNING: {this.generateSpawning()}</p>
+                    <p className='red'>SYNAPSE REQUIRED: {this.generateSynapse()}</p>
+                  </span>
+                </form>
               ))
           }
-          <span className='row center'>
-            <p className='red'>COST: {alienCost}</p>
-            <p className='red'>SPAWNING: {aliensToSpawn}</p>
-          </span>
           <div className='buttons'>
             <button className='arrow-button' onClick={() => this.props.handleMoveLeft()} disabled>LEFT</button>
             <button className='builder-button' onClick={() => this.setSpawnPlan()}>SPAWN</button>
-            <button className='builder-button' onClick={() => this.addToSpawn()}>+</button>
-            <button className='builder-button' onClick={() => this.subtractToSpawn()}>-</button>
+            <button className='builder-button' onClick={() => this.addSpawning()}>+</button>
+            <button className='builder-button' onClick={() => this.subtractSpawning()}>-</button>
             <button className='builder-button' onClick={() => this.props.handleClickCancel()}>CANCEL</button>
             <button className='arrow-button' onClick={() => this.props.handleMoveRight()} disabled>RIGHT</button>
           </div>

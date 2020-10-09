@@ -10,12 +10,6 @@ class AlienSpawner extends Component {
       alienCost: 0,
       aliensToSpawn: 0,
       aliensSynapse: 0,
-      spawnPlan: {
-        alien_name: 'Worker Drone',
-        total_to_spawn: 0,
-        biomass_cost: 0,
-        synapse_required: 0
-      },
     };
   };
 
@@ -27,7 +21,7 @@ class AlienSpawner extends Component {
     let spawning =  this.state.aliens[0].spawning_count;
     let cost = this.state.aliens[0].biomass_cost
     let alienCost = (spawning * cost)
-    return alienCost
+    return alienCost;
   };
 
   generateSynapse() {
@@ -65,20 +59,10 @@ class AlienSpawner extends Component {
     };
   };
 
-  updateAliensSynapse(spawning) {
-    let newSynapse = (1 * spawning);
-    this.setState({aliensSynapse: newSynapse})
-  };
-
   setSpawnPlan() {
     const toSpawn = this.state.aliens[0].spawning_count;
     const biomass = this.generateCost();
     const synapse = this.generateSynapse();
-    let newPlan = this.state.spawnPlan;
-    newPlan.total_to_spawn = toSpawn;
-    newPlan.biomass_cost = biomass;
-    newPlan.synapse_required = synapse;
-    this.setState({spawnPlan: newPlan});
     this.props.setSpawns(toSpawn);
     this.props.setBiomass(biomass);
     this.props.setSynapse(synapse);
@@ -106,13 +90,12 @@ class AlienSpawner extends Component {
                     features={alien.special_features}
                   />
                   <span className='row center'>
-                    <p className='red'>COST: {this.generateCost()}</p>
-                    <p className='red'>SPAWNING: {this.generateSpawning()}</p>
-                    <p className='red'>SYNAPSE REQUIRED: {this.generateSynapse()}</p>
+                    <p className='orange'>COST: {this.generateCost()}</p>
+                    <p className='orange'>SPAWNING: {this.generateSpawning()}</p>
+                    <p className='orange'>SYNAPSE REQUIRED: {this.generateSynapse()}</p>
                   </span>
                 </form>
-              ))
-          }
+              ))}
           <div className='buttons'>
             <button className='arrow-button' onClick={() => this.props.handleMoveLeft()} disabled>LEFT</button>
             <button className='builder-button' onClick={() => this.setSpawnPlan()}>SPAWN</button>

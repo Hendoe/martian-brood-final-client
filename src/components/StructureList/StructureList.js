@@ -3,7 +3,7 @@ import './StructureList.css';
 
 class StructureList extends Component {
   render() {
-    const { structures } = this.props
+    const { structures, structuresCost, structuresSynapse } = this.props
 
     return (
       <div className='list-box-structures'>
@@ -20,8 +20,8 @@ class StructureList extends Component {
           </ul>
         ))}
          <div className='bottom-row'>
-          <h4>Biomass Cost</h4>
-          <h4>Synapse Produced</h4>
+          <h4>Biomass Cost: {structuresCost}</h4>
+          <h4 className='gold'>Synapse Produced: {structuresSynapse}</h4>
         </div>
       </div>
     )   

@@ -177,6 +177,16 @@ class GameplayScreen extends Component {
   };
 
   //CONSTRUCTING
+  setOrders = (orders) => {
+    this.setState( prevState => {
+      let toConstructStructure = prevState.structures[0]
+        toConstructStructure.constructing_count = orders;
+        return {
+          structures: [toConstructStructure]
+        }
+      });
+    this.handleClickCancel();
+  };
 
   //BIOMASS COSTS
   setBiomass = (biomass) => {
@@ -199,9 +209,32 @@ class GameplayScreen extends Component {
     this.resetBiomass();
   };
 
+  setStructuresBiomass = (biomass) => {
+    this.setState({structuresCost: biomass});
+  };
+
+  resetStructuresBiomass() {
+    this.setState({structuresCost: 0});
+  };
+
+  finalStructuresBiomass = (biomass) => {
+    this.setState( prevState => {
+      let newStatus = prevState.status[0]
+        newStatus.biomass -= biomass;
+        return {
+          status: [newStatus]
+        }
+      });
+    this.resetStructuresBiomass();
+  };
+
   //SYNAPSE DISTRIBUTION
   setSynapse = (synapse) => {
     this.setState({aliensSynapse: synapse});
+  };
+
+  setStructuresSynapse = (synapse) => {
+    this.setState({structuresSynapse: synapse});
   };
 
 
@@ -239,8 +272,8 @@ class GameplayScreen extends Component {
       );
     } else if (this.state.constructMode === true) {
       return (
-        <StructureConstructor structures={this.state.structures} handleClickConstruct={this.handleClickConstruct} 
-          handleClickCancel={this.handleClickCancel}
+        <StructureConstructor structures={this.state.structures} setStructuresBiomass={this.setStructuresBiomass} setOrders={this.setOrders}
+         setStructuresSynapse={this.setStructuresSynapse} handleClickCancel={this.handleClickCancel}
         />
       );
     } else if (this.state.taskMode === true) {
@@ -262,7 +295,7 @@ class GameplayScreen extends Component {
 
   //MAIN RENDER
   render() {
-    const { status, aliens, structures, aliensCost, aliensSynapse } = this.state
+    const { status, aliens, structures, aliensCost, aliensSynapse, structuresCost, structuresSynapse } = this.state
 
     return (
       <div>
@@ -288,7 +321,7 @@ class GameplayScreen extends Component {
           </div>
           <div className='right alien-structures-box'>
           <h2>Structures</h2>
-            <StructureList structures={structures} />
+            <StructureList structures={structures} status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse}/>
             <span>{this.renderConstructorButton()}</span>
           </div>
           <div>{this.renderBuilders()}</div>

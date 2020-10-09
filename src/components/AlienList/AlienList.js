@@ -21,7 +21,7 @@ class AlienList extends Component {
         ))}
         <div className='bottom-row'>
           <h4>Biomass Cost: {aliensCost}</h4>
-          <h4>Synapse Required: {aliensSynapse}</h4>
+          <h4 className='orange'>Synapse Required: {aliensSynapse}</h4>
         </div>
       </div>
     )   

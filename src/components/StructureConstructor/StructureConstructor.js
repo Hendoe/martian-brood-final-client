@@ -73,37 +73,34 @@ class StructureConstructor extends Component {
     this.props.setStructuresSynapse(synapse);
   };
 
-
-  // postOrders(orders) {
-  //   return fetch(`${config.API_ENDPOINT}/constructionOrders`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'content-type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       structure_name: orders.structure_name,
-  //       total_to_construct: orders.totalToConstruct,
-  //       biomass_cost: orders.biomass_cost
-  //     }),
-  //   })
-  //     .then(res =>
-  //       (!res.ok)
-  //         ? res.json().then(e => Promise.reject(e))
-  //         : res.json()
-  //     )
-  // };
-
+  findStructure(structures, left, right) {
+    let i = 0;
+    if (left === 1) {
+      if (i === 0) {
+        i = 4;
+      }
+      i -= 1;
+    } else if (right === 1) {
+      if (i === 4) {
+        i = 0;
+      } else {
+        i += 1;
+      };
+    };
+    if (structures[i].constructable === false) 
+    return structures[i];
+  };
 
   render() {
     const { structures } = this.props
+    let structure = this.state.id
 
     return (
       <div className='builder-box'>
         <h2>Structure Constructor</h2>
         <hr />
           {/* {structures.filter(constructableStructure => constructableStructure.constructable === true)
-            .filter(constructingStructure => constructingStructure.constructing === true) */}
-              {structures.map(structure => (
+            .find(constructingStructure => constructingStructure.constructing === true) */}
                 <form>
                   <Structure
                     id={structure.id}
@@ -118,12 +115,11 @@ class StructureConstructor extends Component {
                   <span className='row center'>
                     <p className='red'>COST: {this.generateCost()}</p>
                     <p className='red'>CONSTRUCTING: {this.generateConstructing()}</p>
-                    <p className='GOLD'>SYNAPSE PRODUCED: {this.generateSynapse()}</p>
+                    <p className='gold'>SYNAPSE PRODUCED: {this.generateSynapse()}</p>
                   </span>
                 </form>
-              ))}
           <div className='buttons'>
-            <button className='arrow-button' onClick={() => this.props.handleMoveLeft()} disabled>LEFT</button>
+            <button className='arrow-button' onClick={() => this.findStructure()} disabled>LEFT</button>
             <button className='builder-button' onClick={() => this.setConstructionOrders()}>CONSTRUCT</button>
             <button className='builder-button' onClick={() => this.addToConstruct()}>+</button>
             <button className='builder-button' onClick={() => this.subtractToConstruct()}>-</button>

@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
-import config from '../../config';
 import './Tasks.css';
 
 class Tasks extends Component {
   clickCommit = () => {
       this.finalSpawnPlan();
+      this.finalConstructionOrder();
       this.finalBiomassCost();
       this.adjustSynapse();
       this.props.updateSolarDay();
-      this.POSTmaster();
-      this.runGET();
   };
 
   finalSpawnPlan() {
     const spawning = this.props.aliens[0].spawning_count;
     this.props.finalSpawning(spawning);
+  };
+
+  finalConstructionOrder() {
+    const constructing = this.props.structures[0].constructing_count;
+    this.props.finalOrders(constructing);
   };
 
   finalBiomassCost() {
@@ -33,72 +36,6 @@ class Tasks extends Component {
     const synapseProduced = this.props.structuresSynapse;
     const synapseRequired = this.props.aliensSynapse;
     this.props.finalSynapse(synapseRequired, synapseProduced);
-  };
-
-  POSTmaster() {
-    this.commitStatus();
-    this.commitAliens();
-    this.commitStructures();
-  };
-    
-  commitStatus() {
-    const { status } = this.props
-    status.map( newStatus => (
-      fetch(config.API_ENDPOINT + `/commit/status`, {
-        method: 'PATCH',
-        body: JSON.stringify(newStatus),
-        headers: {
-          'content-type': 'application/json',
-        },
-      })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(error => Promise.reject(error))
-      })
-      .catch(error => {
-        console.error(error)
-      })
-    ));
-  };
-
-  commitAliens() {
-    const { aliens } = this.props
-    aliens.map( newAliens => (
-      fetch(config.API_ENDPOINT + `/commit/aliens`, {
-        method: 'PATCH',
-        body: JSON.stringify(newAliens),
-        headers: {
-          'content-type': 'application/json',
-        },
-      })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(error => Promise.reject(error))
-      })
-      .catch(error => {
-        console.error(error)
-      })
-    ))
-  };
-
-  commitStructures() {
-    const { structures } = this.props
-    structures.map( newStatus => (
-      fetch(config.API_ENDPOINT + `/commit/structures`, {
-        method: 'PATCH',
-        body: JSON.stringify(newStatus),
-        headers: {
-          'content-type': 'application/json',
-        },
-      })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(error => Promise.reject(error))
-      })
-      .catch(error => {
-        console.error(error)
-      })
-    ));
   };
 
   render() {

@@ -28,7 +28,6 @@ class GameplayScreen extends Component {
     };
   };
 
-
   //GET OUR DATABASES
   componentDidMount() {
     this.GETmaster();
@@ -87,10 +86,6 @@ class GameplayScreen extends Component {
         console.log({error})
       })
   };
-
-  runGET = () => {
-    this.GETmaster();
- };
 
   //CHANGING THE CONDITIONALS
   handleChangeCondition(changing) {
@@ -154,7 +149,7 @@ class GameplayScreen extends Component {
   updateSolarDay = () => {
     this.setState( prevState => {
       let newDay = prevState.status[0]
-        newDay.solar_day += 1;
+        newDay.solar_day = (newDay.solar_day += 1);
         return {
           status: [newDay]
         }
@@ -184,12 +179,7 @@ class GameplayScreen extends Component {
       this.handleClickCommit();
   };
 
-  reactionsSpawn(spawning) {
-    this.setState({reactionsSpawn: spawning})
-  };
-
   finalSpawning = (spawning) => {
-    console.log('spawn')
     this.setState( prevState => {
       let spawningAlien = prevState.aliens[0]
         spawningAlien.brood_count += spawning;
@@ -199,6 +189,10 @@ class GameplayScreen extends Component {
       });
     this.reactionsSpawn(spawning);
     this.resetSpawns();
+  };
+
+  reactionsSpawn(spawning) {
+    this.setState({reactionsSpawn: spawning})
   };
 
   //CONSTRUCTING
@@ -211,6 +205,29 @@ class GameplayScreen extends Component {
         }
       });
     this.handleClickCancel();
+  };
+
+  resetOrders() {
+    this.setState( prevState => {
+      let zeroStructure = prevState.structures[0]
+        zeroStructure.constructing_count = 0;
+        return {
+          structures: [zeroStructure]
+        }
+      });
+      this.handleClickCommit();
+  };
+
+  finalOrders = (constructing) => {
+    this.setState( prevState => {
+      let constructingStructure = prevState.structures[0]
+        constructingStructure.brood_count += constructing;
+        return {
+          structures: [constructingStructure]
+        }
+      });
+    this.reactionsConstruct(constructing);
+    this.resetOrders();
   };
 
   reactionsConstruct(constructing) {
@@ -317,22 +334,24 @@ class GameplayScreen extends Component {
     } else if (this.state.constructMode === true) {
       return (
         <StructureConstructor structures={this.state.structures} setStructuresBiomass={this.setStructuresBiomass} setOrders={this.setOrders}
-         setStructuresSynapse={this.setStructuresSynapse} handleClickCancel={this.handleClickCancel}
+          setStructuresSynapse={this.setStructuresSynapse} handleClickCancel={this.handleClickCancel}
         />
       );
     } else if (this.state.taskMode === true) {
       return (
-        <Tasks status={this.state.status} aliens={this.state.aliens} aliensCost={this.state.aliensCost} structuresCost={this.state.structuresCost}
-          aliensSynapse={this.state.aliensSynapse} structuresSynapse={this.state.structuresSynapse} updateSolarDay={this.updateSolarDay} 
-            finalSpawning={this.finalSpawning} finalBiomass={this.finalBiomass} finalSynapse={this.finalSynapse}
-              handleClickSpawner={this.handleClickSpawner} handleClickConstructor={this.handleClickConstructor} 
-                handleClickCancel={this.handleClickCancel} GETmaster={this.runGET}
+        <Tasks status={this.state.status} aliens={this.state.aliens} structures={this.state.structures}
+          aliensCost={this.state.aliensCost} structuresCost={this.state.structuresCost}
+            aliensSynapse={this.state.aliensSynapse} structuresSynapse={this.state.structuresSynapse} updateSolarDay={this.updateSolarDay} 
+              finalSpawning={this.finalSpawning} finalBiomass={this.finalBiomass} finalSynapse={this.finalSynapse} finalOrders={this.finalOrders}
+                handleClickSpawner={this.handleClickSpawner} handleClickConstructor={this.handleClickConstructor} 
+                  handleClickCancel={this.handleClickCancel}
         />
       );
     } else if (this.state.reactionMode === true) {
       return (
-        <Reactions status={this.state.status} aliens={this.state.aliens} reactionsSpawn={this.state.reactionsSpawn}
-            handleClickCancel={this.handleClickCancel}
+        <Reactions status={this.state.status} aliens={this.state.aliens}  structures={this.state.structures}
+          reactionsSpawn={this.state.reactionsSpawn} reactionsConstruct={this.state.reactionsConstruct}
+           handleClickCancel={this.handleClickCancel}
         />
       );
     } else {
@@ -348,37 +367,41 @@ class GameplayScreen extends Component {
       <div>
         {status.map(report => (
           <header className='status-bar'>
-            <span className='left'>
-              <h4>Biomass: {report.biomass}</h4>
-            </span>
-            <span className='center'>
-              <h3>Brood Name: {report.brood_name}</h3>
-              <h3>Solar Day: {report.solar_day}</h3>
-            </span>
-            <span className='right'>
-              <span>
-                <h4>Synapse:</h4>
-                <p className='orange'>{report.synapse_required}</p>
-                <p className='gold'>{report.synapse_produced}</p>
+            <div className='status-bar-major' >
+              <span className='far-left-major'></span>
+              <span className='left-major'>
+                <h4>Biomass: {report.biomass}</h4>
               </span>
-            </span>
+              <span className='center'>
+                <h3>Brood Name: {report.brood_name}</h3>
+              </span>
+              <div className='right-major'>
+                <h4>Synapse:</h4>
+                <h4 className='orange'>{report.synapse_required}</h4>
+                <h4 className='gold'>{report.synapse_produced}</h4>
+              </div>
+              <span className='far-right-major'></span>
+            </div>
+            <div className='status-bar-minor'>
+              <span className='far-left-minor'></span>
+              <span className='center-minor'><h4>Solar Day: {report.solar_day}</h4></span>
+              <span className='far-right-minor'></span>
+            </div>
           </header>
         ))}
         <section className='gameplay-style reaction-mode'>
-          <div className='left aliens-box'>
-          <h2>Aliens</h2>
             <AlienList aliens={aliens} status={status} aliensCost={aliensCost} aliensSynapse={aliensSynapse} />
-            <span>{this.renderSpawnerButton()}</span>
-          </div>
           <div className='right alien-structures-box'>
           <h2>Structures</h2>
             <StructureList structures={structures} status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} />
-            <span>{this.renderConstructorButton()}</span>
+
           </div>
           <div>{this.renderBuilders()}</div>
         </section>
-        <footer>
+        <footer className='game-footer'>
+          <span>{this.renderSpawnerButton()}</span>
           <span>{this.renderTaskButton()}</span>
+          <span>{this.renderConstructorButton()}</span>
         </footer>
       </div>
     )

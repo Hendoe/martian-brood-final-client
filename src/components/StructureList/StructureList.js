@@ -10,7 +10,7 @@ class StructureList extends Component {
         <div className='top-row'>
           <span><h4>Name</h4></span>
           <span><h4>Brood Count</h4></span>
-          <span><h4>To Construct</h4></span>
+          <span><h4>Constructing</h4></span>
         </div>
         {structures.map(structure => (
           <ul className='left-list'>

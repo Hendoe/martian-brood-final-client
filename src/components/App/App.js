@@ -9,39 +9,9 @@ import TaskFooter from '../TaskFooter/TaskFooter';
 import './App.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      buildMode: false,
-      taskMode: false,
-    };
-  };
-
-  buildModeChange = () => {
-    if (this.state.buildMode === true) {
-      this.setState({buildMode: false})
-    } else if (this.state.buildMode === false) {
-      this.setState({buildMode: true})
-    };
-  };
-
-  taskModeChange = () => {
-    if (this.state.taskMode === true) {
-      this.setState({taskMode: false})
-    } else if (this.state.taskMode === false) {
-      this.setState({taskMode: true})
-    };
-  };
-
-  NewGameplayScreen = props => {
+  blankFooter() {
     return (
-      <GameplayScreen
-        buildMode={this.state.buildMode}
-        taskMode={this.state.taskMode}
-        buildModeChange={this.buildModeChange}
-        taskModeChange={this.taskModeChange}
-        {...props}
-      /> 
+      <div></div>
     );
   };
 
@@ -50,7 +20,7 @@ class App extends Component {
       <>
         <Route exact path={'/'} component={MainScreen} />
         <Route path={'/login'} component={Login} />
-        <Route path={'/gameplay'} render={this.NewGameplayScreen} />
+        <Route path={'/gameplay'} component={GameplayScreen} />
       </>
     );
   };
@@ -60,6 +30,7 @@ class App extends Component {
       <>
         <Route exact path={'/'} component={InfoFooter} />
         <Route path={'/login'} component={InfoFooter} />
+        <Route path={'/gameplay'} render={this.blankFooter}/>
       </>
     );
   };
@@ -71,7 +42,7 @@ class App extends Component {
           <Header />
         </header>
         <main className='App-Main'>{this.renderMainRoutes()}</main>
-        <footer className='App-Footer'>{this.renderFooterRoutes()}</footer>
+        <footer>{this.renderFooterRoutes()}</footer>
       </div>
     );
   };

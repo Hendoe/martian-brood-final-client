@@ -198,35 +198,42 @@ class GameplayScreen extends Component {
   //CONSTRUCTING
   setOrders = (orders) => {
     this.setState( prevState => {
-      let toConstructStructure = prevState.structures[0]
-        toConstructStructure.constructing_count = orders;
-        return {
-          structures: [toConstructStructure]
-        }
-      });
+      let toConstructStructures = prevState.structures;
+      let newOrders = orders.filter(structure => structure.constructing_count > 0);
+      let filtered = toConstructStructures.filter(structure => structure.constructing_count > 0);
+      for (let i = 0; i < newOrders.length; i ++) {
+        filtered[i].constructing_count = newOrders[i].constructing_count;
+      };
+    });
     this.handleClickCancel();
   };
 
   resetOrders() {
     this.setState( prevState => {
-      let zeroStructure = prevState.structures[0]
-        zeroStructure.constructing_count = 0;
+      let zeroStructure = prevState.structures;
+        for (let i = 0; i < zeroStructure.length; i++) {
+          zeroStructure[i].constructing_count = 0;
+        };
         return {
-          structures: [zeroStructure]
-        }
+          structures: zeroStructure
+        };
       });
       this.handleClickCommit();
   };
 
-  finalOrders = (constructing) => {
+  finalOrders = (constructCounts) => {
     this.setState( prevState => {
-      let constructingStructure = prevState.structures[0]
-        constructingStructure.brood_count += constructing;
-        return {
-          structures: [constructingStructure]
-        }
-      });
-    this.reactionsConstruct(constructing);
+      let constructingStructures = prevState.structures;
+      for (let i = 0; i < constructingStructures.length; i ++) {
+        constructingStructures[i].brood_count = constructCounts[i].constructing_count;
+      };
+    });
+    let constructTotal = 0;
+    for (let i = 0; i < constructCounts.length; i ++) {
+      let addToTotal = constructCounts[i].constructing_count;
+      constructTotal += addToTotal;
+    };
+    this.reactionsConstruct(constructTotal);
     this.resetOrders();
   };
 
@@ -342,7 +349,8 @@ class GameplayScreen extends Component {
         <Tasks status={this.state.status} aliens={this.state.aliens} structures={this.state.structures}
           aliensCost={this.state.aliensCost} structuresCost={this.state.structuresCost}
             aliensSynapse={this.state.aliensSynapse} structuresSynapse={this.state.structuresSynapse} updateSolarDay={this.updateSolarDay} 
-              finalSpawning={this.finalSpawning} finalBiomass={this.finalBiomass} finalSynapse={this.finalSynapse} finalOrders={this.finalOrders}
+              finalSpawning={this.finalSpawning} finalBiomass={this.finalBiomass} finalSynapse={this.finalSynapse} 
+                finalOrders={this.finalOrders} finalStructuresBiomass={this.finalStructuresBiomass}
                 handleClickSpawner={this.handleClickSpawner} handleClickConstructor={this.handleClickConstructor} 
                   handleClickCancel={this.handleClickCancel}
         />
@@ -391,11 +399,7 @@ class GameplayScreen extends Component {
         ))}
         <section className='gameplay-style reaction-mode'>
             <AlienList aliens={aliens} status={status} aliensCost={aliensCost} aliensSynapse={aliensSynapse} />
-          <div className='right alien-structures-box'>
-          <h2>Structures</h2>
             <StructureList structures={structures} status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} />
-
-          </div>
           <div>{this.renderBuilders()}</div>
         </section>
         <footer className='game-footer'>

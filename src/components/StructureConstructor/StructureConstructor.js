@@ -32,12 +32,34 @@ class StructureConstructor extends Component {
     return structureCost;
   };
 
+  generateTotalCost() {
+    let constructing = this.state.constructables.filter(structure => structure.constructing_count > 0);
+    let totalCost = 0;
+    for (let i = 0; i < constructing.length; i++) {
+      let construct = constructing[i]
+      let cost = (construct.constructing_count * construct.biomass_cost);
+      totalCost += cost;
+     };
+    return totalCost;
+  };
+
   generateSynapse() {
     let i = this.state.current;
     let constructing =  this.state.constructables[i].constructing_count;
     let synapse =  this.state.constructables[i].synapse_produced;
     let synapseProduced = (constructing * synapse);
     return synapseProduced;
+  };
+
+  generateTotalSynapse() {
+    let constructing = this.state.constructables.filter(structure => structure.constructing_count > 0);
+    let totalSynapse = 0;
+    for (let i = 0; i < constructing.length; i++) {
+      let construct = constructing[i]
+      let synapse = (construct.constructing_count * construct.synapse_produced);
+      totalSynapse += synapse;
+     };
+    return totalSynapse;
   };
 
   addToConstruct() {
@@ -61,34 +83,33 @@ class StructureConstructor extends Component {
     } else {
       let newCount = (constructCount -= 1);
       this.setState( prevState => {
-        let newConstructing = prevState.constructables[0]
-          newConstructing.constructing_count = newCount;
+        let newConstructing = prevState.constructables
+          newConstructing[i].constructing_count = newCount;
           return {
-            constructables: [newConstructing]
+            constructables: newConstructing
           }
       });
     };
   };
 
-  updateStructureCost(constructing) {
-    let i = this.state.current;
-    let baseCost = this.state.constructables[i].biomass_cost;
-    let newCost = (baseCost * constructing);
-    this.setState({structureCost: newCost})
-  };
-
   setConstructionOrders() {
-    let i = this.state.current;
-    const toConstruct = this.state.constructables[i].constructing_count;
-    const biomass = this.generateCost();
-    const synapse = this.generateSynapse();
-    this.props.setOrders(toConstruct);
+    const toConstruct = this.state.constructables;
+    let constructCounts = [];
+      for (let i = 0; i < toConstruct.length; i++) {
+        let count = {
+          structure_name: toConstruct[i].structure_name,
+          constructing_count: toConstruct[i].constructing_count
+        };
+        constructCounts.push(count);
+      };
+    const biomass = this.generateTotalCost();
+    const synapse = this.generateTotalSynapse();
+    this.props.setOrders(constructCounts);
     this.props.setStructuresBiomass(biomass);
     this.props.setStructuresSynapse(synapse);
   };
 
   findStructure(x) {
-    console.log(this.state.constructables)
     let i = this.state.current;
     let constructables = this.state.constructables;
     if (x === 0) {
@@ -96,7 +117,6 @@ class StructureConstructor extends Component {
         let terminal = (constructables.length -1);
         for (let i = (terminal); i < constructables.length; i++) {
           this.setState({current: i});
-            this.handleMove();
             return constructables[i];
         };
       } else {
@@ -128,10 +148,6 @@ class StructureConstructor extends Component {
     };
   };
 
-  handleMove() {
-
-  }
-
   render() {
     let structure = this.findStructure()
 
@@ -139,34 +155,32 @@ class StructureConstructor extends Component {
       <div className='builder-box'>
         <h2>Structure Constructor</h2>
         <hr />
-          {/* {structures.filter(constructableStructure => constructableStructure.constructable === true)
-            .find(constructingStructure => constructingStructure.constructing === true) */}
-                <form>
-                  <Structure
-                    // id={structure.id}
-                    name={structure.structure_name}
-                    hp={structure.hp}
-                    atk={structure.atk}
-                    cost={structure.biomass_cost}
-                    synapse={structure.synapse_produced}
-                    desc={structure.description}
-                    features={structure.special_features}
-                  />
-                  <span className='row center'>
-                    <p className='red'>COST: {this.generateCost()}</p>
-                    <p className='red'>CONSTRUCTING: {this.generateConstructing()}</p>
-                    <p className='gold'>SYNAPSE PRODUCED: {this.generateSynapse()}</p>
-                  </span>
-                </form>
-          <div className='buttons'>
-            <button className='arrow-button' onClick={() => this.findStructure(0)}>LEFT</button>
-            <button className='builder-button' onClick={() => this.setConstructionOrders()}>CONSTRUCT</button>
-            <button className='builder-button' onClick={() => this.addToConstruct()}>+</button>
-            <button className='builder-button' onClick={() => this.subtractToConstruct()}>-</button>
-            <button className='builder-button' onClick={() => this.props.handleClickCancel()}>CANCEL</button>
-            <button className='arrow-button' onClick={() => this.findStructure(1)}>RIGHT</button>
-          </div>
-        </div>
+        <form>
+          <Structure
+            // id={structure.id}
+            name={structure.structure_name}
+            hp={structure.hp}
+            atk={structure.atk}
+            cost={structure.biomass_cost}
+            synapse={structure.synapse_produced}
+            desc={structure.description}
+            features={structure.special_features}
+          />
+          <span className='row center'>
+            <p className='red'>COST: {this.generateCost()}</p>
+            <p className='red'>CONSTRUCTING: {this.generateConstructing()}</p>
+            <p className='gold'>SYNAPSE PRODUCED: {this.generateSynapse()}</p>
+          </span>
+        </form>
+      <div className='buttons'>
+        <button className='arrow-button' onClick={() => this.findStructure(0)}>LEFT</button>
+        <button className='builder-button' onClick={() => this.setConstructionOrders()}>CONSTRUCT</button>
+        <button className='builder-button' onClick={() => this.addToConstruct()}>+</button>
+        <button className='builder-button' onClick={() => this.subtractToConstruct()}>-</button>
+        <button className='builder-button' onClick={() => this.props.handleClickCancel()}>CANCEL</button>
+        <button className='arrow-button' onClick={() => this.findStructure(1)}>RIGHT</button>
+      </div>
+    </div>
     );
   };
 };

@@ -16,8 +16,16 @@ class Tasks extends Component {
   };
 
   finalConstructionOrder() {
-    const constructing = this.props.structures[0].constructing_count;
-    this.props.finalOrders(constructing);
+    const constructing = this.props.structures;
+    let constructCounts = [];
+      for (let i = 0; i < constructing.length; i++) {
+        let count = {
+          structure_name: constructing[i].structure_name,
+          constructing_count: constructing[i].constructing_count
+        };
+        constructCounts.push(count);
+      };
+    this.props.finalOrders(constructCounts);
   };
 
   finalBiomassCost() {
@@ -27,8 +35,8 @@ class Tasks extends Component {
     if (totalBiomass > this.props.status[0].biomass) {
       alert('There is not enough Biomass available for your plans');
     } else {
-      this.props.finalBiomass(totalBiomass);
-      return 'true'
+      this.props.finalBiomass(aliensBiomass);
+      this.props.finalStructuresBiomass(structuresBiomass);
     };
   };
 
@@ -40,7 +48,7 @@ class Tasks extends Component {
 
   render() {
     return(
-      <div class="builder-box-tasks">
+      <div className="builder-box-tasks">
         <h3>Task List</h3>
           <div className='task-row-1'>
             <span><button className='tasks'onClick={() => this.props.handleClickSpawner()}>Spawn Plans</button></span>

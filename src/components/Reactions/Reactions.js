@@ -54,6 +54,7 @@ class Reactions extends Component {
   };
   
   commitStructures() {
+    console.log('final structures', this.props.structures)
     const { structures } = this.props
     structures.map( newStructures => (
       fetch(config.API_ENDPOINT + `/commit/structures`, {
@@ -89,7 +90,7 @@ class Reactions extends Component {
     } else if (this.props.reactionsConstruct === 1 ) {
       return <p>The Brood constructed {this.props.reactionsConstruct} structure</p>
     } else {
-      return <p>The Brood constructed {this.props.reactionsSpawn} structures</p>
+      return <p>The Brood constructed {this.props.reactionsConstruct} structures</p>
     };
   };
 

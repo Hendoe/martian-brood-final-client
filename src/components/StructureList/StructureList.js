@@ -6,23 +6,49 @@ class StructureList extends Component {
     const { structures, structuresCost, structuresSynapse } = this.props
 
     return (
-      <div className='list-box-structures'>
-        <div className='top-row'>
-          <span><h4>Name</h4></span>
-          <span><h4>Brood Count</h4></span>
-          <span><h4>Constructing</h4></span>
-        </div>
-        {structures.map(structure => (
-          <ul className='left-list'>
-            <li className='item'>{structure.structure_name}</li>
-            <li className='item'>{structure.brood_count}</li>
-            <li className='item'>{structure.constructing_count}</li>
-          </ul>
-        ))}
-         <div className='bottom-row'>
-          <h4>Biomass Cost: {structuresCost}</h4>
-          <h4 className='gold'>Synapse Produced: {structuresSynapse}</h4>
-        </div>
+      <div className='right alien-structures-box'>
+        <h2>Structures</h2>
+          <div>
+            <div className='list-box-structures'>
+              <div className='left-column-structures'>
+                <span className='top-structures'><h4>Name</h4></span>
+                <ul className='right-list'>
+                  {structures.map(structure => (
+                    <li className='structure'>{structure.structure_name}</li>
+                  ))}
+                  <li><br /></li>
+                  <li><br /></li>
+                  <li><br /></li>
+                  <li><br /></li>
+                  <li><br /></li>
+                  <li><br /></li>
+                  <li><br /></li>
+                  <li><br /></li>
+                  <li><br /></li>
+                </ul>
+              </div>
+              <div className='middle-column-structures'>
+                <span className='top-structures'><h4>Brood Count</h4></span>
+                <ul> 
+                  {structures.map(structure => (
+                    <li className='structure'>{structure.brood_count}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className='right-column-structures'>
+                <span className='top-structures'><h4>Constructing</h4></span>
+                <ul>
+                  {structures.map(structure => (
+                    <li className='structure'>{structure.constructing_count}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className='bottom-row-structures'>
+              <h4>Biomass Cost: {structuresCost}</h4>
+              <h4 className='gold'>Synapse Produced: {structuresSynapse}</h4>
+            </div>
+          </div>
       </div>
     )   
   };

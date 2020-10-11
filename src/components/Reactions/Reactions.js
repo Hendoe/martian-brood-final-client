@@ -102,7 +102,7 @@ class Reactions extends Component {
         <p>End of Solar Day {(status[0].solar_day - 1)}</p>
         {this.renderSpawning()}
         {this.renderConstructing()}
-        <button className='reaction-button' onClick={() => this.props.handleClickCancel()}>OK</button>
+        <button className='reaction-button' onClick={() => this.props.handleClick('cancel')}>OK</button>
       </div>
     );
   };

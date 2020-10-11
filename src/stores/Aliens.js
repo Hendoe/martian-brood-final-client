@@ -2,9 +2,6 @@ const Aliens = [
     { 
         alien_name: 'Worker Drone',
         spawnable: true,
-        spawning: true,
-        active: true,
-        toSpawn: 0,
         spawning_count: 0,
         brood_count: 0,
         hp: 1,

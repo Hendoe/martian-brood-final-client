@@ -177,7 +177,7 @@ class StructureConstructor extends Component {
         <button className='builder-button' onClick={() => this.setConstructionOrders()}>CONSTRUCT</button>
         <button className='builder-button' onClick={() => this.addToConstruct()}>+</button>
         <button className='builder-button' onClick={() => this.subtractToConstruct()}>-</button>
-        <button className='builder-button' onClick={() => this.props.handleClickCancel()}>CANCEL</button>
+        <button className='builder-button' onClick={() => this.props.handleClick('cancel')}>CANCEL</button>
         <button className='arrow-button' onClick={() => this.findStructure(1)}>RIGHT</button>
       </div>
     </div>

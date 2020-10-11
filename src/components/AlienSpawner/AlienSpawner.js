@@ -101,7 +101,7 @@ class AlienSpawner extends Component {
             <button className='builder-button' onClick={() => this.setSpawnPlan()}>SPAWN</button>
             <button className='builder-button' onClick={() => this.addSpawning()}>+</button>
             <button className='builder-button' onClick={() => this.subtractSpawning()}>-</button>
-            <button className='builder-button' onClick={() => this.props.handleClickCancel()}>CANCEL</button>
+            <button className='builder-button' onClick={() => this.props.handleClick('cancel')}>CANCEL</button>
             <button className='arrow-button' onClick={() => this.props.handleMoveRight()} disabled>RIGHT</button>
           </div>
         </div>

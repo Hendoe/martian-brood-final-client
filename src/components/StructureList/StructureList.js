@@ -25,6 +25,9 @@ class StructureList extends Component {
                   <li><br /></li>
                   <li><br /></li>
                   <li><br /></li>
+                  <li><br /></li>
+                  <li><br /></li>
+                  <li><br /></li>
                 </ul>
               </div>
               <div className='middle-column-structures'>

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import config from '../../config';
+import Aliens from '../../stores/Aliens';
+import { Conditionals, handleChangeCondition} from '../../stores/Conditionals';
 import AlienList from '../../components/AlienList/AlienList';
-import StructureList from '../../components/StructureList/StructureList';
 import AlienSpawner from '../../components/AlienSpawner/AlienSpawner';
+import Structures from '../../stores/Structures';
+import StructureList from '../../components/StructureList/StructureList';
 import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
+import Status from '../../stores/Status';
 import Tasks from '../../components/Tasks/Tasks';
 import Reactions from '../../components/Reactions/Reactions';
 import './GameplayScreen.css';
@@ -16,11 +20,11 @@ class GameplayScreen extends Component {
       spawnMode: false,
       constructMode: false,
       taskMode: false,
-      status: [],
-      aliens: [],
+      status: Status,
+      aliens: Aliens,
       aliensCost: 0,
       aliensSynapse: 0,
-      structures: [],
+      structures: Structures,
       structuresCost: 0,
       structuresSynapse: 0,
       reactionsSpawn: 0,
@@ -87,61 +91,41 @@ class GameplayScreen extends Component {
       })
   };
 
-  //CHANGING THE CONDITIONALS
-  handleChangeCondition(changing) {
-    if (changing === 'spawning') {
-      this.setState({disableButtons: true});
-      this.setState({spawnMode: true});
-      this.setState({constructMode: false});
-    } else if (changing === 'constructing') {
-      this.setState({disableButtons: true});
-      this.setState({spawnMode: false});
-      this.setState({constructMode: true});
-    } else if (changing === 'tasks') {
-      this.setState({disableButtons: true});
-      this.setState({spawnMode: false});
-      this.setState({constructMode: false});
-      this.setState({taskMode: true});
-    } else if (changing === 'reactions') {
-      this.setState({disableButtons: true});
-      this.setState({spawnMode: false});
-      this.setState({constructMode: false});
-      this.setState({taskMode: false});
-      this.setState({reactionMode: true});
-    }else if (changing === 'cancel') {
-      this.setState({disableButtons: false});
-      this.setState({spawnMode: false});
-      this.setState({constructMode: false});
-      this.setState({taskMode: false});
-      this.setState({reactionMode: false});
-    } else {
-      alert('check your conditionals');
-    };
-  };
+  // //CHANGING THE CONDITIONALS
+  // handleChangeCondition(changing) {
+  //   if (changing === 'spawning') {
+  //     this.setState({disableButtons: true});
+  //     this.setState({spawnMode: true});
+  //     this.setState({constructMode: false});
+  //   } else if (changing === 'constructing') {
+  //     this.setState({disableButtons: true});
+  //     this.setState({spawnMode: false});
+  //     this.setState({constructMode: true});
+  //   } else if (changing === 'tasks') {
+  //     this.setState({disableButtons: true});
+  //     this.setState({spawnMode: false});
+  //     this.setState({constructMode: false});
+  //     this.setState({taskMode: true});
+  //   } else if (changing === 'reactions') {
+  //     this.setState({disableButtons: true});
+  //     this.setState({spawnMode: false});
+  //     this.setState({constructMode: false});
+  //     this.setState({taskMode: false});
+  //     this.setState({reactionMode: true});
+  //   }else if (changing === 'cancel') {
+  //     this.setState({disableButtons: false});
+  //     this.setState({spawnMode: false});
+  //     this.setState({constructMode: false});
+  //     this.setState({taskMode: false});
+  //     this.setState({reactionMode: false});
+  //   } else {
+  //     alert('check your conditionals');
+  //   };
+  // };
 
-  handleClickSpawner = () => {
-    let changing = 'spawning';
-    this.handleChangeCondition(changing);
-  };
-
-  handleClickConstructor = () => {
-    let changing = 'constructing';
-    this.handleChangeCondition(changing);
-  };
-
-  handleClickTasks = () => {
-    let changing = 'tasks';
-    this.handleChangeCondition(changing);
-  };
-
-  handleClickCommit = () => {
-    let changing = 'reactions';
-    this.handleChangeCondition(changing);
-  };
-
-  handleClickCancel = () => {
-    let changing = 'cancel';
-    this.handleChangeCondition(changing);
+  handleClick = (type) => {
+    handleChangeCondition(type);
+    this.forceUpdate();
   };
 
   //UPDATE PLAYER STATUS
@@ -165,7 +149,7 @@ class GameplayScreen extends Component {
           aliens: [toSpawnAlien]
         }
       });
-    this.handleClickCancel();
+    this.handleClick('cancel');
   };
 
   resetSpawns() {
@@ -176,7 +160,7 @@ class GameplayScreen extends Component {
           aliens: [zeroAlien]
         }
       });
-      this.handleClickCommit();
+      this.handleClick('reactions');
   };
 
   finalSpawning = (spawning) => {
@@ -205,7 +189,7 @@ class GameplayScreen extends Component {
         filtered[i].constructing_count = newOrders[i].constructing_count;
       };
     });
-    this.handleClickCancel();
+    this.handleClick('cancel');
   };
 
   resetOrders() {
@@ -218,7 +202,7 @@ class GameplayScreen extends Component {
           structures: zeroStructure
         };
       });
-      this.handleClickCommit();
+      this.handleClick('reactions');
   };
 
   finalOrders = (constructCounts) => {
@@ -308,58 +292,57 @@ class GameplayScreen extends Component {
 
   //RENDERING FUNCTIONS
   renderSpawnerButton() {
-    if (this.state.disableButtons === true) {
+    if (Conditionals.disableButtons === true) {
       return (<button className='build-aliens-button' disabled>Spawn Aliens</button>);
     } else {
-      return (<button className='build-aliens-button' onClick={() => this.handleClickSpawner()}>Spawn Aliens</button>);
+      return (<button className='build-aliens-button' onClick={() => this.handleClick('spawning')}>Spawn Aliens</button>);
     };
   };
 
   renderConstructorButton() {
-    if (this.state.disableButtons === true) {
+    if (Conditionals.disableButtons === true) {
       return (<button className='build-structures-button' disabled>Build Alien Stuctures</button>);
     } else {
-      return (<button className='build-structures-button' onClick={() => this.handleClickConstructor()}>Build Alien Stuctures</button>);
+      return (<button className='build-structures-button' onClick={() => this.handleClick('constructing')}>Build Alien Stuctures</button>);
     };
   };
 
   renderTaskButton() {
-    if (this.state.disableButtons === true) {
+    if (Conditionals.disableButtons === true) {
       return (<button className='task-button' disabled>Set Tasks</button>)
     } else {
-      return (<button className='task-button' onClick={() =>  this.handleClickTasks()}>Set Tasks</button>);
+      return (<button className='task-button' onClick={() =>  this.handleClick('tasks')}>Set Tasks</button>);
     };
   };
 
   renderBuilders() {
-    if (this.state.spawnMode === true) {
+    if (Conditionals.spawnMode === true) {
       return (
         <AlienSpawner aliens={this.state.aliens} setSpawns={this.setSpawns} setBiomass={this.setBiomass}
-        setSynapse={this.setSynapse} handleClickCancel={this.handleClickCancel}
+        setSynapse={this.setSynapse} handleClick={this.handleClick}
         />
       );
-    } else if (this.state.constructMode === true) {
+    } else if (Conditionals.constructMode === true) {
       return (
         <StructureConstructor structures={this.state.structures} setStructuresBiomass={this.setStructuresBiomass} setOrders={this.setOrders}
-          setStructuresSynapse={this.setStructuresSynapse} handleClickCancel={this.handleClickCancel}
+          setStructuresSynapse={this.setStructuresSynapse} handleClick={this.handleClick}
         />
       );
-    } else if (this.state.taskMode === true) {
+    } else if (Conditionals.taskMode === true) {
       return (
         <Tasks status={this.state.status} aliens={this.state.aliens} structures={this.state.structures}
           aliensCost={this.state.aliensCost} structuresCost={this.state.structuresCost}
             aliensSynapse={this.state.aliensSynapse} structuresSynapse={this.state.structuresSynapse} updateSolarDay={this.updateSolarDay} 
               finalSpawning={this.finalSpawning} finalBiomass={this.finalBiomass} finalSynapse={this.finalSynapse} 
                 finalOrders={this.finalOrders} finalStructuresBiomass={this.finalStructuresBiomass}
-                handleClickSpawner={this.handleClickSpawner} handleClickConstructor={this.handleClickConstructor} 
-                  handleClickCancel={this.handleClickCancel}
+                  handleClick={this.handleClick}
         />
       );
-    } else if (this.state.reactionMode === true) {
+    } else if (Conditionals.reactionMode === true) {
       return (
         <Reactions status={this.state.status} aliens={this.state.aliens}  structures={this.state.structures}
           reactionsSpawn={this.state.reactionsSpawn} reactionsConstruct={this.state.reactionsConstruct}
-           handleClickCancel={this.handleClickCancel}
+           handleClick={this.handleClick}
         />
       );
     } else {

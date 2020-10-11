@@ -51,9 +51,9 @@ class Tasks extends Component {
       <div className="builder-box-tasks">
         <h3>Task List</h3>
           <div className='task-row-1'>
-            <span><button className='tasks'onClick={() => this.props.handleClickSpawner()}>Spawn Plans</button></span>
+            <span><button className='tasks'onClick={() => this.props.handleClick('spawning')}>Spawn Plans</button></span>
             <span><button className='tasks'>Gather Biomass</button></span>
-            <span><button className='tasks' onClick={() => this.props.handleClickConstructor()}>Construction Orders</button></span>
+            <span><button className='tasks' onClick={() => this.props.handleClick('constructing')}>Construction Orders</button></span>
           </div>
           <br />
           <br />
@@ -72,7 +72,7 @@ class Tasks extends Component {
           <br />
           <br />
         <button className='builder-button' onClick={() => this.clickCommit()}>COMMIT</button>
-        <button className='builder-button' onClick={() => this.props.handleClickCancel()}>CANCEL</button>
+        <button className='builder-button' onClick={() => this.props.handleClick('cancelTasks')}>CANCEL</button>
       </div>
     );
   };

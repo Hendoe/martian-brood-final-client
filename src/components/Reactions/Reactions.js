@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Reactor } from '../../stores/Reactor';
 import config from '../../config';
 import './Reactions.css';
 
@@ -75,12 +76,12 @@ class Reactions extends Component {
   };
 
   renderSpawning() {
-    if (this.props.reactionsSpawn === 0 ) {
+    if (Reactor.total_spawning_count === 0 ) {
       return <p>The Brood didn't spawn any aliens</p>
-    } else if (this.props.reactionsSpawn === 1 ) {
-      return <p>The Brood spawned {this.props.reactionsSpawn} alien</p>
+    } else if (Reactor.total_spawning_count === 1 ) {
+      return <p>The Brood spawned {Reactor.total_spawning_count} alien</p>
     } else {
-      return <p>The Brood spawned {this.props.reactionsSpawn} aliens</p>
+      return <p>The Brood spawned {Reactor.total_spawning_count} aliens</p>
     };
   };
 

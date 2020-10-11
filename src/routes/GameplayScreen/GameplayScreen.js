@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import config from '../../config';
 import Aliens from '../../stores/Aliens';
-import { Conditionals, handleChangeCondition} from '../../stores/Conditionals';
+import { AlienInventory } from '../../stores/AlienInventory';
+import { Conditionals, ChangeConditions} from '../../stores/Conditionals';
 import AlienList from '../../components/AlienList/AlienList';
 import AlienSpawner from '../../components/AlienSpawner/AlienSpawner';
 import Structures from '../../stores/Structures';
+import { StructureInventory } from '../../stores/StructureInventory';
 import StructureList from '../../components/StructureList/StructureList';
 import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
 import Status from '../../stores/Status';
@@ -22,9 +24,11 @@ class GameplayScreen extends Component {
       taskMode: false,
       status: Status,
       aliens: Aliens,
+      alienInventory: AlienInventory,
       aliensCost: 0,
       aliensSynapse: 0,
       structures: Structures,
+      StructureInventory: StructureInventory,
       structuresCost: 0,
       structuresSynapse: 0,
       reactionsSpawn: 0,
@@ -91,40 +95,8 @@ class GameplayScreen extends Component {
       })
   };
 
-  // //CHANGING THE CONDITIONALS
-  // handleChangeCondition(changing) {
-  //   if (changing === 'spawning') {
-  //     this.setState({disableButtons: true});
-  //     this.setState({spawnMode: true});
-  //     this.setState({constructMode: false});
-  //   } else if (changing === 'constructing') {
-  //     this.setState({disableButtons: true});
-  //     this.setState({spawnMode: false});
-  //     this.setState({constructMode: true});
-  //   } else if (changing === 'tasks') {
-  //     this.setState({disableButtons: true});
-  //     this.setState({spawnMode: false});
-  //     this.setState({constructMode: false});
-  //     this.setState({taskMode: true});
-  //   } else if (changing === 'reactions') {
-  //     this.setState({disableButtons: true});
-  //     this.setState({spawnMode: false});
-  //     this.setState({constructMode: false});
-  //     this.setState({taskMode: false});
-  //     this.setState({reactionMode: true});
-  //   }else if (changing === 'cancel') {
-  //     this.setState({disableButtons: false});
-  //     this.setState({spawnMode: false});
-  //     this.setState({constructMode: false});
-  //     this.setState({taskMode: false});
-  //     this.setState({reactionMode: false});
-  //   } else {
-  //     alert('check your conditionals');
-  //   };
-  // };
-
   handleClick = (type) => {
-    handleChangeCondition(type);
+    ChangeConditions(type);
     this.forceUpdate();
   };
 
@@ -141,40 +113,6 @@ class GameplayScreen extends Component {
   };
 
   //SPAWNING
-  setSpawns = (toSpawn) => {
-    this.setState( prevState => {
-      let toSpawnAlien = prevState.aliens[0]
-        toSpawnAlien.spawning_count = toSpawn;
-        return {
-          aliens: [toSpawnAlien]
-        }
-      });
-    this.handleClick('cancel');
-  };
-
-  resetSpawns() {
-    this.setState( prevState => {
-      let zeroAlien = prevState.aliens[0]
-        zeroAlien.spawning_count = 0;
-        return {
-          aliens: [zeroAlien]
-        }
-      });
-      this.handleClick('reactions');
-  };
-
-  finalSpawning = (spawning) => {
-    this.setState( prevState => {
-      let spawningAlien = prevState.aliens[0]
-        spawningAlien.brood_count += spawning;
-        return {
-          aliens: [spawningAlien]
-        }
-      });
-    this.reactionsSpawn(spawning);
-    this.resetSpawns();
-  };
-
   reactionsSpawn(spawning) {
     this.setState({reactionsSpawn: spawning})
   };
@@ -333,7 +271,7 @@ class GameplayScreen extends Component {
         <Tasks status={this.state.status} aliens={this.state.aliens} structures={this.state.structures}
           aliensCost={this.state.aliensCost} structuresCost={this.state.structuresCost}
             aliensSynapse={this.state.aliensSynapse} structuresSynapse={this.state.structuresSynapse} updateSolarDay={this.updateSolarDay} 
-              finalSpawning={this.finalSpawning} finalBiomass={this.finalBiomass} finalSynapse={this.finalSynapse} 
+             finalBiomass={this.finalBiomass} finalSynapse={this.finalSynapse} 
                 finalOrders={this.finalOrders} finalStructuresBiomass={this.finalStructuresBiomass}
                   handleClick={this.handleClick}
         />
@@ -341,8 +279,7 @@ class GameplayScreen extends Component {
     } else if (Conditionals.reactionMode === true) {
       return (
         <Reactions status={this.state.status} aliens={this.state.aliens}  structures={this.state.structures}
-          reactionsSpawn={this.state.reactionsSpawn} reactionsConstruct={this.state.reactionsConstruct}
-           handleClick={this.handleClick}
+          reactionsConstruct={this.state.reactionsConstruct} handleClick={this.handleClick}
         />
       );
     } else {
@@ -352,7 +289,7 @@ class GameplayScreen extends Component {
 
   //MAIN RENDER
   render() {
-    const { status, aliens, structures, aliensCost, aliensSynapse, structuresCost, structuresSynapse } = this.state
+    const { status, structures, aliensCost, aliensSynapse, structuresCost, structuresSynapse } = this.state
 
     return (
       <div>
@@ -381,7 +318,7 @@ class GameplayScreen extends Component {
           </header>
         ))}
         <section className='gameplay-style reaction-mode'>
-            <AlienList aliens={aliens} status={status} aliensCost={aliensCost} aliensSynapse={aliensSynapse} />
+            <AlienList aliensCost={aliensCost} aliensSynapse={aliensSynapse} />
             <StructureList structures={structures} status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} />
           <div>{this.renderBuilders()}</div>
         </section>

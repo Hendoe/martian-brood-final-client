@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Structure from '../Structure/Structure';
+import Structures from '../../stores/Structures';
+import { StructureInventory, UpdateConstructing } from '../../stores/StructureInventory';
 import './StructureConstructor.css';
 
 class StructureConstructor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      constructables: [],
+      constructables: StructureInventory,
       current: 0,
       structureCost: 0,
       structuresToConstruct: 0,
@@ -14,20 +16,20 @@ class StructureConstructor extends Component {
     };
   };
 
-  componentWillMount() {
-    let constructables = this.props.structures.filter(structure => structure.constructable === true);
-    this.setState({ constructables })
-  };
+  // componentWillMount() {
+  //   let constructables = Structures.filter(structure => structure.constructable === true);
+  //   this.setState({ constructables })
+  // };
 
   generateConstructing() {
     let i = this.state.current;
-    return this.state.constructables[i].constructing_count;
+    return StructureInventory[i].constructing_count;
   };
 
   generateCost() {
     let i = this.state.current;
-    let constructing =  this.state.constructables[i].constructing_count;
-    let cost = this.state.constructables[i].biomass_cost
+    let constructing =  StructureInventory[i].constructing_count;
+    let cost = StructureInventory[i].biomass_cost
     let structureCost = (constructing * cost)
     return structureCost;
   };
@@ -45,8 +47,8 @@ class StructureConstructor extends Component {
 
   generateSynapse() {
     let i = this.state.current;
-    let constructing =  this.state.constructables[i].constructing_count;
-    let synapse =  this.state.constructables[i].synapse_produced;
+    let constructing =  StructureInventory[i].constructing_count;
+    let synapse =  StructureInventory[i].synapse_produced;
     let synapseProduced = (constructing * synapse);
     return synapseProduced;
   };
@@ -62,34 +64,9 @@ class StructureConstructor extends Component {
     return totalSynapse;
   };
 
-  addToConstruct() {
-    let i = this.state.current;
-    let constructCount = this.state.constructables[i].constructing_count;
-    let newCount = (constructCount += 1);
-    this.setState( prevState => {
-      let newConstructing = prevState.constructables
-        newConstructing[i].constructing_count = newCount;
-        return {
-          constructables: newConstructing
-        }
-    });
-  };
-
-  subtractToConstruct() {
-    let i = this.state.current;
-    let constructCount = this.state.constructables[i].constructing_count;
-    if (constructCount === 0) {
-      alert('You cannot construct less than 0 structures')
-    } else {
-      let newCount = (constructCount -= 1);
-      this.setState( prevState => {
-        let newConstructing = prevState.constructables
-          newConstructing[i].constructing_count = newCount;
-          return {
-            constructables: newConstructing
-          }
-      });
-    };
+  handleUpdateConstructing = (x, i) => {
+    UpdateConstructing(x, i);
+    this.forceUpdate();
   };
 
   setConstructionOrders() {
@@ -111,7 +88,7 @@ class StructureConstructor extends Component {
 
   findStructure(x) {
     let i = this.state.current;
-    let constructables = this.state.constructables;
+    let constructables = StructureInventory;
     if (x === 0) {
       if (i === 0) {
         let terminal = (constructables.length -1);
@@ -150,6 +127,7 @@ class StructureConstructor extends Component {
 
   render() {
     let structure = this.findStructure()
+    let i = this.state.current
 
     return (
       <div className='builder-box'>
@@ -175,8 +153,8 @@ class StructureConstructor extends Component {
       <div className='buttons'>
         <button className='arrow-button' onClick={() => this.findStructure(0)}>LEFT</button>
         <button className='builder-button' onClick={() => this.setConstructionOrders()}>CONSTRUCT</button>
-        <button className='builder-button' onClick={() => this.addToConstruct()}>+</button>
-        <button className='builder-button' onClick={() => this.subtractToConstruct()}>-</button>
+        <button className='builder-button' onClick={() => this.handleUpdateConstructing(1, i)}>+</button>
+        <button className='builder-button' onClick={() => this.handleUpdateConstructing(0, i)}>-</button>
         <button className='builder-button' onClick={() => this.props.handleClick('cancel')}>CANCEL</button>
         <button className='arrow-button' onClick={() => this.findStructure(1)}>RIGHT</button>
       </div>

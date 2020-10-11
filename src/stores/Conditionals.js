@@ -5,7 +5,7 @@ export const Conditionals = {
     taskMode: false,
 };
 
-export const handleChangeCondition = (changing) => {
+export const ChangeConditions = (changing) => {
   if (changing === 'spawning') {
     Conditionals.disableButtons = true;
     Conditionals.spawnMode = true;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { AlienInventory, FinalSpawning } from '../../stores/AlienInventory';
 import './Tasks.css';
 
 class Tasks extends Component {
@@ -11,8 +12,7 @@ class Tasks extends Component {
   };
 
   finalSpawnPlan() {
-    const spawning = this.props.aliens[0].spawning_count;
-    this.props.finalSpawning(spawning);
+    FinalSpawning();
   };
 
   finalConstructionOrder() {

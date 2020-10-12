@@ -9,10 +9,9 @@ import Structures from '../../stores/Structures';
 import { StructureInventory } from '../../stores/StructureInventory';
 import StructureList from '../../components/StructureList/StructureList';
 import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
-import { Status } from '../../storesAPI/Status';
+import Status from '../../stores/Status';
 import Tasks from '../../components/Tasks/Tasks';
 import Reactions from '../../components/Reactions/Reactions';
-import { GETmaster } from '../../services/Aliens-Api-Service';
 import './GameplayScreen.css';
 
 class GameplayScreen extends Component {
@@ -34,12 +33,6 @@ class GameplayScreen extends Component {
       structuresSynapse: 0,
     };
   };
-
-  //GET OUR DATABASES
-  componentDidMount() {
-    GETmaster();
-  };
-  
 
   handleClick = (type) => {
     ChangeConditions(type);

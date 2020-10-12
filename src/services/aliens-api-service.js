@@ -1,5 +1,6 @@
-// //import TokenService from '../services/token-service';
-// import config from '../config';
+//import TokenService from '../services/token-service';
+import config from '../config';
+import { SetStatus } from '../storesAPI/Status';
 
 // const AliensApiService = {
 //   getAliens() {
@@ -32,64 +33,59 @@
 // ALL OTHERS
 
 // //GAMEPLAY
-  //  //GET OUR DATABASES
-  //  componentDidMount() {
-  //   this.GETmaster();
-  // };
+  //GETS IT
+  export const GETmaster = () => {
+    Promise.all([
+      fetch(`${config.API_ENDPOINT}/status`)
+    ])
+      .then(([statusRes]) => {
+        if (!statusRes.ok)
+          return statusRes.json().then(event => Promise.reject(event))
+        return Promise.all([
+          statusRes.json(),
+        ])
+      })
+      .then((status) => {
+        SetStatus( status )
+      })
+      .catch(error => {
+        console.log({error})
+      })
 
-  // //GETS IT
-  // GETmaster() {
-  //   Promise.all([
-  //     fetch(`${config.API_ENDPOINT}/status`)
-  //   ])
-  //     .then(([statusRes]) => {
-  //       if (!statusRes.ok)
-  //         return statusRes.json().then(event => Promise.reject(event))
-  //       return Promise.all([
-  //         statusRes.json(),
-  //       ])
-  //     })
-  //     .then(([status]) => {
-  //       this.setState({ status })
-  //     })
-  //     .catch(error => {
-  //       console.log({error})
-  //     })
+    // Promise.all([
+    //   fetch(`${config.API_ENDPOINT}/aliens`)
+    // ])
+    //   .then(([aliensRes]) => {
+    //     if (!aliensRes.ok)
+    //       return aliensRes.json().then(event => Promise.reject(event))
+    //     return Promise.all([
+    //       aliensRes.json(),
+    //     ])
+    //   })
+    //   .then(([aliens]) => {
+    //     this.setState({ aliens })
+    //   })
+    //   .catch(error => {
+    //     console.log({error})
+    //   })
 
-  //   Promise.all([
-  //     fetch(`${config.API_ENDPOINT}/aliens`)
-  //   ])
-  //     .then(([aliensRes]) => {
-  //       if (!aliensRes.ok)
-  //         return aliensRes.json().then(event => Promise.reject(event))
-  //       return Promise.all([
-  //         aliensRes.json(),
-  //       ])
-  //     })
-  //     .then(([aliens]) => {
-  //       this.setState({ aliens })
-  //     })
-  //     .catch(error => {
-  //       console.log({error})
-  //     })
-
-  //   Promise.all([
-  //     fetch(`${config.API_ENDPOINT}/structures`)
-  //   ])
-  //     .then(([structuresRes]) => {
-  //       if (!structuresRes.ok)
-  //         return structuresRes.json().then(event => Promise.reject(event))
-  //       return Promise.all([
-  //         structuresRes.json(),
-  //       ])
-  //     })
-  //     .then(([structures]) => {
-  //       this.setState({ structures })
-  //     })
-  //     .catch(error => {
-  //       console.log({error})
-  //     })
-  // };
+    // Promise.all([
+    //   fetch(`${config.API_ENDPOINT}/structures`)
+    // ])
+    //   .then(([structuresRes]) => {
+    //     if (!structuresRes.ok)
+    //       return structuresRes.json().then(event => Promise.reject(event))
+    //     return Promise.all([
+    //       structuresRes.json(),
+    //     ])
+    //   })
+    //   .then(([structures]) => {
+    //     this.setState({ structures })
+    //   })
+    //   .catch(error => {
+    //     console.log({error})
+    //   })
+  };
 
 
 // // REACTIONS

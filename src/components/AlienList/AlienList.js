@@ -14,7 +14,7 @@ class AlienList extends Component {
           <div className='left-column-aliens'>
             <span className='top-aliens'><h4>Name</h4></span>
             <ul className='left-list'>
-              <li className='alien'>{AlienInventory[0].alien_name}</li>
+              <li key={AlienInventory[0].id} className='alien'>{AlienInventory[0].alien_name}</li>
               <li><br /></li>
               <li><br /></li>
               <li><br /></li>
@@ -33,13 +33,13 @@ class AlienList extends Component {
           <div className='middle-column-aliens'>
             <span className='top-aliens'><h4>Brood Count</h4></span>
             <ul>
-              <li>{AlienInventory[0].brood_count}</li>
+              <li key={AlienInventory[0].id}>{AlienInventory[0].brood_count} </li>
             </ul>
           </div>
           <div className='right-column-aliens'>
             <span className='top-aliens'><h4>Spawning</h4></span>
             <ul>
-              <li>{AlienInventory[0].spawning_count}</li>
+              <li key={AlienInventory[0].id} >{AlienInventory[0].spawning_count}</li>
             </ul>
           </div>
         </div>

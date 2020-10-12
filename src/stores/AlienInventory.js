@@ -2,9 +2,10 @@ import { ReactionsSpawning } from './Reactor';
 
 export const AlienInventory = [
   { 
-      alien_name: 'Worker Drone',
-      spawning_count: 0,
-      brood_count: 0,
+    id: 1,
+    alien_name: 'Worker Drone',
+    spawning_count: 0,
+    brood_count: 0,
   },
 ];
 
@@ -23,7 +24,7 @@ export const UpdateSpawning = (x) => {
 
 export const FinalSpawning = () => {
   let spawnCount = AlienInventory[0].spawning_count;
-  AlienInventory[0].brood_count = spawnCount;
+  AlienInventory[0].brood_count += spawnCount;
   ReactionsSpawning(spawnCount);
   resetSpawns();
 };

@@ -5,7 +5,6 @@ import MainScreen from '../../routes/MainScreen/MainScreen';
 import Login from '../../routes/Login/Login';
 import InfoFooter from '../InfoFooter/InfoFooter';
 import GameplayScreen from '../../routes/GameplayScreen/GameplayScreen';
-import TaskFooter from '../TaskFooter/TaskFooter';
 import './App.css';
 
 class App extends Component {

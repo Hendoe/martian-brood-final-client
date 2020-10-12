@@ -1,31 +1,15 @@
 import React, { Component } from 'react';
-import { AlienInventory, FinalSpawning } from '../../stores/AlienInventory';
+import { FinalSpawning } from '../../stores/AlienInventory';
+import { FinalConstructing } from '../../stores/StructureInventory';
 import './Tasks.css';
 
 class Tasks extends Component {
   clickCommit = () => {
-      this.finalSpawnPlan();
-      this.finalConstructionOrder();
+      FinalSpawning();
+      FinalConstructing();
       this.finalBiomassCost();
       this.adjustSynapse();
       this.props.updateSolarDay();
-  };
-
-  finalSpawnPlan() {
-    FinalSpawning();
-  };
-
-  finalConstructionOrder() {
-    const constructing = this.props.structures;
-    let constructCounts = [];
-      for (let i = 0; i < constructing.length; i++) {
-        let count = {
-          structure_name: constructing[i].structure_name,
-          constructing_count: constructing[i].constructing_count
-        };
-        constructCounts.push(count);
-      };
-    this.props.finalOrders(constructCounts);
   };
 
   finalBiomassCost() {
@@ -35,7 +19,7 @@ class Tasks extends Component {
     if (totalBiomass > this.props.status[0].biomass) {
       alert('There is not enough Biomass available for your plans');
     } else {
-      this.props.finalBiomass(aliensBiomass);
+      this.props.finalAliensBiomass(aliensBiomass);
       this.props.finalStructuresBiomass(structuresBiomass);
     };
   };

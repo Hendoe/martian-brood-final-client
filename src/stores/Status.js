@@ -1,5 +1,6 @@
 const Status = [
     { 
+        id: 1,
         brood_name: 'Vlagiums',
         solar_day: 1,
         aliens: 1,

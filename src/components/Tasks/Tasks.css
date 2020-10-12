@@ -2,7 +2,7 @@
   position: relative;
 }
 
-.builder-box {
+.builder-box-tasks {
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 40rem;
   background-color: black;
@@ -12,30 +12,11 @@
   height: 32rem;
 }
 
-.inner-builder {
+.task-row-1 {
   display: flex;
-  flex: 2;
+  flex: 1;
   flex-direction: row;
-}
-
-.left-builder {
-  flex: 1;
-  border-style: solid;
-  height: 16rem;
-}
-
-.left-builder > h3 {
-  text-decoration: underline;
-}
-
-.right-builder {
-  flex: 1;
-  border-style: solid;
-  height: 16rem;
-}
-
-.right-builder > h3 {
-  text-decoration: underline;
+  justify-content: space-evenly;
 }
 
 .builder-button {

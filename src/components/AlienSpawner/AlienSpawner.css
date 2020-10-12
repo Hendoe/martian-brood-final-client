@@ -21,30 +21,23 @@
   flex-direction: column;
 }
 
-.build-buttons {
+.buttons {
   flex: 3;
   flex-direction: row;
   justify-content: center;
-  align-items: space-between;
+  align-items: space-evenly;
 }
 
 .builder-button {
   margin-top: 1rem;
   height: 2.5rem;
-  width: 5rem;
-}
-
-.arrow-buttons {
-  flex: 3;
-  flex-direction: row;
-  justify-content: center;
-  align-items: space-between;
+  width: 10rem;
 }
 
 .arrow-button {
   margin-top: 1rem;
   height: 2.5rem;
-  width: 5rem;
+  width: 4rem;
 }
 
 .spawn-button {

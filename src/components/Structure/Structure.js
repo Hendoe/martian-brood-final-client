@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import './Alien.css';
+import './Structure.css';
 
-class Alien extends Component {
+class Structure extends Component {
   render() {
     const { name, hp, atk, cost, synapse, desc, features } = this.props
-
+    
     return (
       <div>
         <span><h3>Name: {name}</h3></span>
@@ -26,7 +26,7 @@ class Alien extends Component {
             <p>{cost}</p>
           </div>
          <div className='builder-column'>
-            <h3>Synapse Required</h3>
+            <h3>Synapse Produced</h3>
             <p>{synapse}</p>
           </div>
         </section>
@@ -35,4 +35,4 @@ class Alien extends Component {
   };
 };
 
-export default Alien;
+export default Structure;

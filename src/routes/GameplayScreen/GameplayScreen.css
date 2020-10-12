@@ -1,29 +1,73 @@
-.status-bar {
-  border-style: solid;
-  border-width: 0px 2px 4px 2px;
+.status-bar-major {
   display: flex;
-  flex: 2;
+  flex: 1;
 }
-  
-.left {
+
+.status-bar-minor {
+  display: flex;
+  flex: 1;
+  margin-top: -25px;
+}
+
+.far-left-major {
+  flex: 1;
+}
+
+.left-major {
   flex: 1;
   justify-content: left;
+  border-style: solid;
+  border-width: 0px 0px 1px 2px;
 }
-  
+
+.far-right-major {
+  flex: 1;
+}
+
+.right-major {
+  flex: 1;
+  justify-content: left;
+  border-style: solid;
+  border-width: 0px 2px 1px 0px;
+}
+
+.far-left-minor {
+  flex: 2;
+}
+
+.far-right-minor {
+  flex: 2;
+}
+
+.center-minor {
+  flex: 1;
+  border-style: solid;
+  border-width: 1px;
+  margin-top: 0.5%;
+  margin-bottom: -0.5%;
+}
+
 .row {
   flex: 1;
   display: flex;
   flex-direction: row;
 }
 
-.center {
+.left-status {
+  flex: 1;
+  justify-content: left;
+}
+
+.center-status {
   flex: 1;
   justify-content: center;
 }
   
-.right {
+.right-major {
   flex: 1;
-  justify-content: right;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .gameplay-style {
@@ -31,42 +75,49 @@
   flex: 6;
   justify-content: center;
   flex-direction: row;
-  margin-top: 4rem;
-  margin-bottom: 10rem;
+  margin-top: 1%;
+  margin-bottom: 5rem;
 }
 
 .reaction-mode {
   position: relative;
 }
 
-.aliens-box {
-  flex: 2;
-  justify-content: left;
-  text-align: center;
+.game-footer {
   border-style: solid;
-  margin-left: 15rem;
-  margin-right: 15rem;
-  height: 30rem;
+  border-top-width: 4px;
+  border-bottom-width: 0px;
+  border-left-width: 2px;
+  border-right-width: 2px;
+  display: flex;
+  flex: 1;
+  justify-content: space-evenly;
+  flex-direction: row;
 }
 
+
+
+
+
+
+
 .alien-structures-box {
-  flex: 2;
-  justify-content: right;
+  flex: 3;
   text-align: center;
   border-style: solid;
-  margin-left: 15rem;
-  margin-right: 15rem;
+  margin-left: 10%;
+  margin-right: 5%;
   height: 30rem;
 }
 
 .build-aliens-button {
-  margin-top: 15rem;
+  margin-top: 45%;
   height: 3rem;
   width: 10rem;
 }
 
 .build-structures-button {
-  margin-top: 15rem;
+  margin-top: 45%;
   height: 3rem;
   width: 10rem;
 }
@@ -75,6 +126,10 @@ ul {
   list-style-type: none;
 }
 
-.red {
-  color: #FF6E0B;
+.orange {
+  color: #FF6400;
+}
+
+.gold {
+  color: #FFC800;
 }

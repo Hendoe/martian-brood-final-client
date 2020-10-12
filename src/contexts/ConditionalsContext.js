@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
 
 const ConditionalsContext = React.createContext({
-  buildAliens: false,
-  buildStructures: false,
+  disableButtons: false,
+  spawnMode: false,
+  constructMode: false,
+  taskMode: false,
 })
 
 export default ConditionalsContext;
 
 export class ConditionalsProvider extends Component {
   state = {
-    buildAliensMode: false,
-    buildStructuresMode: false,
-    // error: null,
+    disableButtons: false,
+    spawnMode: false,
+    constructMode: false,
+    taskMode: false,
+  };
+
+  test() {
+    console.log('okay man')
   };
 
   //ALL HANDLERS FOR CONDITIONAL CHANGES
@@ -34,7 +41,8 @@ export class ConditionalsProvider extends Component {
     const values = {
       buildAliens: this.state.buildAliens,
       buildStructures: this.state.buildStructures,
-      handleBuildAliensModeChange: this.handleBuildAliensModeChange
+      handleBuildAliensModeChange: this.handleBuildAliensModeChange,
+      test: this.test,
       // error: null,
     }
     return (

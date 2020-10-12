@@ -1,286 +1,334 @@
 import React, { Component } from 'react';
 import config from '../../config';
-import ConditionalsContext from '../../contexts/ConditionalsContext';
-import AliensContext from '../../contexts/AliensContext'
-import AliensApiService from '../../services/aliens-api-service';
+import Aliens from '../../stores/Aliens';
+import { AlienInventory } from '../../stores/AlienInventory';
+import { Conditionals, ChangeConditions} from '../../stores/Conditionals';
 import AlienList from '../../components/AlienList/AlienList';
-import AlienBuilder from '../../components/AlienBuilder/AlienBuilder';
-import StructuresBuilder from '../../components/StructuresBuilder/StructuresBuilder';
+import AlienSpawner from '../../components/AlienSpawner/AlienSpawner';
+import Structures from '../../stores/Structures';
+import { StructureInventory } from '../../stores/StructureInventory';
+import StructureList from '../../components/StructureList/StructureList';
+import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
+import Status from '../../stores/Status';
 import Tasks from '../../components/Tasks/Tasks';
+import Reactions from '../../components/Reactions/Reactions';
 import './GameplayScreen.css';
 
 class GameplayScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      buildAliensMode: false,
-      buildStructuresMode: false,
-      aliensAPI: [],
-      aliens: [
-        {
-          alienid: 0,
-          alien_name: "Worker Drone",
-          hp: 1,
-          atk: 1,
-          biomass_cost: 5,
-          synapse_required: 1,
-          description: 'Simple alien. Gathers Biomass for the growth of the Brood.',
-          special_features: null,
-        }
-      ],
-      statusAPI: {},
-      status: {
-        userid: 0,
-        brood_name: 'starter',
-        biomass: 25,
-        synapse: 5,
-        alienInventory: [
-          {
-            alien_name: 'Worker Drone',
-            count: 0,
-            living: false,
-            toSpawn: 0,
-            spawning: false
-          },
-        ]
-      },
-      buildOrders: {},
-      biomass: 45,
-      cost: 0,
-      count: 0,
-      toBuild: 0,
+      disableButtons: false,
+      spawnMode: false,
+      constructMode: false,
+      taskMode: false,
+      status: Status,
+      aliens: Aliens,
+      alienInventory: AlienInventory,
+      aliensCost: 0,
+      aliensSynapse: 0,
+      structures: Structures,
+      StructureInventory: StructureInventory,
+      structuresCost: 0,
+      structuresSynapse: 0,
+      reactionsSpawn: 0,
+      reactionsConstruct: 0
     };
   };
 
-  static contextType = AliensContext
-
+  //GET OUR DATABASES
   componentDidMount() {
-    AliensApiService.getAliens()
-      .then(this.context.setAliens)
-      .then(console.log(this.context))
-      .catch(this.context.setError)
+    this.GETmaster();
   };
 
-  //   Promise.all([
-  //     fetch(`${config.API_ENDPOINT}/aliens`)
-  //   ])
-  //     .then(([aliensRes]) => {
-  //       if (!aliensRes.ok)
-  //         return aliensRes.json().then(event => Promise.reject(event))
-  //       return Promise.all([
-  //         aliensRes.json(),
-  //       ])
-  //     })
-  //     .then(([aliensAPI]) => {
-  //       this.setState({ aliensAPI })
-  //     })
-  //     .catch(error => {
-  //       console.log({error})
-  //     });
-  // };
+  //GETS IT
+  GETmaster() {
+    Promise.all([
+      fetch(`${config.API_ENDPOINT}/status`)
+    ])
+      .then(([statusRes]) => {
+        if (!statusRes.ok)
+          return statusRes.json().then(event => Promise.reject(event))
+        return Promise.all([
+          statusRes.json(),
+        ])
+      })
+      .then(([status]) => {
+        this.setState({ status })
+      })
+      .catch(error => {
+        console.log({error})
+      })
 
-  //ALL HANDLERS FOR CONDITIONAL CHANGES
-  handleBuildModeChange() {
-    this.props.buildModeChange();
+    Promise.all([
+      fetch(`${config.API_ENDPOINT}/aliens`)
+    ])
+      .then(([aliensRes]) => {
+        if (!aliensRes.ok)
+          return aliensRes.json().then(event => Promise.reject(event))
+        return Promise.all([
+          aliensRes.json(),
+        ])
+      })
+      .then(([aliens]) => {
+        this.setState({ aliens })
+      })
+      .catch(error => {
+        console.log({error})
+      })
+
+    Promise.all([
+      fetch(`${config.API_ENDPOINT}/structures`)
+    ])
+      .then(([structuresRes]) => {
+        if (!structuresRes.ok)
+          return structuresRes.json().then(event => Promise.reject(event))
+        return Promise.all([
+          structuresRes.json(),
+        ])
+      })
+      .then(([structures]) => {
+        this.setState({ structures })
+      })
+      .catch(error => {
+        console.log({error})
+      })
   };
 
-  handleTaskModeChange() {
-    this.props.taskModeChange();
+  handleClick = (type) => {
+    ChangeConditions(type);
+    this.forceUpdate();
   };
 
-  //ALL HANDLERS FOR UPDATING PLAYER STATUS
-
-  handleUpdateTotalBiomass() {
-    let oldBiomass = this.state.biomass;
-    const newBiomass = oldBiomass - this.state.cost;
-    this.setState({biomass: newBiomass})
-    this.setState({cost: 0})
-  }
-
-  handleUpdateAlienCount() {
-    let oldCount = this.state.count;
-    const newCount = oldCount + this.state.toBuild;
-    this.setState({count: newCount});
-    this.setState({toBuild: 0});
-  }
-
-  //ALL HANDLERS FOR SPAWNING ALIENS
-  handleClickAlienBuilder = () => {
-    this.setState({buildAliensMode: true});
-    // this.context.handleBuildAliensModeChange();
-    this.handleBuildModeChange();
+  //UPDATE PLAYER STATUS
+  //SOLAR DAY
+  updateSolarDay = () => {
+    this.setState( prevState => {
+      let newDay = prevState.status[0]
+        newDay.solar_day = (newDay.solar_day += 1);
+        return {
+          status: [newDay]
+        }
+      });
   };
 
-  handleAddBuild = () => {
-    console.log('adding');
-    let oldCost = this.state.cost;
-    const newCost = oldCost +=5;
-    this.setState({cost: newCost});
-    let oldBuild = this.state.toBuild;
-    const newBuild = oldBuild +=1;
-    this.setState({toBuild: newBuild});
+  //SPAWNING
+  reactionsSpawn(spawning) {
+    this.setState({reactionsSpawn: spawning})
   };
 
-  handleSubtractBuild = () => {
-    console.log('subtracting');
-    let oldCost = this.state.cost;
-    const newCost = oldCost -=5;
-    this.setState({cost: newCost});
-    let oldBuild = this.state.toBuild;
-    const newBuild = oldBuild -=1;
-    this.setState({toBuild: newBuild});
+  //CONSTRUCTING
+  setOrders = (orders) => {
+    this.setState( prevState => {
+      let toConstructStructures = prevState.structures;
+      let newOrders = orders.filter(structure => structure.constructing_count > 0);
+      let filtered = toConstructStructures.filter(structure => structure.constructing_count > 0);
+      for (let i = 0; i < newOrders.length; i ++) {
+        filtered[i].constructing_count = newOrders[i].constructing_count;
+      };
+    });
+    this.handleClick('cancel');
   };
 
-  handleClickSpawn = () => {
-    this.setState({buildAliensMode: false});
-    // this.context.handleBuildAliensModeChange();
-    let newCount = this.state.toBuild;
-    let aliens = this.context.aliens;
-    aliens[0] = {...aliens[0], toBuild: newCount} 
-    this.setState({ aliens })
-    this.handleBuildModeChange();
+  resetOrders() {
+    this.setState( prevState => {
+      let zeroStructure = prevState.structures;
+        for (let i = 0; i < zeroStructure.length; i++) {
+          zeroStructure[i].constructing_count = 0;
+        };
+        return {
+          structures: zeroStructure
+        };
+      });
+      this.handleClick('reactions');
   };
 
-  //ALL HANDLERS FOR STRUCTURE CONSTRUCTION
-  handleClickStructureBuilder = () => {
-    this.setState({buildStructuresMode: true});
-    this.handleBuildModeChange();
+  finalOrders = (constructCounts) => {
+    this.setState( prevState => {
+      let constructingStructures = prevState.structures;
+      for (let i = 0; i < constructingStructures.length; i ++) {
+        constructingStructures[i].brood_count = constructCounts[i].constructing_count;
+      };
+    });
+    let constructTotal = 0;
+    for (let i = 0; i < constructCounts.length; i ++) {
+      let addToTotal = constructCounts[i].constructing_count;
+      constructTotal += addToTotal;
+    };
+    this.reactionsConstruct(constructTotal);
+    this.resetOrders();
   };
 
-  handleClickConstruct = () => {
-    this.setState({buildStructuresMode: false});
-    this.handleBuildModeChange();
+  reactionsConstruct(constructing) {
+    this.setState({reactionsConstruct: constructing})
   };
 
-  //ALL HANDLERS FOR TASKS
-  handleCancelTasks = () => {
-    this.handleTaskModeChange();
+  //BIOMASS COSTS
+  setBiomass = (biomass) => {
+    this.setState({aliensCost: biomass});
   };
 
-  handleCommitTasks = () => {
-    this.handleTaskModeChange();
-    this.handleUpdateTotalBiomass();
-    this.handleUpdateAlienCount();
+  resetBiomass() {
+    this.setState({aliensCost: 0});
   };
 
-  renderGameplay() {
-    if (this.props.buildMode === true || this.props.taskMode === true) {
-      return (
-        <div>
-          <header className='status-bar'>
-            <span className='left'>
-              <span className='row'>
-                <h4>
-                  Biomass: {this.state.biomass}
-                </h4>
-                <br />
-                <h4 className='red'>
-                  - {this.state.cost}
-                </h4>
-                </span>
-            </span>
-            <span className='center'>
-              <h3>Brood Name: {this.state.status.brood_name}</h3>
-            </span>
-            <span className='right'>
-              <h4>Synapse: {this.state.status.synapse}</h4>
-            </span>
-          </header>
-          <section className='gameplay-style reaction-mode'>
-            <div className='left aliens-box'>
-            <h2>Aliens</h2>
-              {/* <AlienList aliens={this.state.aliens} alienInventory={this.state.status.alienInventory} count={this.state.count} toBuild={this.state.toBuild} /> */}
-              <AlienList alienInventory={this.state.status.alienInventory} count={this.state.count} toBuild={this.state.toBuild} />
-              <button className='build-aliens-button' disabled>Spawn Aliens</button>
-            </div>
-            <div className='right alien-structures-box'>
-              <h2>Alien Stuctures</h2>
-              <ul>
-                <li>1 Synapse Cluster</li>
-                {/* <li>3 Watcher Orbs</li> */}
-                <li>1 Spawning Pit</li>
-              </ul>
-              <button className='build-structures-button' disabled>Build Alien Stuctures</button>
-            </div>
-            <div>{this.renderBuilders()}</div>
-          </section>
-        </div>
-      )
+  finalBiomass = (biomass) => {
+    this.setState( prevState => {
+      let newStatus = prevState.status[0]
+        newStatus.biomass -= biomass;
+        return {
+          status: [newStatus]
+        }
+      });
+    this.resetBiomass();
+  };
+
+  setStructuresBiomass = (biomass) => {
+    this.setState({structuresCost: biomass});
+  };
+
+  resetStructuresBiomass() {
+    this.setState({structuresCost: 0});
+  };
+
+  finalStructuresBiomass = (biomass) => {
+    this.setState( prevState => {
+      let newStatus = prevState.status[0]
+        newStatus.biomass -= biomass;
+        return {
+          status: [newStatus]
+        }
+      });
+    this.resetStructuresBiomass();
+  };
+
+  //SYNAPSE DISTRIBUTION
+  setSynapse = (synapse) => {
+    this.setState({aliensSynapse: synapse});
+  };
+
+  setStructuresSynapse = (synapse) => {
+    this.setState({structuresSynapse: synapse});
+  };
+
+  resetSynapses() {
+    this.setState({aliensSynapse: 0});
+    this.setState({structuresSynapse: 0});
+  };
+
+  finalSynapse = (required, produced) => {
+    this.setState( prevState => {
+      let newStatus = prevState.status[0]
+        newStatus.synapse_required += required;
+        newStatus.synapse_produced += produced;
+        return {
+          status: [newStatus]
+        }
+      });
+    this.resetSynapses();
+  };
+
+  //RENDERING FUNCTIONS
+  renderSpawnerButton() {
+    if (Conditionals.disableButtons === true) {
+      return (<button className='build-aliens-button' disabled>Spawn Aliens</button>);
     } else {
-      return (
-        <div>
-          <header className='status-bar'>
-            <span className='left'>
-                <span className='row'>
-                  <h4>
-                    Biomass: {this.state.biomass}
-                  </h4>
-                  <br />
-                  <h4 className='red'>
-                    - {this.state.cost}
-                  </h4>
-                </span>
-            </span>
-            <span className='center'>
-              <h3>Brood Name: {this.state.status.brood_name}</h3>
-            </span>
-            <span className='right'>
-              <h4>Synapse: {this.state.status.synapse}</h4>
-            </span>
-          </header>
-          <section className='gameplay-style'>
-            <div className="left aliens-box">
-            <h2>Aliens</h2>
-              {/* <AlienList aliens={this.state.aliens} alienInventory={this.state.status.alienInventory} count={this.state.count} toBuild={this.state.toBuild} /> */}
-              <AlienList alienInventory={this.state.status.alienInventory} count={this.state.count} toBuild={this.state.toBuild} />
-              <button className='build-aliens-button' onClick={() => this.handleClickAlienBuilder()}>Spawn Aliens</button>
-            </div>
-            <div className="right alien-structures-box">
-              <h2>Alien Structures</h2>
-              <ul>
-                <li>1 Synapse Cluster</li>
-                {/* <li>3 Watcher Orbs</li> */}
-                <li>1 Spawning Pit</li>
-              </ul>
-              <button className='build-structures-button' onClick={() => this.handleClickStructureBuilder()}>Build Alien Stuctures</button>
-            </div>
-          <div>{this.renderBuilders()}</div>
-        </section>
-      </div>
-      )
+      return (<button className='build-aliens-button' onClick={() => this.handleClick('spawning')}>Spawn Aliens</button>);
+    };
+  };
+
+  renderConstructorButton() {
+    if (Conditionals.disableButtons === true) {
+      return (<button className='build-structures-button' disabled>Build Alien Stuctures</button>);
+    } else {
+      return (<button className='build-structures-button' onClick={() => this.handleClick('constructing')}>Build Alien Stuctures</button>);
+    };
+  };
+
+  renderTaskButton() {
+    if (Conditionals.disableButtons === true) {
+      return (<button className='task-button' disabled>Set Tasks</button>)
+    } else {
+      return (<button className='task-button' onClick={() =>  this.handleClick('tasks')}>Set Tasks</button>);
     };
   };
 
   renderBuilders() {
-    const { aliens = [] } = this.context
-    if (this.state.buildAliensMode === true) {
+    if (Conditionals.spawnMode === true) {
       return (
-        // <AlienBuilder aliens={this.state.aliens} cost={this.state.cost} toBuild={this.state.toBuild}
-        //   handleClickAdd={this.handleAddBuild} handleClickSubtract={this.handleSubtractBuild} handleClickSpawn={this.handleClickSpawn}
-        // />
-        <AlienBuilder aliens={aliens} cost={this.state.cost} toBuild={this.state.toBuild}
-          handleClickAdd={this.handleAddBuild} handleClickSubtract={this.handleSubtractBuild} handleClickSpawn={this.handleClickSpawn}
+        <AlienSpawner aliens={this.state.aliens} setSpawns={this.setSpawns} setBiomass={this.setBiomass}
+        setSynapse={this.setSynapse} handleClick={this.handleClick}
         />
       );
-    } else if (this.state.buildStructuresMode === true) {
+    } else if (Conditionals.constructMode === true) {
       return (
-        <StructuresBuilder handleClickConstruct={this.handleClickConstruct} />
+        <StructureConstructor structures={this.state.structures} setStructuresBiomass={this.setStructuresBiomass} setOrders={this.setOrders}
+          setStructuresSynapse={this.setStructuresSynapse} handleClick={this.handleClick}
+        />
       );
-    } else if (this.props.taskMode === true) {
+    } else if (Conditionals.taskMode === true) {
       return (
-        <Tasks aliens={this.context.aliens}
-          handleClickCancel={this.handleCancelTasks} handleClickCommit={this.handleCommitTasks}/>
+        <Tasks status={this.state.status} aliens={this.state.aliens} structures={this.state.structures}
+          aliensCost={this.state.aliensCost} structuresCost={this.state.structuresCost}
+            aliensSynapse={this.state.aliensSynapse} structuresSynapse={this.state.structuresSynapse} updateSolarDay={this.updateSolarDay} 
+             finalBiomass={this.finalBiomass} finalSynapse={this.finalSynapse} 
+                finalOrders={this.finalOrders} finalStructuresBiomass={this.finalStructuresBiomass}
+                  handleClick={this.handleClick}
+        />
+      );
+    } else if (Conditionals.reactionMode === true) {
+      return (
+        <Reactions status={this.state.status} aliens={this.state.aliens}  structures={this.state.structures}
+          reactionsConstruct={this.state.reactionsConstruct} handleClick={this.handleClick}
+        />
       );
     } else {
       return
     }
   };
 
+  //MAIN RENDER
   render() {
-    console.log(this.context.aliens)
+    const { status, structures, aliensCost, aliensSynapse, structuresCost, structuresSynapse } = this.state
+
     return (
-      <div>{this.renderGameplay()}</div>
-    );
+      <div>
+        {status.map(report => (
+          <header className='status-bar'>
+            <div className='status-bar-major' >
+              <span className='far-left-major'></span>
+              <span className='left-major'>
+                <h4>Biomass: {report.biomass}</h4>
+              </span>
+              <span className='center'>
+                <h3>Brood Name: {report.brood_name}</h3>
+              </span>
+              <div className='right-major'>
+                <h4>Synapse:</h4>
+                <h4 className='orange'>{report.synapse_required}</h4>
+                <h4 className='gold'>{report.synapse_produced}</h4>
+              </div>
+              <span className='far-right-major'></span>
+            </div>
+            <div className='status-bar-minor'>
+              <span className='far-left-minor'></span>
+              <span className='center-minor'><h4>Solar Day: {report.solar_day}</h4></span>
+              <span className='far-right-minor'></span>
+            </div>
+          </header>
+        ))}
+        <section className='gameplay-style reaction-mode'>
+            <AlienList aliensCost={aliensCost} aliensSynapse={aliensSynapse} />
+            <StructureList structures={structures} status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} />
+          <div>{this.renderBuilders()}</div>
+        </section>
+        <footer className='game-footer'>
+          <span>{this.renderSpawnerButton()}</span>
+          <span>{this.renderTaskButton()}</span>
+          <span>{this.renderConstructorButton()}</span>
+        </footer>
+      </div>
+    )
   };
 };
 

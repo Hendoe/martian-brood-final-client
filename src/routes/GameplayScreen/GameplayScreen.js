@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import config from '../../config';
+import config from '../../config';
 import Aliens from '../../stores/Aliens';
 import { AlienInventory } from '../../stores/AlienInventory';
 import { Conditionals, ChangeConditions} from '../../stores/Conditionals';
@@ -9,11 +9,12 @@ import Structures from '../../stores/Structures';
 import { StructureInventory } from '../../stores/StructureInventory';
 import StructureList from '../../components/StructureList/StructureList';
 import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
-import { Status } from '../../storesAPI/Status';
+import Status from '../../stores/Status';
 import Tasks from '../../components/Tasks/Tasks';
 import Reactions from '../../components/Reactions/Reactions';
-import { GETmaster } from '../../services/Aliens-Api-Service';
 import './GameplayScreen.css';
+import StatusApiService from '../../services/status-api-service';
+import StatusContext from '../../contexts/StatusContext';
 
 class GameplayScreen extends Component {
   constructor(props) {
@@ -23,23 +24,80 @@ class GameplayScreen extends Component {
       spawnMode: false,
       constructMode: false,
       taskMode: false,
-      status: Status,
-      aliens: Aliens,
+      status: [],
+      aliens: [],
       alienInventory: AlienInventory,
       aliensCost: 0,
       aliensSynapse: 0,
-      structures: Structures,
+      structures: [],
       StructureInventory: StructureInventory,
       structuresCost: 0,
       structuresSynapse: 0,
     };
   };
 
+  static contextType = StatusContext
+
   //GET OUR DATABASES
   componentDidMount() {
-    GETmaster();
+    this.GETmaster();
+    this.forceUpdate();
+    console.log('context', this.context.setStatus())
   };
   
+  //GETS IT
+  GETmaster = () => {
+    Promise.all([
+      fetch(`${config.API_ENDPOINT}/status`)
+    ])
+      .then(([statusRes]) => {
+        if (!statusRes.ok)
+          return statusRes.json().then(event => Promise.reject(event))
+        return Promise.all([
+          statusRes.json(),
+        ])
+      })
+      .then((status) => {
+        this.setState({ status: status[0] })
+      })
+      .catch(error => {
+        console.log({error})
+      })
+
+    Promise.all([
+      fetch(`${config.API_ENDPOINT}/aliens`)
+    ])
+      .then(([aliensRes]) => {
+        if (!aliensRes.ok)
+          return aliensRes.json().then(event => Promise.reject(event))
+        return Promise.all([
+          aliensRes.json(),
+        ])
+      })
+      .then(([aliens]) => {
+        this.setState({ aliens })
+      })
+      .catch(error => {
+        console.log({error})
+      })
+
+    Promise.all([
+      fetch(`${config.API_ENDPOINT}/structures`)
+    ])
+      .then(([structuresRes]) => {
+        if (!structuresRes.ok)
+          return structuresRes.json().then(event => Promise.reject(event))
+        return Promise.all([
+          structuresRes.json(),
+        ])
+      })
+      .then(([structures]) => {
+        this.setState({ structures })
+      })
+      .catch(error => {
+        console.log({error})
+      })
+  };
 
   handleClick = (type) => {
     ChangeConditions(type);
@@ -196,11 +254,21 @@ class GameplayScreen extends Component {
 
   //MAIN RENDER
   render() {
-    const { status, structures, aliensCost, aliensSynapse, structuresCost, structuresSynapse } = this.state
+    const { status, aliens, structures, aliensCost, aliensSynapse, structuresCost, structuresSynapse } = this.state
+    let report = ""
+    if (status[0]) {
+      report = status[0]
+      // console.log('REPORT', report)
+    };
+    // console.log('state status', this.state.status[0])
+    // console.log('aliens', aliens)
+    // console.log('structures', structures)
+    // console.log('context', this.context)
+    // console.log('STATUS', status[0])
 
     return (
       <div>
-        {status.map(report => (
+        {/* {status.map(report => ( */}
           <li key={report.id} >
           <header className='status-bar'>
             <div className='status-bar-major' >
@@ -225,7 +293,7 @@ class GameplayScreen extends Component {
             </div>
           </header>
           </li>
-        ))}
+        {/* ))} */}
         <section className='gameplay-style reaction-mode'>
             <AlienList aliensCost={aliensCost} aliensSynapse={aliensSynapse} />
             <StructureList structures={structures} status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} />

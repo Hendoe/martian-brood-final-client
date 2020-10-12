@@ -34,23 +34,23 @@ import { SetStatus } from '../storesAPI/Status';
 
 // //GAMEPLAY
   //GETS IT
-  export const GETmaster = () => {
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/status`)
-    ])
-      .then(([statusRes]) => {
-        if (!statusRes.ok)
-          return statusRes.json().then(event => Promise.reject(event))
-        return Promise.all([
-          statusRes.json(),
-        ])
-      })
-      .then((status) => {
-        SetStatus( status )
-      })
-      .catch(error => {
-        console.log({error})
-      })
+  // export const GETmaster = () => {
+  //   Promise.all([
+  //     fetch(`${config.API_ENDPOINT}/status`)
+  //   ])
+  //     .then(([statusRes]) => {
+  //       if (!statusRes.ok)
+  //         return statusRes.json().then(event => Promise.reject(event))
+  //       return Promise.all([
+  //         statusRes.json(),
+  //       ])
+  //     })
+  //     .then((status) => {
+  //       SetStatus( status )
+  //     })
+  //     .catch(error => {
+  //       console.log({error})
+  //     })
 
     // Promise.all([
     //   fetch(`${config.API_ENDPOINT}/aliens`)
@@ -85,7 +85,7 @@ import { SetStatus } from '../storesAPI/Status';
     //   .catch(error => {
     //     console.log({error})
     //   })
-  };
+  //};
 
 
 // // REACTIONS

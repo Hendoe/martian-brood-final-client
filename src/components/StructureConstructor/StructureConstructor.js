@@ -29,8 +29,10 @@ class StructureConstructor extends Component {
   generateCost() {
     let i = this.state.current;
     let constructing =  StructureInventory[i].constructing_count;
-    let cost = StructureInventory[i].biomass_cost
+    let cost = Structures[i].biomass_cost
     let structureCost = (constructing * cost)
+    console.log(cost)
+    debugger
     return structureCost;
   };
 
@@ -88,39 +90,38 @@ class StructureConstructor extends Component {
 
   findStructure(x) {
     let i = this.state.current;
-    let constructables = StructureInventory;
     if (x === 0) {
       if (i === 0) {
-        let terminal = (constructables.length -1);
-        for (let i = (terminal); i < constructables.length; i++) {
+        let terminal = (StructureInventory.length -1);
+        for (let i = (terminal); i < StructureInventory.length; i++) {
           this.setState({current: i});
-            return constructables[i];
+            return StructureInventory[i];
         };
       } else {
           let moveLeft = (i -= 1);
-          for (let i = (moveLeft); i < constructables.length; i++) {
+          for (let i = (moveLeft); i < StructureInventory.length; i++) {
             this.setState({current: moveLeft});
-              return constructables[i];
+              return StructureInventory[i];
           };
       };
     } else if (x === 1) {
-      if (i === constructables.length -1) {
+      if (i === StructureInventory.length -1) {
         let start = 0;
-        for (let i = (start); i < constructables.length; i++) {
+        for (let i = (start); i < StructureInventory.length; i++) {
           this.setState({current: start});
-            return constructables[i];
+            return StructureInventory[i];
         };
       } else {
           let moveRight = (i += 1);
-          for (let i = (moveRight); i < constructables.length; i++) {
+          for (let i = (moveRight); i < StructureInventory.length; i++) {
             this.setState({current: moveRight});
-              return constructables[i];
+              return StructureInventory[i];
           };
       };
     } else {
       let index = i
-        for (let i = (index); i < constructables.length; i++) {
-          return constructables[i];
+        for (let i = (index); i < StructureInventory.length; i++) {
+          return StructureInventory[i];
       };
     };
   };

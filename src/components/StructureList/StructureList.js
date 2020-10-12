@@ -5,7 +5,6 @@ import './StructureList.css';
 class StructureList extends Component {
   render() {
     const { structuresCost, structuresSynapse } = this.props
-    console.log(structuresCost)
 
     return (
       <div className='right alien-structures-box'>

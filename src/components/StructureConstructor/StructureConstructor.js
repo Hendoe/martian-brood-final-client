@@ -30,10 +30,10 @@ class StructureConstructor extends Component {
   };
 
   generateTotalCost() {
-    let i = this.state.current;
+    let index = this.state.current;
     let constructing = this.state.constructables.filter(structure => structure.constructing_count > 0);
     let totalCost = 0;
-    for (let i = 0; i < constructing.length; i++) {
+    for (let i = (index); i < constructing.length; i++) {
       let construct = constructing[i];
       let cost = (construct.constructing_count * Structures[i].biomass_cost);
       console.log(Structures[i])
@@ -51,9 +51,10 @@ class StructureConstructor extends Component {
   };
 
   generateTotalSynapse() {
+    let index = this.state.current;
     let constructing = StructureInventory.filter(structure => structure.constructing_count > 0);
     let totalSynapse = 0;
-    for (let i = 0; i < constructing.length; i++) {
+    for (let i = (index); i < constructing.length; i++) {
       let construct = constructing[i]
       let synapse = (construct.constructing_count * Structures[i].synapse_produced);
       totalSynapse += synapse;

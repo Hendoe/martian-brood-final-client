@@ -7,6 +7,7 @@ export const ReactionsSpawning = (spawnCount) => {
   Reactor.total_spawning_count = spawnCount;
 };
 
-export const Reactionsconstructing = (constructCount) => {
+export const ReactionsConstructing = (constructCount) => {
+  console.log(constructCount)
   Reactor.total_constructing_count = constructCount;
 };

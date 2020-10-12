@@ -1,80 +1,9 @@
 import React, { Component } from 'react';
 import { Reactor } from '../../stores/Reactor';
-import config from '../../config';
+// import config from '../../config';
 import './Reactions.css';
 
 class Reactions extends Component {
-  componentWillUnmount() {
-    this.POSTmaster();
-  };
-
-  POSTmaster() {
-    this.commitStatus();
-    this.commitAliens();
-    this.commitStructures();
-  };
-
-  commitStatus() {
-    const { status } = this.props
-    status.map( newStatus => (
-      fetch(config.API_ENDPOINT + `/commit/status`, {
-        method: 'PATCH',
-        body: JSON.stringify(newStatus),
-        headers: {
-          'content-type': 'application/json',
-        },
-      })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(error => Promise.reject(error))
-      })
-      .catch(error => {
-        console.error(error)
-      })
-    ));
-  };
-  
-  commitAliens() {
-    const { aliens } = this.props
-    aliens.map( newAliens => (
-      fetch(config.API_ENDPOINT + `/commit/aliens`, {
-        method: 'PATCH',
-        body: JSON.stringify(newAliens),
-        headers: {
-          'content-type': 'application/json',
-        },
-      })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(error => Promise.reject(error))
-      })
-      .catch(error => {
-        console.error(error)
-      })
-    ))
-  };
-  
-  commitStructures() {
-    console.log('final structures', this.props.structures)
-    const { structures } = this.props
-    structures.map( newStructures => (
-      fetch(config.API_ENDPOINT + `/commit/structures`, {
-        method: 'PATCH',
-        body: JSON.stringify(newStructures),
-        headers: {
-          'content-type': 'application/json',
-        },
-      })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(error => Promise.reject(error))
-      })
-      .catch(error => {
-        console.error(error)
-      })
-    ));
-  };
-
   renderSpawning() {
     if (Reactor.total_spawning_count === 0 ) {
       return <p>The Brood didn't spawn any aliens</p>
@@ -86,12 +15,12 @@ class Reactions extends Component {
   };
 
   renderConstructing() {
-    if (this.props.reactionsConstruct === 0 ) {
+    if (Reactor.total_constructing_count === 0 ) {
       return <p>The Brood didn't construct any structures</p>
-    } else if (this.props.reactionsConstruct === 1 ) {
-      return <p>The Brood constructed {this.props.reactionsConstruct} structure</p>
+    } else if (Reactor.total_constructing_count === 1 ) {
+      return <p>The Brood constructed {Reactor.total_constructing_count} structure</p>
     } else {
-      return <p>The Brood constructed {this.props.reactionsConstruct} structures</p>
+      return <p>The Brood constructed {Reactor.total_constructing_count} structures</p>
     };
   };
 
@@ -99,7 +28,7 @@ class Reactions extends Component {
     const { status } = this.props
 
     return(
-      <div class="reaction-box">
+      <div className="reaction-box">
         <p>End of Solar Day {(status[0].solar_day - 1)}</p>
         {this.renderSpawning()}
         {this.renderConstructing()}

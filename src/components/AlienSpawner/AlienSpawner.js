@@ -42,7 +42,7 @@ class AlienSpawner extends Component {
   setSpawnPlan() {
     const biomass = this.generateCost();
     const synapse = this.generateSynapse();
-    this.props.setBiomass(biomass);
+    this.props.setAliensBiomass(biomass);
     this.props.setSynapse(synapse);
   };
   
@@ -53,8 +53,8 @@ class AlienSpawner extends Component {
       <div className='builder-box'>
         <h2>Alien Spawner</h2>
         <hr />
-          {aliens.map(alien => (
-            <form>                
+          {aliens.map(alien => (          
+            <form>    
               <Alien 
                 id={alien.id}
                 name={alien.alien_name}

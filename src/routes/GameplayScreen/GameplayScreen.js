@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import config from '../../config';
+//import config from '../../config';
 import Aliens from '../../stores/Aliens';
 import { AlienInventory } from '../../stores/AlienInventory';
 import { Conditionals, ChangeConditions} from '../../stores/Conditionals';
@@ -31,68 +31,7 @@ class GameplayScreen extends Component {
       StructureInventory: StructureInventory,
       structuresCost: 0,
       structuresSynapse: 0,
-      reactionsSpawn: 0,
-      reactionsConstruct: 0
     };
-  };
-
-  //GET OUR DATABASES
-  componentDidMount() {
-    this.GETmaster();
-  };
-
-  //GETS IT
-  GETmaster() {
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/status`)
-    ])
-      .then(([statusRes]) => {
-        if (!statusRes.ok)
-          return statusRes.json().then(event => Promise.reject(event))
-        return Promise.all([
-          statusRes.json(),
-        ])
-      })
-      .then(([status]) => {
-        this.setState({ status })
-      })
-      .catch(error => {
-        console.log({error})
-      })
-
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/aliens`)
-    ])
-      .then(([aliensRes]) => {
-        if (!aliensRes.ok)
-          return aliensRes.json().then(event => Promise.reject(event))
-        return Promise.all([
-          aliensRes.json(),
-        ])
-      })
-      .then(([aliens]) => {
-        this.setState({ aliens })
-      })
-      .catch(error => {
-        console.log({error})
-      })
-
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/structures`)
-    ])
-      .then(([structuresRes]) => {
-        if (!structuresRes.ok)
-          return structuresRes.json().then(event => Promise.reject(event))
-        return Promise.all([
-          structuresRes.json(),
-        ])
-      })
-      .then(([structures]) => {
-        this.setState({ structures })
-      })
-      .catch(error => {
-        console.log({error})
-      })
   };
 
   handleClick = (type) => {
@@ -110,6 +49,7 @@ class GameplayScreen extends Component {
           status: [newDay]
         }
       });
+    this.handleClick('reactions');
   };
 
   //SPAWNING
@@ -118,61 +58,21 @@ class GameplayScreen extends Component {
   };
 
   //CONSTRUCTING
-  setOrders = (orders) => {
-    this.setState( prevState => {
-      let toConstructStructures = prevState.structures;
-      let newOrders = orders.filter(structure => structure.constructing_count > 0);
-      let filtered = toConstructStructures.filter(structure => structure.constructing_count > 0);
-      for (let i = 0; i < newOrders.length; i ++) {
-        filtered[i].constructing_count = newOrders[i].constructing_count;
-      };
-    });
-    this.handleClick('cancel');
-  };
-
-  resetOrders() {
-    this.setState( prevState => {
-      let zeroStructure = prevState.structures;
-        for (let i = 0; i < zeroStructure.length; i++) {
-          zeroStructure[i].constructing_count = 0;
-        };
-        return {
-          structures: zeroStructure
-        };
-      });
-      this.handleClick('reactions');
-  };
-
-  finalOrders = (constructCounts) => {
-    this.setState( prevState => {
-      let constructingStructures = prevState.structures;
-      for (let i = 0; i < constructingStructures.length; i ++) {
-        constructingStructures[i].brood_count = constructCounts[i].constructing_count;
-      };
-    });
-    let constructTotal = 0;
-    for (let i = 0; i < constructCounts.length; i ++) {
-      let addToTotal = constructCounts[i].constructing_count;
-      constructTotal += addToTotal;
-    };
-    this.reactionsConstruct(constructTotal);
-    this.resetOrders();
-  };
-
   reactionsConstruct(constructing) {
     this.setState({reactionsConstruct: constructing})
   };
 
   //BIOMASS COSTS
-  setBiomass = (biomass) => {
+  setAliensBiomass = (biomass) => {
     this.setState({aliensCost: biomass});
+    this.handleClick('cancel');
   };
 
-  resetBiomass() {
+  resetAliensBiomass() {
     this.setState({aliensCost: 0});
   };
 
-  finalBiomass = (biomass) => {
+  finalAliensBiomass = (biomass) => {
     this.setState( prevState => {
       let newStatus = prevState.status[0]
         newStatus.biomass -= biomass;
@@ -180,11 +80,12 @@ class GameplayScreen extends Component {
           status: [newStatus]
         }
       });
-    this.resetBiomass();
+    this.resetAliensBiomass();
   };
 
   setStructuresBiomass = (biomass) => {
     this.setState({structuresCost: biomass});
+    this.handleClick('cancel');
   };
 
   resetStructuresBiomass() {
@@ -256,13 +157,13 @@ class GameplayScreen extends Component {
   renderBuilders() {
     if (Conditionals.spawnMode === true) {
       return (
-        <AlienSpawner aliens={this.state.aliens} setSpawns={this.setSpawns} setBiomass={this.setBiomass}
+        <AlienSpawner aliens={this.state.aliens} setAliensBiomass={this.setAliensBiomass}
         setSynapse={this.setSynapse} handleClick={this.handleClick}
         />
       );
     } else if (Conditionals.constructMode === true) {
       return (
-        <StructureConstructor structures={this.state.structures} setStructuresBiomass={this.setStructuresBiomass} setOrders={this.setOrders}
+        <StructureConstructor structures={this.state.structures} setStructuresBiomass={this.setStructuresBiomass}
           setStructuresSynapse={this.setStructuresSynapse} handleClick={this.handleClick}
         />
       );
@@ -271,15 +172,14 @@ class GameplayScreen extends Component {
         <Tasks status={this.state.status} aliens={this.state.aliens} structures={this.state.structures}
           aliensCost={this.state.aliensCost} structuresCost={this.state.structuresCost}
             aliensSynapse={this.state.aliensSynapse} structuresSynapse={this.state.structuresSynapse} updateSolarDay={this.updateSolarDay} 
-             finalBiomass={this.finalBiomass} finalSynapse={this.finalSynapse} 
-                finalOrders={this.finalOrders} finalStructuresBiomass={this.finalStructuresBiomass}
+             finalAliensBiomass={this.finalAliensBiomass} finalSynapse={this.finalSynapse} 
+                finalStructuresBiomass={this.finalStructuresBiomass}
                   handleClick={this.handleClick}
         />
       );
     } else if (Conditionals.reactionMode === true) {
       return (
-        <Reactions status={this.state.status} aliens={this.state.aliens}  structures={this.state.structures}
-          reactionsConstruct={this.state.reactionsConstruct} handleClick={this.handleClick}
+        <Reactions status={this.state.status} aliens={this.state.aliens}  structures={this.state.structures} handleClick={this.handleClick}
         />
       );
     } else {
@@ -294,6 +194,7 @@ class GameplayScreen extends Component {
     return (
       <div>
         {status.map(report => (
+          <li key={report.id} >
           <header className='status-bar'>
             <div className='status-bar-major' >
               <span className='far-left-major'></span>
@@ -316,6 +217,7 @@ class GameplayScreen extends Component {
               <span className='far-right-minor'></span>
             </div>
           </header>
+          </li>
         ))}
         <section className='gameplay-style reaction-mode'>
             <AlienList aliensCost={aliensCost} aliensSynapse={aliensSynapse} />

@@ -16,11 +16,6 @@ class StructureConstructor extends Component {
     };
   };
 
-  // componentWillMount() {
-  //   let constructables = Structures.filter(structure => structure.constructable === true);
-  //   this.setState({ constructables })
-  // };
-
   generateConstructing() {
     let i = this.state.current;
     return StructureInventory[i].constructing_count;
@@ -31,17 +26,17 @@ class StructureConstructor extends Component {
     let constructing =  StructureInventory[i].constructing_count;
     let cost = Structures[i].biomass_cost
     let structureCost = (constructing * cost)
-    console.log(cost)
-    debugger
     return structureCost;
   };
 
   generateTotalCost() {
+    let i = this.state.current;
     let constructing = this.state.constructables.filter(structure => structure.constructing_count > 0);
     let totalCost = 0;
     for (let i = 0; i < constructing.length; i++) {
-      let construct = constructing[i]
-      let cost = (construct.constructing_count * construct.biomass_cost);
+      let construct = constructing[i];
+      let cost = (construct.constructing_count * Structures[i].biomass_cost);
+      console.log(Structures[i])
       totalCost += cost;
      };
     return totalCost;
@@ -50,17 +45,17 @@ class StructureConstructor extends Component {
   generateSynapse() {
     let i = this.state.current;
     let constructing =  StructureInventory[i].constructing_count;
-    let synapse =  StructureInventory[i].synapse_produced;
+    let synapse =  Structures[i].synapse_produced;
     let synapseProduced = (constructing * synapse);
     return synapseProduced;
   };
 
   generateTotalSynapse() {
-    let constructing = this.state.constructables.filter(structure => structure.constructing_count > 0);
+    let constructing = StructureInventory.filter(structure => structure.constructing_count > 0);
     let totalSynapse = 0;
     for (let i = 0; i < constructing.length; i++) {
       let construct = constructing[i]
-      let synapse = (construct.constructing_count * construct.synapse_produced);
+      let synapse = (construct.constructing_count * Structures[i].synapse_produced);
       totalSynapse += synapse;
      };
     return totalSynapse;
@@ -72,18 +67,8 @@ class StructureConstructor extends Component {
   };
 
   setConstructionOrders() {
-    const toConstruct = this.state.constructables;
-    let constructCounts = [];
-      for (let i = 0; i < toConstruct.length; i++) {
-        let count = {
-          structure_name: toConstruct[i].structure_name,
-          constructing_count: toConstruct[i].constructing_count
-        };
-        constructCounts.push(count);
-      };
     const biomass = this.generateTotalCost();
     const synapse = this.generateTotalSynapse();
-    this.props.setOrders(constructCounts);
     this.props.setStructuresBiomass(biomass);
     this.props.setStructuresSynapse(synapse);
   };
@@ -121,7 +106,7 @@ class StructureConstructor extends Component {
     } else {
       let index = i
         for (let i = (index); i < StructureInventory.length; i++) {
-          return StructureInventory[i];
+          return Structures[i];
       };
     };
   };

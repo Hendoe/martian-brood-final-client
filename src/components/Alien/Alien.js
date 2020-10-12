@@ -3,10 +3,10 @@ import './Alien.css';
 
 class Alien extends Component {
   render() {
-    const { name, hp, atk, cost, synapse, desc, features } = this.props
+    const { id, name, hp, atk, cost, synapse, desc, features } = this.props
 
     return (
-      <div>
+      <li key={id}>
         <span><h3>Name: {name}</h3></span>
         <span><h3>Description:</h3></span>
           <span><p>{desc}</p></span>
@@ -30,7 +30,7 @@ class Alien extends Component {
             <p>{synapse}</p>
           </div>
         </section>
-      </div>
+      </li>
     );
   };
 };

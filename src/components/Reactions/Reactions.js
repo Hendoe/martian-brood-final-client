@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { Reactor } from '../../stores/Reactor';
 // import config from '../../config';
 import './Reactions.css';
+import ReportContext from '../../contexts/ReportContext';
 
 class Reactions extends Component {
+  static contextType = ReportContext
+
   renderSpawning() {
     if (Reactor.total_spawning_count === 0 ) {
       return <p>The Brood didn't spawn any aliens</p>
@@ -25,11 +28,11 @@ class Reactions extends Component {
   };
 
   render() {
-    const { status } = this.props
+    const { status } = this.context
 
     return(
       <div className="reaction-box">
-        <p>End of Solar Day {(status[0].solar_day - 1)}</p>
+        <p>End of Solar Day {(status.solar_day - 1)}</p>
         {this.renderSpawning()}
         {this.renderConstructing()}
         <button className='reaction-button' onClick={() => this.props.handleClick('cancel')}>OK</button>

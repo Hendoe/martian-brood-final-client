@@ -44,7 +44,6 @@ class GameplayScreen extends Component {
     this.forceUpdate();
   };
   
-  //
   //Clicks are sent here from the components
   //Then a message is sent to the Conditionals
   //Who need to know how to update the Conditions correctly
@@ -54,11 +53,9 @@ class GameplayScreen extends Component {
     this.forceUpdate();
   };
 
-  //
   //The Reactions Page wants to tell the player how their turn went
   //So it has to figure out how many Aliens spawned, how many Structures were constructed
   //The Gameplay state holds this data, so that it may be sent to the Reactor when needed
-
   reactionsSpawn(spawning) {
     this.setState({reactionsSpawn: spawning})
   };
@@ -67,8 +64,7 @@ class GameplayScreen extends Component {
     this.setState({reactionsConstruct: constructing})
   };
 
-  //
-  //BIOMASS COSTS
+  //Whenever a Player finalizes their Spawning Plans or Construction Orders the Biomass Cost and Synapse Distribution must then be calculated
   setAliensBiomass = (biomass) => {
     this.setState({aliensCost: biomass});
     this.handleClick('cancel');
@@ -80,8 +76,8 @@ class GameplayScreen extends Component {
 
   finalAliensBiomass = (newBiomass) => {
     console.log('INCOMING ALIEN BIOMASS', newBiomass)
-    console.log('CONTEXT ALIEN BIOMASS', this.context.status[0].biomass)
-    let oldBiomass = this.context.status[0].biomass;
+    console.log('CONTEXT ALIEN BIOMASS', this.context.status.biomass)
+    let oldBiomass = this.context.status.biomass;
     let totalBiomass = (oldBiomass += newBiomass);
     this.context.setStatus(totalBiomass);
     this.resetAliensBiomass();
@@ -98,8 +94,8 @@ class GameplayScreen extends Component {
 
   finalStructuresBiomass = (newBiomass) => {
     console.log('INCOMING STRUCTURES BIOMASS', newBiomass)
-    console.log('CONTEXT STRUCTURES BIOMASS', this.context.status[0].biomass)
-    let oldBiomass = this.context.status[0].biomass;
+    console.log('CONTEXT STRUCTURES BIOMASS', this.context.status.biomass)
+    let oldBiomass = this.context.status.biomass;
     let totalBiomass = (oldBiomass += newBiomass);
     this.context.setStatus(totalBiomass);
     this.resetStructuresBiomass();
@@ -128,7 +124,8 @@ class GameplayScreen extends Component {
   //   this.resetSynapses();
   };
 
-  //RENDERING FUNCTIONS
+  //All of the buttons have an active and disabled state
+  //If anything that creates a Builder Box is active then all the buttons that open new Builder Boxes must be made disabled
   renderSpawnerButton() {
     if (Conditionals.disableButtons === true) {
       return (<button className='build-aliens-button' disabled>Spawn Aliens</button>);
@@ -153,6 +150,7 @@ class GameplayScreen extends Component {
     };
   };
 
+  //Our Builders are only going to appear when the Conditions are right for them
   renderBuilders() {
     if (Conditionals.spawnMode === true) {
       return (
@@ -168,8 +166,7 @@ class GameplayScreen extends Component {
       );
     } else if (Conditionals.taskMode === true) {
       return (
-        <Tasks status={this.state.status} aliens={this.state.aliens} structures={this.state.structures}
-          aliensCost={this.state.aliensCost} structuresCost={this.state.structuresCost}
+        <Tasks aliensCost={this.state.aliensCost} structuresCost={this.state.structuresCost}
             aliensSynapse={this.state.aliensSynapse} structuresSynapse={this.state.structuresSynapse} updateSolarDay={this.updateSolarDay} 
              finalAliensBiomass={this.finalAliensBiomass} finalSynapse={this.finalSynapse} 
                 finalStructuresBiomass={this.finalStructuresBiomass}
@@ -186,7 +183,7 @@ class GameplayScreen extends Component {
     }
   };
 
-  //MAIN RENDER
+  //The Main Render Function
   render() {
     const { aliensCost, aliensSynapse, structuresCost, structuresSynapse } = this.state
     const { status } = this.context

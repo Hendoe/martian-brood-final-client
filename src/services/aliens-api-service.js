@@ -99,26 +99,6 @@ import { SetStatus } from '../storesAPI/Status';
   //   this.commitStructures();
   // };
 
-  // commitStatus() {
-  //   const { status } = this.props
-  //   status.map( newStatus => (
-  //     fetch(config.API_ENDPOINT + `/commit/status`, {
-  //       method: 'PATCH',
-  //       body: JSON.stringify(newStatus),
-  //       headers: {
-  //         'content-type': 'application/json',
-  //       },
-  //     })
-  //     .then(res => {
-  //       if (!res.ok)
-  //         return res.json().then(error => Promise.reject(error))
-  //     })
-  //     .catch(error => {
-  //       console.error(error)
-  //     })
-  //   ));
-  // };
-
   // commitAliens() {
   //   const { aliens } = this.props
   //   aliens.map( newAliens => (

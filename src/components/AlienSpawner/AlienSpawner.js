@@ -3,18 +3,20 @@ import Alien from '../Alien/Alien';
 import Aliens from '../../stores/Aliens';
 import { AlienInventory, UpdateSpawning } from '../../stores/AlienInventory';
 import './AlienSpawner.css';
+import ReportContext from '../../contexts/ReportContext';
 
 class AlienSpawner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      aliens: this.props.aliens,
       AlienInventory: AlienInventory,
       alienCost: 0,
       aliensToSpawn: 0,
       aliensSynapse: 0,
     };
   };
+
+  static contextType = ReportContext
 
   generateSpawning() {
     return AlienInventory[0].spawning_count;
@@ -47,7 +49,7 @@ class AlienSpawner extends Component {
   };
   
   render() {
-    const { aliens } = this.state
+    const { aliens } = this.context
 
     return (
       <div className='builder-box'>

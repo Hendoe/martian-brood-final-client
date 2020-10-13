@@ -3,6 +3,7 @@ import Structure from '../Structure/Structure';
 import Structures from '../../stores/Structures';
 import { StructureInventory, UpdateConstructing } from '../../stores/StructureInventory';
 import './StructureConstructor.css';
+import StructureInventoryContext from '../../contexts/StructureInventoryContext';
 
 class StructureConstructor extends Component {
   constructor(props) {
@@ -16,11 +17,21 @@ class StructureConstructor extends Component {
     };
   };
 
+  static contextType = StructureInventoryContext
+
+  componentDidMount() {
+    console.log('what are constructables', this.state.constructables);
+    console.log('what is context', this.context);
+    console.log('what is structure inventory context', this.context.structureInventory);
+  };
+
+  //This tallies up the total amount of a structure the Brood plans to construct
   generateConstructing() {
     let i = this.state.current;
     return StructureInventory[i].constructing_count;
   };
 
+  //This will generate the cost for constructing so many of such and such Structure
   generateCost() {
     let i = this.state.current;
     let constructing =  StructureInventory[i].constructing_count;
@@ -29,6 +40,8 @@ class StructureConstructor extends Component {
     return structureCost;
   };
 
+  //We need this to figure out what to display on the Structure List for our total costs
+  //It's also used to calculate how much Biomass to subtract from our Final Status
   generateTotalCost() {
     let index = this.state.current;
     let constructing = this.state.constructables.filter(structure => structure.constructing_count > 0);
@@ -42,6 +55,7 @@ class StructureConstructor extends Component {
     return totalCost;
   };
 
+  //This calculates how much Synapse the Brood will be producing after completing the Structures
   generateSynapse() {
     let i = this.state.current;
     let constructing =  StructureInventory[i].constructing_count;
@@ -50,6 +64,8 @@ class StructureConstructor extends Component {
     return synapseProduced;
   };
 
+  //We need this to figure out what to display on the Structure List for our total produced Synapse
+  //It's also used to calculate how much Synapse to add to our Final Status
   generateTotalSynapse() {
     let index = this.state.current;
     let constructing = StructureInventory.filter(structure => structure.constructing_count > 0);
@@ -62,11 +78,13 @@ class StructureConstructor extends Component {
     return totalSynapse;
   };
 
+  //Everytime a new construction is planned, the Structure Inventory needs to take it into account
   handleUpdateConstructing = (x, i) => {
     UpdateConstructing(x, i);
     this.forceUpdate();
   };
 
+  //When the Player is happy with their selection the game needs to take all the costs and send them to the main screen
   setConstructionOrders() {
     const biomass = this.generateTotalCost();
     const synapse = this.generateTotalSynapse();
@@ -74,6 +92,9 @@ class StructureConstructor extends Component {
     this.props.setStructuresSynapse(synapse);
   };
 
+  //Since their are several Structures able to be built, the Player must be able to cycle through their available options
+  //This can be acheived mostly be changing the index value, however the extreme ends of the array need a different logic
+  //'terminal' and 'start' are used to bring the index from last to first and vice versa, just in the case that no higher/lower index is available
   findStructure(x) {
     let i = this.state.current;
     if (x === 0) {
@@ -113,6 +134,7 @@ class StructureConstructor extends Component {
   };
 
   render() {
+    //the app needs to be told what structure to display, hence we use findStructure() to find our place in the Inventory
     let structure = this.findStructure()
     let i = this.state.current
 

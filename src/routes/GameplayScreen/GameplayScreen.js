@@ -1,132 +1,73 @@
 import React, { Component } from 'react';
-import config from '../../config';
-import Aliens from '../../stores/Aliens';
-import { AlienInventory } from '../../stores/AlienInventory';
 import { Conditionals, ChangeConditions} from '../../stores/Conditionals';
 import AlienList from '../../components/AlienList/AlienList';
 import AlienSpawner from '../../components/AlienSpawner/AlienSpawner';
-import Structures from '../../stores/Structures';
 import { StructureInventory } from '../../stores/StructureInventory';
 import StructureList from '../../components/StructureList/StructureList';
 import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
-import Status from '../../stores/Status';
 import Tasks from '../../components/Tasks/Tasks';
 import Reactions from '../../components/Reactions/Reactions';
 import './GameplayScreen.css';
-import StatusApiService from '../../services/status-api-service';
-import StatusContext from '../../contexts/StatusContext';
+import { StatusApiService } from '../../services/report-api-services';
+import ReportContext from '../../contexts/ReportContext';
 
 class GameplayScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      disableButtons: false,
-      spawnMode: false,
-      constructMode: false,
-      taskMode: false,
-      status: [],
-      aliens: [],
-      alienInventory: AlienInventory,
       aliensCost: 0,
       aliensSynapse: 0,
-      structures: [],
       StructureInventory: StructureInventory,
       structuresCost: 0,
       structuresSynapse: 0,
     };
   };
 
-  static contextType = StatusContext
+  static contextType = ReportContext
 
-  //GET OUR DATABASES
+  //Once the Component Mounts the game will need access to all the information about the player
+  //Thus, we call on 3 GET requests to fetch the info from the server
+  //An attempt is being made to simplify this process with Promise.all
+  //Lastly, the page updates to be sure it's displaying proper data
   componentDidMount() {
-    this.GETmaster();
+    StatusApiService.getStatus()
+      .then(this.context.setStatus)
+    StatusApiService.getAliens()
+      .then(this.context.setAliens)
+    StatusApiService.getStructures()
+      .then(this.context.setStructures) 
+    // StatusApiService.GETmaster()
+      // .then(this.context.setStatus)
+      // .then(this.context.setAliens)
+      // .then(this.context.setStructures) 
+
     this.forceUpdate();
-    console.log('context', this.context.setStatus())
   };
   
-  //GETS IT
-  GETmaster = () => {
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/status`)
-    ])
-      .then(([statusRes]) => {
-        if (!statusRes.ok)
-          return statusRes.json().then(event => Promise.reject(event))
-        return Promise.all([
-          statusRes.json(),
-        ])
-      })
-      .then((status) => {
-        this.setState({ status: status[0] })
-      })
-      .catch(error => {
-        console.log({error})
-      })
-
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/aliens`)
-    ])
-      .then(([aliensRes]) => {
-        if (!aliensRes.ok)
-          return aliensRes.json().then(event => Promise.reject(event))
-        return Promise.all([
-          aliensRes.json(),
-        ])
-      })
-      .then(([aliens]) => {
-        this.setState({ aliens })
-      })
-      .catch(error => {
-        console.log({error})
-      })
-
-    Promise.all([
-      fetch(`${config.API_ENDPOINT}/structures`)
-    ])
-      .then(([structuresRes]) => {
-        if (!structuresRes.ok)
-          return structuresRes.json().then(event => Promise.reject(event))
-        return Promise.all([
-          structuresRes.json(),
-        ])
-      })
-      .then(([structures]) => {
-        this.setState({ structures })
-      })
-      .catch(error => {
-        console.log({error})
-      })
-  };
-
+  //
+  //Clicks are sent here from the components
+  //Then a message is sent to the Conditionals
+  //Who need to know how to update the Conditions correctly
+  //Lastly, this component is updated to stay current
   handleClick = (type) => {
     ChangeConditions(type);
     this.forceUpdate();
   };
 
-  //UPDATE PLAYER STATUS
-  //SOLAR DAY
-  updateSolarDay = () => {
-    this.setState( prevState => {
-      let newDay = prevState.status[0]
-        newDay.solar_day = (newDay.solar_day += 1);
-        return {
-          status: [newDay]
-        }
-      });
-    this.handleClick('reactions');
-  };
+  //
+  //The Reactions Page wants to tell the player how their turn went
+  //So it has to figure out how many Aliens spawned, how many Structures were constructed
+  //The Gameplay state holds this data, so that it may be sent to the Reactor when needed
 
-  //SPAWNING
   reactionsSpawn(spawning) {
     this.setState({reactionsSpawn: spawning})
   };
 
-  //CONSTRUCTING
   reactionsConstruct(constructing) {
     this.setState({reactionsConstruct: constructing})
   };
 
+  //
   //BIOMASS COSTS
   setAliensBiomass = (biomass) => {
     this.setState({aliensCost: biomass});
@@ -137,14 +78,12 @@ class GameplayScreen extends Component {
     this.setState({aliensCost: 0});
   };
 
-  finalAliensBiomass = (biomass) => {
-    this.setState( prevState => {
-      let newStatus = prevState.status[0]
-        newStatus.biomass -= biomass;
-        return {
-          status: [newStatus]
-        }
-      });
+  finalAliensBiomass = (newBiomass) => {
+    console.log('INCOMING ALIEN BIOMASS', newBiomass)
+    console.log('CONTEXT ALIEN BIOMASS', this.context.status[0].biomass)
+    let oldBiomass = this.context.status[0].biomass;
+    let totalBiomass = (oldBiomass += newBiomass);
+    this.context.setStatus(totalBiomass);
     this.resetAliensBiomass();
   };
 
@@ -157,14 +96,12 @@ class GameplayScreen extends Component {
     this.setState({structuresCost: 0});
   };
 
-  finalStructuresBiomass = (biomass) => {
-    this.setState( prevState => {
-      let newStatus = prevState.status[0]
-        newStatus.biomass -= biomass;
-        return {
-          status: [newStatus]
-        }
-      });
+  finalStructuresBiomass = (newBiomass) => {
+    console.log('INCOMING STRUCTURES BIOMASS', newBiomass)
+    console.log('CONTEXT STRUCTURES BIOMASS', this.context.status[0].biomass)
+    let oldBiomass = this.context.status[0].biomass;
+    let totalBiomass = (oldBiomass += newBiomass);
+    this.context.setStatus(totalBiomass);
     this.resetStructuresBiomass();
   };
 
@@ -183,15 +120,12 @@ class GameplayScreen extends Component {
   };
 
   finalSynapse = (required, produced) => {
-    this.setState( prevState => {
-      let newStatus = prevState.status[0]
-        newStatus.synapse_required += required;
-        newStatus.synapse_produced += produced;
-        return {
-          status: [newStatus]
-        }
-      });
-    this.resetSynapses();
+    console.log('SYNAPSE REQUIRED', required)
+    console.log('SYNAPSE PRODUCED', produced)
+  //   let oldBiomass = this.context.status[0].biomass;
+  //   let totalBiomass = (oldBiomass += newBiomass);
+  //   this.context.setStatus(totalBiomass);
+  //   this.resetSynapses();
   };
 
   //RENDERING FUNCTIONS
@@ -228,7 +162,7 @@ class GameplayScreen extends Component {
       );
     } else if (Conditionals.constructMode === true) {
       return (
-        <StructureConstructor structures={this.state.structures} setStructuresBiomass={this.setStructuresBiomass}
+        <StructureConstructor setStructuresBiomass={this.setStructuresBiomass}
           setStructuresSynapse={this.setStructuresSynapse} handleClick={this.handleClick}
         />
       );
@@ -254,16 +188,16 @@ class GameplayScreen extends Component {
 
   //MAIN RENDER
   render() {
-    const { status, aliens, structures, aliensCost, aliensSynapse, structuresCost, structuresSynapse } = this.state
+    const { aliensCost, aliensSynapse, structuresCost, structuresSynapse } = this.state
+    const { status } = this.context
     let report = ""
     if (status[0]) {
       report = status[0]
       // console.log('REPORT', report)
     };
     // console.log('state status', this.state.status[0])
-    // console.log('aliens', aliens)
-    // console.log('structures', structures)
-    // console.log('context', this.context)
+    console.log('local state', this.state);
+    console.log('context', this.context)
     // console.log('STATUS', status[0])
 
     return (
@@ -296,7 +230,7 @@ class GameplayScreen extends Component {
         {/* ))} */}
         <section className='gameplay-style reaction-mode'>
             <AlienList aliensCost={aliensCost} aliensSynapse={aliensSynapse} />
-            <StructureList structures={structures} status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} />
+            <StructureList status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} />
           <div>{this.renderBuilders()}</div>
         </section>
         <footer className='game-footer'>

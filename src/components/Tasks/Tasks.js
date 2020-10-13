@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
 import { FinalSpawning } from '../../stores/AlienInventory';
 import { FinalConstructing } from '../../stores/StructureInventory';
+import ReportContext from '../../contexts/ReportContext';
 import './Tasks.css';
 
 class Tasks extends Component {
+  static contextType = ReportContext
+
+  //FinalSpawning and FinalConstructing are responsible for changing the Player's spawning/constructing counts to new Brood Counts
+  //After those, we have to calculate our Biomass and Synapse with in-component functions
+  //We must also be sure to update the Solar Day, to signify the end of the turn and beginning of the next
+  //Last, set the Conditionals to display Reactions
   clickCommit = () => {
       FinalSpawning();
       FinalConstructing();
       this.finalBiomassCost();
       this.adjustSynapse();
-      this.props.updateSolarDay();
+      this.context.updateSolarDay();
+      this.props.handleClick('reactions')
+      console.log('TASK CONTENT', this.context);
   };
 
+  //Here we determine exactly how much Biomass we need from the Aliens and the Structures
   finalBiomassCost() {
     const aliensBiomass = this.props.aliensCost;
     const structuresBiomass = this.props.structuresCost;
@@ -24,6 +34,7 @@ class Tasks extends Component {
     // };
   };
 
+  //Now we determine how our new Synapse Distribution will be
   adjustSynapse() {
     const synapseProduced = this.props.structuresSynapse;
     const synapseRequired = this.props.aliensSynapse;

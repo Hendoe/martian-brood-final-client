@@ -17,7 +17,7 @@ export const StructureInventory = [
     },
   ];
 
-export const UpdateConstructing = (x, i) => {
+export const UpdateConstructionOrders = (x, i) => {
     let constructCount = StructureInventory[i].constructing_count;
     if (x === 1) {
       let newCount = (constructCount += 1);
@@ -30,7 +30,7 @@ export const UpdateConstructing = (x, i) => {
     };
   };
 
-  export const FinalConstructing = () => {
+  export const FinalConstructionOrders = () => {
     let constructCount = 0;
       for (let i = 0; i < StructureInventory.length; i++) {
         let count = StructureInventory[i].constructing_count;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Conditionals, ChangeConditions} from '../../stores/Conditionals';
 import AlienList from '../../components/AlienList/AlienList';
 import AlienSpawner from '../../components/AlienSpawner/AlienSpawner';
-import { StructureInventory } from '../../stores/StructureInventory';
+import { StructureInventory } from '../../stores/ConstructionOrders';
 import StructureList from '../../components/StructureList/StructureList';
 import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
 import Tasks from '../../components/Tasks/Tasks';
@@ -193,17 +193,13 @@ class GameplayScreen extends Component {
     let report = ""
     if (status[0]) {
       report = status[0]
-      // console.log('REPORT', report)
     };
-    // console.log('state status', this.state.status[0])
     console.log('local state', this.state);
     console.log('context', this.context)
-    // console.log('STATUS', status[0])
 
     return (
       <div>
-        {/* {status.map(report => ( */}
-          <li key={report.id} >
+        <li key={report.id} >
           <header className='status-bar'>
             <div className='status-bar-major' >
               <span className='far-left-major'></span>
@@ -226,11 +222,10 @@ class GameplayScreen extends Component {
               <span className='far-right-minor'></span>
             </div>
           </header>
-          </li>
-        {/* ))} */}
+        </li>
         <section className='gameplay-style reaction-mode'>
-            <AlienList aliensCost={aliensCost} aliensSynapse={aliensSynapse}  />
-            <StructureList status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} structureInventory={structureInventory} />
+          <AlienList aliensCost={aliensCost} aliensSynapse={aliensSynapse}  />
+          <StructureList status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} structureInventory={structureInventory} />
           <div>{this.renderBuilders()}</div>
         </section>
         <footer className='game-footer'>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FinalSpawning } from '../../stores/AlienInventory';
-import { FinalConstructing } from '../../stores/StructureInventory';
+import { FinalConstructionOrders } from '../../stores/ConstructionOrders';
 import ReportContext from '../../contexts/ReportContext';
 import './Tasks.css';
 
@@ -13,7 +13,7 @@ class Tasks extends Component {
   //Last, set the Conditionals to display Reactions
   clickCommit = () => {
       FinalSpawning();
-      FinalConstructing();
+      FinalConstructionOrders();
       this.finalBiomassCost();
       this.adjustSynapse();
       this.context.updateSolarDay();

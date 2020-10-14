@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { StructureInventory2 } from '../../stores/StructureInventory2';
+import { StructureInventory } from '../../stores/ConstructionOrders';
 import ReportContext from '../../contexts/ReportContext';
 import './StructureList.css';
-import Structure from '../Structure/Structure';
 import { Conditionals } from '../../stores/Conditionals';
 
 class StructureList extends Component {
@@ -44,14 +43,13 @@ class StructureList extends Component {
           <div className='right-column-structures'>
             <span className='top-structures'><h4>Constructing</h4></span>
             <ul>
-              {structureInventory.map(structure => (
+              {StructureInventory.map(structure => (
                 <li key={structure.id} className='structure'>{structure.constructing_count}</li>
               ))}
             </ul>
           </div>
         </div>
       )
-    
     } else {
       return (
         <ul className='right-list'>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Structure from '../Structure/Structure';
 import Structures from '../../stores/Structures';
-import { StructureInventory, UpdateConstructing } from '../../stores/StructureInventory';
+import {StructureInventory, UpdateConstructionOrders } from '../../stores/ConstructionOrders';
 import './StructureConstructor.css';
 import StructureInventoryContext from '../../contexts/StructureInventoryContext';
 
@@ -43,13 +43,10 @@ class StructureConstructor extends Component {
   //We need this to figure out what to display on the Structure List for our total costs
   //It's also used to calculate how much Biomass to subtract from our Final Status
   generateTotalCost() {
-    let index = this.state.current;
-    let constructing = this.state.constructables.filter(structure => structure.constructing_count > 0);
+    let constructing = this.state.constructables
     let totalCost = 0;
-    for (let i = (index); i < constructing.length; i++) {
-      let construct = constructing[i];
-      let cost = (construct.constructing_count * Structures[i].biomass_cost);
-      console.log(Structures[i])
+    for (let x = 0; x < constructing.length; x++) {
+      let cost = (constructing[x].constructing_count * Structures[x].biomass_cost);
       totalCost += cost;
      };
     return totalCost;
@@ -67,12 +64,10 @@ class StructureConstructor extends Component {
   //We need this to figure out what to display on the Structure List for our total produced Synapse
   //It's also used to calculate how much Synapse to add to our Final Status
   generateTotalSynapse() {
-    let index = this.state.current;
-    let constructing = StructureInventory.filter(structure => structure.constructing_count > 0);
+    let constructing = StructureInventory
     let totalSynapse = 0;
-    for (let i = (index); i < constructing.length; i++) {
-      let construct = constructing[i]
-      let synapse = (construct.constructing_count * Structures[i].synapse_produced);
+    for (let x = 0; x < constructing.length; x++) {
+      let synapse = (constructing[x].constructing_count * Structures[x].synapse_produced);
       totalSynapse += synapse;
      };
     return totalSynapse;
@@ -80,7 +75,7 @@ class StructureConstructor extends Component {
 
   //Everytime a new construction is planned, the Structure Inventory needs to take it into account
   handleUpdateConstructing = (x, i) => {
-    UpdateConstructing(x, i);
+    UpdateConstructionOrders(x, i);
     this.forceUpdate();
   };
 

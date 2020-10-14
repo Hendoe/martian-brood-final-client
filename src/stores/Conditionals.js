@@ -3,6 +3,7 @@ export const Conditionals = {
     spawnMode: false,
     constructMode: false,
     taskMode: false,
+    reactionMode: true,
 };
 
 export const ChangeConditions = (changing) => {

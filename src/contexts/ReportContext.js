@@ -8,6 +8,8 @@ const ReportContext = React.createContext({
   setAliens: () => {},
   structures: {},
   setStructures: () => {},
+  structureInventory: {},
+  setStructureInventory: () => {},
 })
 export default ReportContext
 
@@ -16,6 +18,7 @@ export class ReportProvider extends Component {
     status: {},
     aliens: {},
     structures: {},
+    structureInventory: {},
   };
 
   //USED TO ADJUST THE STATES AS NEEDED AND SET INITIAL STATES
@@ -32,6 +35,11 @@ export class ReportProvider extends Component {
   setStructures = structures => {
     console.log('SETTING STRUCTURES')
     this.setState({ structures });
+  };
+
+  setStructureInventory = structureInventory => {
+    console.log('SETTING STRUCTURE INVENTORY')
+    this.setState({ structureInventory });
   };
 
   //UPDATES THE SOLAR DAY
@@ -61,6 +69,8 @@ export class ReportProvider extends Component {
       setAliens: this.setAliens,
       structures: this.state.structures,
       setStructures: this.setStructures,
+      structureInventory: this.state.structureInventory,
+      setStructureInventory: this.setStructureInventory,
     }
     return (
       <ReportContext.Provider value={value}>

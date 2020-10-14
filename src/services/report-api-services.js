@@ -70,4 +70,16 @@ export const StatusApiService = {
           : res.json()
       )
   },
+  getStructureInventory() {
+    console.log('getting structure inventory')
+    return fetch(`${config.API_ENDPOINT}/structureInventory`, {
+      headers: {
+      },
+    })
+      .then(res =>
+        (!res.ok)
+          ? res.json().then(e => Promise.reject(e))
+          : res.json()
+      )
+  },
 };

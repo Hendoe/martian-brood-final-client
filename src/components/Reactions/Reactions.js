@@ -1,11 +1,65 @@
 import React, { Component } from 'react';
 import { Reactor } from '../../stores/Reactor';
-// import config from '../../config';
 import './Reactions.css';
 import ReportContext from '../../contexts/ReportContext';
+import config from '../../config';
 
 class Reactions extends Component {
   static contextType = ReportContext
+
+  componentDidMount() {
+    console.log('patching status')
+    this.context.status.map(newStatus => (
+      fetch(config.API_ENDPOINT + `/commit/status`, {
+        method: 'PATCH',
+        body: JSON.stringify(newStatus),
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(res => {
+        if (!res.ok)
+          return res.json().then(error => Promise.reject(error))
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    ))
+    console.log('patching alien inventory', this.context)
+    this.context.alienInventory.map(newAlienInventory => (
+      fetch(config.API_ENDPOINT + `/commit/alienInventory`, {
+        method: 'PATCH',
+        body: JSON.stringify(newAlienInventory),
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(res => {
+        if (!res.ok)
+          return res.json().then(error => Promise.reject(error))
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    ))
+    console.log('patching structure inventory')
+    this.context.structureInventory.map( newStructureInventory => (
+      fetch(config.API_ENDPOINT + `/commit/structureInventory`, {
+        method: 'PATCH',
+        body: JSON.stringify(newStructureInventory),
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(res => {
+        if (!res.ok)
+          return res.json().then(error => Promise.reject(error))
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    ))
+  };
 
   renderSpawning() {
     if (Reactor.total_spawning_count === 0 ) {
@@ -29,10 +83,14 @@ class Reactions extends Component {
 
   render() {
     const { status } = this.context
+    let report = ""
+    if (status[0]) {
+      report = status[0]
+    };
 
     return(
       <div className="reaction-box">
-        <p>End of Solar Day {(status.solar_day - 1)}</p>
+        <p>End of Solar Day {(report.solar_day - 1)}</p>
         {this.renderSpawning()}
         {this.renderConstructing()}
         <button className='reaction-button' onClick={() => this.props.handleClick('cancel')}>OK</button>

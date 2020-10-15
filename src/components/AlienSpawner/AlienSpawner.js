@@ -49,13 +49,17 @@ class AlienSpawner extends Component {
   };
   
   render() {
-    const { aliens } = this.context
+    const { aliens = [] } = this.context
+    let alien = ""
+    if (aliens[0]) {
+      alien = aliens[0]
+    };
 
     return (
       <div className='builder-box'>
         <h2>Alien Spawner</h2>
         <hr />
-          {aliens.map(alien => (          
+          {/* {aliens.map(alien => (           */}
             <form>    
               <Alien 
                 id={alien.id}
@@ -73,7 +77,7 @@ class AlienSpawner extends Component {
                 <p className='orange'>SYNAPSE REQUIRED: {this.generateSynapse()}</p>
               </span>
             </form>
-          ))}
+          {/* ))} */}
         <div className='buttons'>
           <button className='arrow-button' onClick={() => this.props.handleMoveLeft()} disabled>LEFT</button>
           <button className='builder-button' onClick={() => this.setSpawnPlan()}>SPAWN</button>

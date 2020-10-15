@@ -10,6 +10,7 @@ class StructureList extends Component {
   renderStructureList() {
     if (Conditionals.reactionMode === false) {
       const { structureInventory } = this.context
+      console.log('STRUCTURE LIST', structureInventory)
       return (
         <div className='list-box-structures'>
           <div className='left-column-structures'>
@@ -81,14 +82,11 @@ class StructureList extends Component {
   render() {
     const { structuresCost, structuresSynapse } = this.props
     const { structureInventory } = this.context
-    console.log('STRUCTURE LIST', this.props)
-    console.log('STRUCTURE INVENTORY', structureInventory)
     let structure = ""
     if (!structureInventory) {
       alert('no structures')
     } else {
       structure = structureInventory;
-      console.log('OUR STRUCTURE', structure[0])
     }
 
     return (

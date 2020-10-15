@@ -17,6 +17,7 @@ class GameplayScreen extends Component {
     this.state = {
       aliensCost: 0,
       aliensSynapse: 0,
+      AlienInventory: {},
       StructureInventory: {},
       structuresCost: 0,
       structuresSynapse: 0,
@@ -34,6 +35,8 @@ class GameplayScreen extends Component {
       .then(this.context.setStatus)
     StatusApiService.getAliens()
       .then(this.context.setAliens)
+    StatusApiService.getAlienInventory()
+      .then(this.context.setAlienInventory)
     StatusApiService.getStructures()
       .then(this.context.setStructures)
     StatusApiService.getStructureInventory()
@@ -188,14 +191,13 @@ class GameplayScreen extends Component {
   //The Main Render Function
   render() {
     const { aliensCost, aliensSynapse, structuresCost, structuresSynapse } = this.state
-    const { structureInventory } = this.context
+    const { structureInventory, alienInventory } = this.context
     const { status } = this.context
     let report = ""
     if (status[0]) {
       report = status[0]
     };
-    console.log('local state', this.state);
-    console.log('context', this.context)
+    console.log('main screen', this.context.structureInventory)
 
     return (
       <div>
@@ -224,7 +226,7 @@ class GameplayScreen extends Component {
           </header>
         </li>
         <section className='gameplay-style reaction-mode'>
-          <AlienList aliensCost={aliensCost} aliensSynapse={aliensSynapse}  />
+          <AlienList aliensCost={aliensCost} aliensSynapse={aliensSynapse} alienInventory={alienInventory} />
           <StructureList status={status} structuresCost={structuresCost} structuresSynapse={structuresSynapse} structureInventory={structureInventory} />
           <div>{this.renderBuilders()}</div>
         </section>

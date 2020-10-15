@@ -12,8 +12,9 @@ class Tasks extends Component {
   //We must also be sure to update the Solar Day, to signify the end of the turn and beginning of the next
   //Last, set the Conditionals to display Reactions
   clickCommit = () => {
-      FinalSpawning();
-      FinalConstructionOrders();
+      //FinalSpawning();
+      //FinalConstructionOrders();
+      this.context.updateBroodCounts();
       this.finalBiomassCost();
       this.adjustSynapse();
       this.context.updateSolarDay();

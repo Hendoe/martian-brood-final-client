@@ -32,7 +32,6 @@ import config from '../config';
 //       })
 //   }
 // };
-
 export const StatusApiService = {
   getStatus() {
     console.log('getting status')
@@ -49,6 +48,18 @@ export const StatusApiService = {
   getAliens() {
     console.log('getting aliens')
     return fetch(`${config.API_ENDPOINT}/aliens`, {
+      headers: {
+      },
+    })
+      .then(res =>
+        (!res.ok)
+          ? res.json().then(e => Promise.reject(e))
+          : res.json()
+      )
+  },
+  getAlienInventory() {
+    console.log('getting alien inventory')
+    return fetch(`${config.API_ENDPOINT}/alienInventory`, {
       headers: {
       },
     })
@@ -82,4 +93,44 @@ export const StatusApiService = {
           : res.json()
       )
   },
+  // commitAliens() {
+  //   const { aliens } = this.props
+  //   aliens.map( newAliens => (
+  //     fetch(config.API_ENDPOINT + `/commit/aliens`, {
+  //       method: 'PATCH',
+  //       body: JSON.stringify(newAliens),
+  //       headers: {
+  //         'content-type': 'application/json',
+  //       },
+  //     })
+  //     .then(res => {
+  //       if (!res.ok)
+  //         return res.json().then(error => Promise.reject(error))
+  //     })
+  //     .catch(error => {
+  //       console.error(error)
+  //     })
+  //   ))
+  // };
+
+  // commitStructures() {
+  //   console.log('final structures', this.props.structures)
+  //   const { structures } = this.props
+  //   structures.map( newStructures => (
+  //     fetch(config.API_ENDPOINT + `/commit/structures`, {
+  //       method: 'PATCH',
+  //       body: JSON.stringify(newStructures),
+  //       headers: {
+  //         'content-type': 'application/json',
+  //       },
+  //     })
+  //     .then(res => {
+  //       if (!res.ok)
+  //         return res.json().then(error => Promise.reject(error))
+  //     })
+  //     .catch(error => {
+  //       console.error(error)
+  //     })
+  //   ));
+  // };
 };

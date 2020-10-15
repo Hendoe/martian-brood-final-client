@@ -3,7 +3,6 @@ import Structure from '../Structure/Structure';
 import Structures from '../../stores/Structures';
 import {StructureInventory, UpdateConstructionOrders } from '../../stores/ConstructionOrders';
 import './StructureConstructor.css';
-import StructureInventoryContext from '../../contexts/StructureInventoryContext';
 
 class StructureConstructor extends Component {
   constructor(props) {
@@ -15,14 +14,6 @@ class StructureConstructor extends Component {
       structuresToConstruct: 0,
       structuresSynapse: 0,
     };
-  };
-
-  static contextType = StructureInventoryContext
-
-  componentDidMount() {
-    console.log('what are constructables', this.state.constructables);
-    console.log('what is context', this.context);
-    console.log('what is structure inventory context', this.context.structureInventory);
   };
 
   //This tallies up the total amount of a structure the Brood plans to construct

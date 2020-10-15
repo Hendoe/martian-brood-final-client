@@ -9,7 +9,6 @@ class AlienList extends Component {
 
   renderAlienList() {
     const { alienInventory } = this.context
-    console.log("ALIEN LIST", this.context)
     if (Conditionals.reactionMode === false) {
       return (
         <div className='list-box-aliens'>

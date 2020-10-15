@@ -34,7 +34,6 @@ import config from '../config';
 // };
 export const StatusApiService = {
   getStatus() {
-    console.log('getting status')
     return fetch(`${config.API_ENDPOINT}/status`, {
       headers: {
       },
@@ -46,7 +45,6 @@ export const StatusApiService = {
       )
   },
   getAliens() {
-    console.log('getting aliens')
     return fetch(`${config.API_ENDPOINT}/aliens`, {
       headers: {
       },
@@ -58,7 +56,6 @@ export const StatusApiService = {
       )
   },
   getAlienInventory() {
-    console.log('getting alien inventory')
     return fetch(`${config.API_ENDPOINT}/alienInventory`, {
       headers: {
       },
@@ -70,7 +67,6 @@ export const StatusApiService = {
       )
   },
   getStructures() {
-    console.log('getting structures')
     return fetch(`${config.API_ENDPOINT}/structures`, {
       headers: {
       },
@@ -82,7 +78,6 @@ export const StatusApiService = {
       )
   },
   getStructureInventory() {
-    console.log('getting structure inventory')
     return fetch(`${config.API_ENDPOINT}/structureInventory`, {
       headers: {
       },

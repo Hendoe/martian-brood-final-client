@@ -19,7 +19,6 @@ class Tasks extends Component {
       this.adjustSynapse();
       this.context.updateSolarDay();
       this.props.handleClick('reactions')
-      console.log('TASK CONTENT', this.context);
   };
 
   //Here we determine exactly how much Biomass we need from the Aliens and the Structures

@@ -10,7 +10,6 @@ class StructureList extends Component {
   renderStructureList() {
     if (Conditionals.reactionMode === false) {
       const { structureInventory } = this.context
-      console.log('STRUCTURE LIST', structureInventory)
       return (
         <div className='list-box-structures'>
           <div className='left-column-structures'>

@@ -197,7 +197,6 @@ class GameplayScreen extends Component {
     if (status[0]) {
       report = status[0]
     };
-    console.log('main screen', this.context.structureInventory)
 
     return (
       <div>

@@ -29,28 +29,22 @@ export class ReportProvider extends Component {
 
   //USED TO ADJUST THE STATES AS NEEDED AND SET INITIAL STATES
   setStatus = status => {
-    console.log('SETTING STATUS')
     this.setState({ status });
   };
 
   setAliens = aliens => {
-    console.log('SETTING ALIENS')
     this.setState({ aliens });
   };
 
   setAlienInventory = alienInventory => {
-    console.log('SETTING ALIEN INVENTORY', alienInventory)
     this.setState({ alienInventory });
-    console.log('SET ALIEN INVENTORY', alienInventory)
   };
 
   setStructures = structures => {
-    console.log('SETTING STRUCTURES')
     this.setState({ structures });
   };
 
   setStructureInventory = structureInventory => {
-    console.log('SETTING STRUCTURE INVENTORY', structureInventory)
     this.setState({ structureInventory });
   };
 
@@ -58,7 +52,6 @@ export class ReportProvider extends Component {
   //With these values, they are able to build new forms of the State
   //Ulimately, these new States get sent to the Server, where they are PATCHED to keep track of the player's progress
   updateSolarDay = () => {
-    console.log('NEW SOLAR DAY', this.state.status[0].solar_day);
     let oldSolarDay = this.state.status[0].solar_day;
     let newSolarDay = (oldSolarDay += 1);
     let newStatus = [{

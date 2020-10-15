@@ -62,24 +62,40 @@ class Reactions extends Component {
   };
 
   renderSpawning() {
-    if (Reactor.total_spawning_count === 0 ) {
-      return <p>The Brood didn't spawn any aliens</p>
-    } else if (Reactor.total_spawning_count === 1 ) {
-      return <p>The Brood spawned {Reactor.total_spawning_count} alien</p>
+    let report = ""
+    if (this.context.status[0]) {
+      report = this.context.status[0]
+    };
+    if (report.solar_day === 1) {
+      return <p>There are not many Aliens in the Brood</p>
     } else {
-      return <p>The Brood spawned {Reactor.total_spawning_count} aliens</p>
+      if (Reactor.total_spawning_count === 0 ) {
+        return <p>The Brood didn't spawn any aliens</p>
+      } else if (Reactor.total_spawning_count === 1 ) {
+        return <p>The Brood spawned {Reactor.total_spawning_count} alien</p>
+      } else {
+        return <p>The Brood spawned {Reactor.total_spawning_count} aliens</p>
+      };
     };
   };
 
   renderConstructing() {
-    if (Reactor.total_constructing_count === 0 ) {
-      return <p>The Brood didn't construct any structures</p>
-    } else if (Reactor.total_constructing_count === 1 ) {
-      return <p>The Brood constructed {Reactor.total_constructing_count} structure</p>
-    } else {
-      return <p>The Brood constructed {Reactor.total_constructing_count} structures</p>
+    let report = ""
+    if (this.context.status[0]) {
+      report = this.context.status[0]
     };
-  };
+    if (report.solar_day === 1) {
+      return <p>The Brood has few Structures</p>
+    } else {
+      if (Reactor.total_constructing_count === 0 ) {
+        return <p>The Brood didn't construct any structures</p>
+      } else if (Reactor.total_constructing_count === 1 ) {
+        return <p>The Brood constructed {Reactor.total_constructing_count} structure</p>
+      } else {
+        return <p>The Brood constructed {Reactor.total_constructing_count} structures</p>
+      };
+    };
+  };  
 
   render() {
     const { status } = this.context

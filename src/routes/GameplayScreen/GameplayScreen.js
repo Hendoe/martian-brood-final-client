@@ -45,7 +45,6 @@ class GameplayScreen extends Component {
       // .then(this.context.setStatus)
       // .then(this.context.setAliens)
       // .then(this.context.setStructures) 
-
     this.forceUpdate();
   };
   
@@ -70,6 +69,12 @@ class GameplayScreen extends Component {
   };
 
   //Whenever a Player finalizes their Spawning Plans or Construction Orders the Biomass Cost and Synapse Distribution must then be calculated
+  resetCosts = () => {
+    this.resetAliensBiomass();
+    this.resetStructuresBiomass();
+    this.resetSynapses();
+  };
+
   setAliensBiomass = (biomass) => {
     this.setState({aliensCost: biomass});
     this.handleClick('cancel');
@@ -175,7 +180,7 @@ class GameplayScreen extends Component {
             aliensSynapse={this.state.aliensSynapse} structuresSynapse={this.state.structuresSynapse} updateSolarDay={this.updateSolarDay} 
              finalAliensBiomass={this.finalAliensBiomass} finalSynapse={this.finalSynapse} 
                 finalStructuresBiomass={this.finalStructuresBiomass}
-                  handleClick={this.handleClick}
+                  handleClick={this.handleClick} resetCosts={this.resetCosts}
         />
       );
     } else if (Conditionals.reactionMode === true) {

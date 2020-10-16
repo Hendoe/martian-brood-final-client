@@ -1,5 +1,3 @@
-import { ReactionsConstructing } from './Reactor';
-
 export const StructureInventory = [
     {
       id: 1,
@@ -38,7 +36,6 @@ export const UpdateConstructionOrders = (x, i) => {
         StructureInventory[i].constructing_count = 0;
         constructCount += count;
         };
-    ReactionsConstructing(constructCount);
     resetOrders();
   };
 

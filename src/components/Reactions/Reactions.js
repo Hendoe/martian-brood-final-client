@@ -3,13 +3,11 @@ import { Reactor } from '../../stores/Reactor';
 import './Reactions.css';
 import ReportContext from '../../contexts/ReportContext';
 import config from '../../config';
-import { StructureInventory } from '../../stores/ConstructionOrders';
 
 class Reactions extends Component {
   static contextType = ReportContext
 
   componentDidMount() {
-    console.log('patching status')
     this.context.status.map(newStatus => (
       fetch(config.API_ENDPOINT + `/commit/status`, {
         method: 'PATCH',
@@ -26,30 +24,30 @@ class Reactions extends Component {
         console.error(error)
       })
     ))
-    console.log('patching alien inventory', this.context)
-    // this.context.alienInventory.map(newAlienInventory => (
-    //   fetch(config.API_ENDPOINT + `/commit/alienInventory`, {
-    //     method: 'PATCH',
-    //     body: JSON.stringify(newAlienInventory),
-    //     headers: {
-    //       'content-type': 'application/json',
-    //     },
-    //   })
-    //   .then(res => {
-    //     if (!res.ok)
-    //       return res.json().then(error => Promise.reject(error))
-    //   })
-    //   .catch(error => {
-    //     console.error(error)
-    //   })
-    // ))
-    console.log('patching structure inventory', this.context.structureInventory)
-    let structureInventory = this.context.structureInventory
-    console.log('INVENTORY', structureInventory)
+    let alienInventory = this.context.alienInventory;
+    console.log('CONTEXT', this.context)
+    console.log('AI', alienInventory)
+    for (let i = 0; i < alienInventory.length; i++) {
+      let alienId = alienInventory[i].id;
+      fetch(config.API_ENDPOINT + `/alienInventory/${alienId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(alienInventory[i]),
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(res => {
+        if (!res.ok)
+          return res.json().then(error => Promise.reject(error))
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    };
+    let structureInventory = this.context.structureInventory;
+    console.log('SI', structureInventory)
     for (let i = 0; i < structureInventory.length; i++) {
-      console.log('STRUCTURE', structureInventory[i])
       let structureId = structureInventory[i].id;
-      console.log('structure ID', structureId)
         fetch(config.API_ENDPOINT + `/structureInventory/${structureId}`, {
           method: 'PATCH',
           body: JSON.stringify(structureInventory[i]),

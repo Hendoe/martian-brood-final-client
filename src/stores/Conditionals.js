@@ -1,5 +1,5 @@
 export const Conditionals = { 
-    disableButtons: false,
+    disableButtons: true,
     spawnMode: false,
     constructMode: false,
     taskMode: false,

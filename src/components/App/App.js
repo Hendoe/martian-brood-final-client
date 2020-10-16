@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import Header from '../Header/Header';
 import MainScreen from '../../routes/MainScreen/MainScreen';
-import Login from '../../routes/Login/Login';
+import Create from '../../routes/Create/Create';
+import Continue from '../../routes/Continue/Continue';
 import InfoFooter from '../InfoFooter/InfoFooter';
 import GameplayScreen from '../../routes/GameplayScreen/GameplayScreen';
 import './App.css';
@@ -18,7 +19,8 @@ class App extends Component {
     return (
       <>
         <Route exact path={'/'} component={MainScreen} />
-        <Route path={'/login'} component={Login} />
+        <Route path={'/create'} component={Create} />
+        <Route path={'/continue'} component={Continue} />
         <Route path={'/gameplay'} component={GameplayScreen} />
       </>
     );
@@ -28,7 +30,8 @@ class App extends Component {
     return (
       <>
         <Route exact path={'/'} component={InfoFooter} />
-        <Route path={'/login'} component={InfoFooter} />
+        <Route path={'/create'} component={InfoFooter} />
+        <Route path={'/continue'} component={InfoFooter} />
         <Route path={'/gameplay'} render={this.blankFooter}/>
       </>
     );

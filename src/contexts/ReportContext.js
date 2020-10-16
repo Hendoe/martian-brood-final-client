@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AlienInventory } from '../stores/AlienInventory';
 import { StructureInventory } from '../stores/ConstructionOrders';
+import { ReactionsSpawning, ReactionsConstructing } from '../stores/Reactor';
 
 const ReportContext = React.createContext({
   status: [],
@@ -13,7 +14,7 @@ const ReportContext = React.createContext({
   setStructures: () => {},
   structureInventory: [],
   setStructureInventory: () => {},
-  updateSolarDay: () => {},
+  masterStatusUpdater: () => {},
   updateBroodCounts: () => {},
 })
 export default ReportContext
@@ -51,69 +52,88 @@ export class ReportProvider extends Component {
   //Updaters first take transient values from the Client
   //With these values, they are able to build new forms of the State
   //Ulimately, these new States get sent to the Server, where they are PATCHED to keep track of the player's progress
-  updateSolarDay = () => {
-    let oldSolarDay = this.state.status[0].solar_day;
-    let newSolarDay = (oldSolarDay += 1);
+  masterStatusUpdater = (finalBiomassCost, producedSynapse, requiredSynapse) => {
+    let finalBiomass = this.updateBiomass(finalBiomassCost);
+    let newSolarDay = this.updateSolarDay();
+    let newProduced = this.updateProducedSynapse(producedSynapse);
+    let newRequired = this.updateRequiredSynapse(requiredSynapse);
+    console.log('WHAT WE PRODUCING', newProduced);
+    console.log('WHAT WE REQUIRING', newRequired);    
+
     let newStatus = [{
       aliens: this.state.status[0].aliens,
-      biomass: this.state.status[0].biomass,
+      biomass: finalBiomass,
       brood_name: this.state.status[0].brood_name,
       id: this.state.status[0].id,
       solar_day: newSolarDay,
       structures: this.state.status[0].structures,
-      synapse_produced: this.state.status[0].synapse_produced,
-      synapse_required: this.state.status[0].synapse_required,
-    },];
-    this.setStatus(newStatus);
+      synapse_produced: newProduced,
+      synapse_required: newRequired,
+    },]
+    this.setStatus(newStatus)
+  }
+
+  updateSolarDay = () => {
+    console.log('LAST IS SOLAR DAY', this.state.status[0])
+    let oldSolarDay = this.state.status[0].solar_day;
+    let newSolarDay = (oldSolarDay += 1);
+    return newSolarDay;
   };
 
   updateBroodCounts = () => {
-    //let spawnCount = 0,
-    //let constructCount = 0,
-    //create empty array to push new States into
-    //loop through alienInventory to find spawning_counts
-      //for each Alien, add spawning_counts to spawnCount
-      //then serialize a new version of that Alien
-      //lastly, reset spawning_count to zero
-    //loop through structureInventory to find constructing_counts
-      //for each Structure, add spawning_counts to constructCount
-      //then serialize a new version of that Structure
-      //lastly, reset constructing_count to zero
-    //setState of alienInventory
-    //setState of structureInventory
-    console.log('UPDATING BROOD COUNTS')
-    let spawnCount = 0;
-    let constructCount = 0;
+    console.log('FIRST BROOD COUNTS', this.state.status[0])
+    let totalSpawning = 0;
     let newAlienInventory = [];
-    let newStructureInventory = [];
     for (let i = 0; i< AlienInventory.length; i++) {
-      spawnCount += AlienInventory[i].spawning_count;
-      let newBroodCount = (this.state.alienInventory[i].brood_count += AlienInventory[i].spawning_count);
+      totalSpawning += AlienInventory[i].spawning_count;
+      let newAlienBroodCount = (this.state.alienInventory[i].brood_count += AlienInventory[i].spawning_count);
       let newAlien = {
         id: this.state.alienInventory[i].id,
         alien_name: this.state.alienInventory[i].alien_name,
         spawning_count: AlienInventory[i].spawning_count,
-        brood_count: newBroodCount,
+        brood_count: newAlienBroodCount,
         spawnable: true,
       };
       newAlienInventory.push(newAlien);
       AlienInventory[i].spawning_count = 0;
     };
+    let totalConstructing = 0;
+    let newStructureInventory = [];
     for (let i = 0; i< StructureInventory.length; i++) {
-      constructCount += StructureInventory[i].constructing_count;
-        let newBroodCount = (this.state.structureInventory[i].brood_count += StructureInventory[i].constructing_count);
+      totalConstructing += StructureInventory[i].constructing_count;
+        let newStructureBroodCount = (this.state.structureInventory[i].brood_count += StructureInventory[i].constructing_count);
         let newStructure = {
           id: this.state.structureInventory[i].id,
           structure_name: this.state.structureInventory[i].structure_name,
           constructing_count: StructureInventory[i].constructing_count,
-          brood_count: newBroodCount,
+          brood_count: newStructureBroodCount,
           constructable: true,
         };
         newStructureInventory.push(newStructure);
         StructureInventory[i].constructing_count = 0;
+    };
+    ReactionsSpawning(totalSpawning);
+    ReactionsConstructing(totalConstructing);
     this.setAlienInventory(newAlienInventory);
     this.setStructureInventory(newStructureInventory);
-    };
+  };
+
+  //This is where we do all the calculations for our updated Resource Information
+  updateBiomass = (finalBiomassCost) => {
+    let oldBiomass = this.state.status[0].biomass;
+    let newBiomass = (oldBiomass - finalBiomassCost);
+    return newBiomass;
+  };
+  updateProducedSynapse = (producedSynapse) => {
+    console.log('THE FACTORY', producedSynapse)
+    let oldProduced = this.state.status[0].synapse_produced;
+    let newProduced = (oldProduced += producedSynapse);
+    return newProduced;
+  };
+  updateRequiredSynapse(requiredSynapse) {
+    let oldRequired = this.state.status[0].synapse_required;
+    let newRequired = (oldRequired += requiredSynapse);
+    return newRequired;
   };
 
   render() {
@@ -128,7 +148,7 @@ export class ReportProvider extends Component {
       setStructures: this.setStructures,
       structureInventory: this.state.structureInventory,
       setStructureInventory: this.setStructureInventory,
-      updateSolarDay: this.updateSolarDay,
+      masterStatusUpdater: this.masterStatusUpdater,
       updateBroodCounts: this.updateBroodCounts,
     }
     return (

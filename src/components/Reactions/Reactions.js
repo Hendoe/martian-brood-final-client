@@ -14,6 +14,7 @@ class Reactions extends Component {
         body: JSON.stringify(newStatus),
         headers: {
           'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
         },
       })
       .then(res => {
@@ -34,6 +35,7 @@ class Reactions extends Component {
         body: JSON.stringify(alienInventory[i]),
         headers: {
           'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
         },
       })
       .then(res => {
@@ -53,6 +55,7 @@ class Reactions extends Component {
           body: JSON.stringify(structureInventory[i]),
           headers: {
             'content-type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
           },
         })
         .then(res => {

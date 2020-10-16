@@ -9,7 +9,8 @@ class Continue extends Component {
     fetch(`${config.API_ENDPOINT}/api/users`, {
       method: 'GET',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
     })
       .then(res => {

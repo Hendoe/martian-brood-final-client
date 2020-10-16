@@ -57,6 +57,7 @@ class MainScreen extends Component {
         body: JSON.stringify(newStatus),
         headers: {
           'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
         },
       })
       .then(res => {
@@ -75,6 +76,7 @@ class MainScreen extends Component {
         body: JSON.stringify(this.state.alienInventory[i]),
         headers: {
           'content-type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
         },
       })
       .then(res => {
@@ -93,6 +95,7 @@ class MainScreen extends Component {
           body: JSON.stringify(structureInventory[i]),
           headers: {
             'content-type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
           },
         })
         .then(res => {

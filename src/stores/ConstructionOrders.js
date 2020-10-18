@@ -2,14 +2,12 @@ export const StructureInventory = [
     {
       id: 1,
       structure_name: 'Spawning Pit',
-      constructable: true,
       constructing_count: 0,
       brood_count: 1,
     },
     {
       id: 2,
       structure_name: 'Synapse Cluster',
-      constructable: true,
       constructing_count: 0,
       brood_count: 1,
     },

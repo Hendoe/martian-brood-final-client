@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Reactor } from '../../stores/Reactor';
+import { Reactor, Story } from '../../stores/Reactor';
 import './Reactions.css';
 import ReportContext from '../../contexts/ReportContext';
 import config from '../../config';
@@ -68,6 +68,30 @@ class Reactions extends Component {
     };
   };
 
+  //Everytime the Reactions Screen appears, there are a few things it must take into consideration
+  //First, what unique string's about the Story to generate based on the Solar Day
+  //Second, a sentence about the Spawning situation
+  //Third, another sentence, this time about the Constructing situation
+  renderReactions() {
+    let report = ""
+    if (this.context.status[0]) {
+      report = this.context.status[0]
+    };
+    if (report.solar_day === 1) {
+      return <p>{Story.day1}</p>
+    } else if (report.solar_day === 2) {
+        return <p>{Story.day2}</p>
+    } else if (report.solar_day === 3) {
+      return <p>{Story.day3}</p>
+    } else if (report.solar_day === 4) {
+      return <p>{Story.day4}</p>
+    } else if (report.solar_day === 5) {
+      return <p>{Story.day5}</p>
+    } else {
+      return <p>Another day passes for the {report.brood_name}</p>
+    };
+  };
+
   renderSpawning() {
     let report = ""
     if (this.context.status[0]) {
@@ -114,6 +138,7 @@ class Reactions extends Component {
     return(
       <div className="reaction-box">
         <p>End of Solar Day {(report.solar_day - 1)}</p>
+        {this.renderReactions()}
         {this.renderSpawning()}
         {this.renderConstructing()}
         <button className='reaction-button' onClick={() => this.props.handleClick('cancel')}>OK</button>

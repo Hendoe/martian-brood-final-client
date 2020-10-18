@@ -10,12 +10,10 @@ class MainScreen extends Component {
     super(props);
     this.state = {
       status: [{
-        aliens: 1,
-        biomass: 50,
-        brood_name: 'Grongs',
         id: 1,
+        brood_name: 'Grongs',
         solar_day: 1,
-        structures: 2,
+        biomass: 50,
         synapse_produced: 5,
         synapse_required: 1,
       }],
@@ -24,8 +22,13 @@ class MainScreen extends Component {
           id: 1,
           alien_name: 'Worker Drone',
           spawning_count: 0,
+          brood_count: 0,
+        },
+        {
+          id: 2,
+          alien_name: 'Brood Master',
+          spawning_count: 0,
           brood_count: 1,
-          spawnable: true,
         },
       ],
       structureInventory: [
@@ -33,17 +36,14 @@ class MainScreen extends Component {
           id: 1,
           structure_name: 'Spawning Pit',
           constructing_count: 0,
-          brood_count: 1,
-          constructable: true,
+          brood_count: 0,
 
         },
         {   
           id: 2,
           structure_name: 'Synapse Clusters',
           constructing_count: 0,
-          brood_count: 1,
-          constructable: true,
-
+          brood_count: 0,
         },
       ],
     };

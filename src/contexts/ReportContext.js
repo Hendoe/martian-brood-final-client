@@ -61,12 +61,10 @@ export class ReportProvider extends Component {
     console.log('WHAT WE REQUIRING', newRequired);    
 
     let newStatus = [{
-      aliens: this.state.status[0].aliens,
-      biomass: finalBiomass,
-      brood_name: this.state.status[0].brood_name,
       id: this.state.status[0].id,
+      brood_name: this.state.status[0].brood_name,
       solar_day: newSolarDay,
-      structures: this.state.status[0].structures,
+      biomass: finalBiomass,
       synapse_produced: newProduced,
       synapse_required: newRequired,
     },]
@@ -91,8 +89,7 @@ export class ReportProvider extends Component {
         id: this.state.alienInventory[i].id,
         alien_name: this.state.alienInventory[i].alien_name,
         spawning_count: AlienInventory[i].spawning_count,
-        brood_count: newAlienBroodCount,
-        spawnable: true,
+        brood_count: newAlienBroodCount
       };
       newAlienInventory.push(newAlien);
       AlienInventory[i].spawning_count = 0;
@@ -106,8 +103,7 @@ export class ReportProvider extends Component {
           id: this.state.structureInventory[i].id,
           structure_name: this.state.structureInventory[i].structure_name,
           constructing_count: StructureInventory[i].constructing_count,
-          brood_count: newStructureBroodCount,
-          constructable: true,
+          brood_count: newStructureBroodCount
         };
         newStructureInventory.push(newStructure);
         StructureInventory[i].constructing_count = 0;

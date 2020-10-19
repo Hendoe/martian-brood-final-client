@@ -3,7 +3,7 @@ import './Loader.css';
 
 class Reactions extends Component {
   timer = () => {
-    setTimeout(() => this.props.handleClick('reactions'), 3200);
+    setTimeout(() => this.props.handleClick('reactions'), 2000);
   };
 
   render() {

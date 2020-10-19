@@ -13,9 +13,9 @@ class MainScreen extends Component {
         id: 1,
         brood_name: 'Grongs',
         solar_day: 1,
-        biomass: 50,
-        synapse_produced: 5,
-        synapse_required: 1,
+        biomass: 0,
+        synapse_produced: 0,
+        synapse_required: 0,
       }],
       alienInventory: [
         {
@@ -111,11 +111,11 @@ class MainScreen extends Component {
   render() {
     return(
       <section className='main-style'>
-        <Link to='/create'><h1>Create</h1></Link>
+        <h1><Link to='/create'>Create</Link></h1>
         <br />
-        <Link to='/continue'><h1>Continue</h1></Link>
+        <h1><Link to='/continue'>Continue</Link></h1>
         <br />
-        <Link to='/gameplay'><h1>Quickplay</h1></Link>
+        <h1><Link to='/gameplay'>Quickplay</Link></h1>
       </section>
     );
   };

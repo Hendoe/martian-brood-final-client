@@ -7,36 +7,28 @@ import { Conditionals } from '../../stores/Conditionals';
 class AlienList extends Component {
   static contextType = ReportContext
 
-  renderAlienList() {
-    const { alienInventory } = this.context
-    if (Conditionals.reactionMode === false) {
+  filterInBrood = () => {
+    const { alienInventory } = this.context;
+    let filteredAliens = alienInventory.filter(alien => alien.brood_count > 0);
+    return filteredAliens
+  };
+
+  renderAlienList = (filteredAliens) => {
+    if (Conditionals.loadMode === false) {
       return (
         <div className='list-box-aliens'>
           <div className='left-column-aliens'>
             <span className='top-aliens'><h4>Name</h4></span>
             <ul className='left-list'>
-              {alienInventory.map(alien => (
+              {filteredAliens.map(alien => (
                 <li key={alien.id} className='alien'>{alien.alien_name}</li>
               ))}
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
-              <li><br /></li>
             </ul>
           </div>
           <div className='middle-column-aliens'>
             <span className='top-aliens'><h4>Brood Count</h4></span>
             <ul> 
-              {alienInventory.map(alien => (
+              {filteredAliens.map(alien => (
                 <li key={alien.id} className='alien'>{alien.brood_count}</li>
               ))}
             </ul>
@@ -44,7 +36,7 @@ class AlienList extends Component {
           <div className='right-column-aliens'>
             <span className='top-aliens'><h4>Spawning</h4></span>
             <ul>
-              {AlienInventory.map(alien => (
+              {filteredAliens.map(alien => (
                 <li key={alien.id} className='alien'>{alien.spawning_count}</li>
               ))}
             </ul>
@@ -55,7 +47,7 @@ class AlienList extends Component {
       return (
       <ul className='left-list'>
         <li><br /></li>
-        <li>SPAWNING<br /></li>
+        <li>SPAWNING</li>
         <li><br /></li>
         <li><br /></li>
         <li><br /></li>
@@ -79,12 +71,13 @@ class AlienList extends Component {
   };
   render() {
     const { aliensCost, aliensSynapse } = this.props
+    let filteredAliens = this.filterInBrood();
 
     return (
       <div className='left aliens-box'>
         <h2>Aliens</h2>
-          <div>
-            {this.renderAlienList()}
+          <div className='lower-left'>
+            {this.renderAlienList(filteredAliens)}
               <div className='bottom-row-aliens'>
                 <h4>Biomass Cost: {aliensCost}</h4>
                 <h4 className='orange'>Synapse Required: {aliensSynapse}</h4>

@@ -7,15 +7,20 @@ import { Conditionals } from '../../stores/Conditionals';
 class StructureList extends Component {
   static contextType = ReportContext
 
-  renderStructureList() {
-    if (Conditionals.reactionMode === false) {
-      const { structureInventory } = this.context
+  filterInBrood = () => {
+    const { structureInventory } = this.context;
+    let filteredStructures = structureInventory.filter(structure => structure.brood_count > 0);
+    return filteredStructures
+  };
+
+  renderStructureList = (filteredStructures) => {
+    if (Conditionals.loadMode === false) {
       return (
         <div className='list-box-structures'>
           <div className='left-column-structures'>
             <span className='top-structures'><h4>Name</h4></span>
             <ul className='right-list'>
-              {structureInventory.map(structure => (
+              {filteredStructures.map(structure => (
                 <li key={structure.id} className='structure'>{structure.structure_name}</li>
               ))}
               <li><br /></li>
@@ -35,7 +40,7 @@ class StructureList extends Component {
           <div className='middle-column-structures'>
             <span className='top-structures'><h4>Brood Count</h4></span>
             <ul> 
-              {structureInventory.map(structure => (
+              {filteredStructures.map(structure => (
                 <li key={structure.id} className='structure'>{structure.brood_count}</li>
               ))}
             </ul>
@@ -43,7 +48,7 @@ class StructureList extends Component {
           <div className='right-column-structures'>
             <span className='top-structures'><h4>Constructing</h4></span>
             <ul>
-              {StructureInventory.map(structure => (
+              {filteredStructures.map(structure => (
                 <li key={structure.id} className='structure'>{structure.constructing_count}</li>
               ))}
             </ul>
@@ -80,12 +85,13 @@ class StructureList extends Component {
 
   render() {
     const { structuresCost, structuresSynapse } = this.props
+    let filteredStructures = this.filterInBrood();
 
     return (
       <div className='right alien-structures-box'>
         <h2>Structures</h2>
-          <div>
-            {this.renderStructureList()}
+          <div className='lower-left'>
+            {this.renderStructureList(filteredStructures)}
             <div className='bottom-row-structures'>
               <h4>Biomass Cost: {structuresCost}</h4>
               <h4 className='gold'>Synapse Produced: {structuresSynapse}</h4>

@@ -84,7 +84,8 @@ export class ReportProvider extends Component {
     let newAlienInventory = [];
     for (let i = 0; i< AlienInventory.length; i++) {
       totalSpawning += AlienInventory[i].spawning_count;
-      let newAlienBroodCount = (this.state.alienInventory[i].brood_count += AlienInventory[i].spawning_count);
+      let oldAlienBroodCount = this.state.alienInventory[i].brood_count;
+      let newAlienBroodCount = (oldAlienBroodCount += AlienInventory[i].spawning_count);
       let newAlien = {
         id: this.state.alienInventory[i].id,
         alien_name: this.state.alienInventory[i].alien_name,
@@ -98,15 +99,16 @@ export class ReportProvider extends Component {
     let newStructureInventory = [];
     for (let i = 0; i< StructureInventory.length; i++) {
       totalConstructing += StructureInventory[i].constructing_count;
-        let newStructureBroodCount = (this.state.structureInventory[i].brood_count += StructureInventory[i].constructing_count);
-        let newStructure = {
-          id: this.state.structureInventory[i].id,
-          structure_name: this.state.structureInventory[i].structure_name,
-          constructing_count: StructureInventory[i].constructing_count,
-          brood_count: newStructureBroodCount
-        };
-        newStructureInventory.push(newStructure);
-        StructureInventory[i].constructing_count = 0;
+      let oldStructureBroodCount = this.state.structureInventory[i].brood_count;
+      let newStructureBroodCount = (oldStructureBroodCount += StructureInventory[i].constructing_count);
+      let newStructure = {
+        id: this.state.structureInventory[i].id,
+        structure_name: this.state.structureInventory[i].structure_name,
+        constructing_count: StructureInventory[i].constructing_count,
+        brood_count: newStructureBroodCount
+      };
+      newStructureInventory.push(newStructure);
+      StructureInventory[i].constructing_count = 0;
     };
     ReactionsSpawning(totalSpawning);
     ReactionsConstructing(totalConstructing);

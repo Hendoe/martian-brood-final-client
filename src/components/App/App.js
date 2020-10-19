@@ -32,7 +32,7 @@ class App extends Component {
         <Route exact path={'/'} component={InfoFooter} />
         <Route path={'/create'} component={InfoFooter} />
         <Route path={'/continue'} component={InfoFooter} />
-        <Route path={'/gameplay'} render={this.blankFooter}/>
+        <Route path={'/gameplay'} render={this.blankFooter} />
       </>
     );
   };

@@ -80,13 +80,6 @@ class StructureList extends Component {
 
   render() {
     const { structuresCost, structuresSynapse } = this.props
-    const { structureInventory } = this.context
-    let structure = ""
-    if (!structureInventory) {
-      alert('no structures')
-    } else {
-      structure = structureInventory;
-    }
 
     return (
       <div className='right alien-structures-box'>

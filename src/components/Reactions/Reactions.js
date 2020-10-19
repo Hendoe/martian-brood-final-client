@@ -26,8 +26,6 @@ class Reactions extends Component {
       })
     ))
     let alienInventory = this.context.alienInventory;
-    console.log('CONTEXT', this.context)
-    console.log('AI', alienInventory)
     for (let i = 0; i < alienInventory.length; i++) {
       let alienId = alienInventory[i].id;
       fetch(config.API_ENDPOINT + `/alienInventory/${alienId}`, {
@@ -47,7 +45,6 @@ class Reactions extends Component {
       })
     };
     let structureInventory = this.context.structureInventory;
-    console.log('SI', structureInventory)
     for (let i = 0; i < structureInventory.length; i++) {
       let structureId = structureInventory[i].id;
         fetch(config.API_ENDPOINT + `/structureInventory/${structureId}`, {

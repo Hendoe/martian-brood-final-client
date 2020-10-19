@@ -3,7 +3,8 @@ export const Conditionals = {
     spawnMode: false,
     constructMode: false,
     taskMode: false,
-    reactionMode: true,
+    reactionMode: false,
+    loadMode: true,
 };
 
 export const ChangeConditions = (changing) => {
@@ -26,18 +27,28 @@ export const ChangeConditions = (changing) => {
     Conditionals.constructMode = false;
     Conditionals.taskMode = false;
     Conditionals.reactionMode = true;
+    Conditionals.loadMode = false;
+  } else if (changing === 'loading') {
+    Conditionals.disableButtons = true;
+    Conditionals.spawnMode = false;
+    Conditionals.constructMode = false;
+    Conditionals.taskMode = false;
+    Conditionals.reactionMode = false;
+    Conditionals.loadMode = true;
   } else if (changing === 'cancel') {
     Conditionals.disableButtons = false;
     Conditionals.spawnMode = false;
     Conditionals.constructMode = false;
     //taskMode
     Conditionals.reactionMode = false;
+    Conditionals.loadMode = false;
   } else if (changing === 'cancelTasks') {
     Conditionals.disableButtons = false;
     Conditionals.spawnMode = false;
     Conditionals.constructMode = false;
     Conditionals.taskMode = false;
     Conditionals.reactionMode = false;
+    Conditionals.loadMode = false;
   } else {
     alert('check your conditionals');
   };

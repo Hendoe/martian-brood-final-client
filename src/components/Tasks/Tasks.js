@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
-import { FinalSpawning } from '../../stores/AlienInventory';
-import { FinalConstructionOrders } from '../../stores/ConstructionOrders';
 import ReportContext from '../../contexts/ReportContext';
 import './Tasks.css';
 
 class Tasks extends Component {
   static contextType = ReportContext
 
-  //FinalSpawning and FinalConstructing are responsible for changing the Player's spawning/constructing counts to new Brood Counts
-  //After those, we have to calculate our Biomass and Synapse with in-component functions
-  //We must also be sure to update the Solar Day, to signify the end of the turn and beginning of the next
-  //Last, set the Conditionals to display Reactions, as well as reseting our Costs and Synapse Distribution
+  //Once a player commits their choices we need to gather details about the Biomass and Synapse Costs associated with them
+  //With those figured, we can go to context and update
+  //From there, context will handle the rest of the end of turn process
+  //But we still need to change our conditionals and reset our costs, since the old ones have already been sent away
   clickCommit = () => {
       let finalBiomassCost = this.finalBiomassCost();
       let producedSynapse = this.findProducedSynapse();
       let requiredSynapse = this.findRequiredSynapse();
-      console.log('HOWS SHE LOOKING', producedSynapse, requiredSynapse)
       this.context.updateBroodCounts();
       this.context.masterStatusUpdater(finalBiomassCost, producedSynapse, requiredSynapse);
-      this.props.handleClick('reactions')
+      this.props.handleClick('loadings')
       this.props.resetCosts();
   };
 
@@ -31,7 +28,7 @@ class Tasks extends Component {
     return finalBiomassCost;
   };
 
-  //Now we determine how our new Synapse Distribution will be, in a process fairly similar to what we used for determining the Biomass exchange
+  //Now we calculate what our new Synapse Distribution will be, in a process fairly similar to what we used for determining the Biomass exchange
   //However, Biomass is a single cost, Synapse is two values competing. So we have to use two functions here, one for Producing and one for Requiring
   findProducedSynapse() {
     const synapseProduced = this.props.structuresSynapse;
@@ -42,6 +39,7 @@ class Tasks extends Component {
    return synapseRequired
   };
 
+  //All of the line breaks <br /> are a neccessary evil until the CSS is improved
   render() {
     return(
       <div className="builder-box-tasks">

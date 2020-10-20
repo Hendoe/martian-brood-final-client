@@ -67,8 +67,6 @@ class Reactions extends Component {
 
   //Everytime the Reactions Screen appears, there are a few things it must take into consideration
   //First, what unique string's about the Story to generate based on the Solar Day
-  //Second, a sentence about the Spawning situation
-  //Third, another sentence, this time about the Constructing situation
   renderReactions() {
     let report = ""
     if (this.context.status[0]) {
@@ -89,6 +87,7 @@ class Reactions extends Component {
     };
   };
 
+  //Second, a sentence about the Spawning situation
   renderSpawning() {
     let report = ""
     if (this.context.status[0]) {
@@ -107,6 +106,7 @@ class Reactions extends Component {
     };
   };
 
+  //Third, another sentence, this time about the Constructing situation
   renderConstructing() {
     let report = ""
     if (this.context.status[0]) {

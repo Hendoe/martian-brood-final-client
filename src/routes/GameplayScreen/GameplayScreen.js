@@ -7,7 +7,7 @@ import StructureConstructor from '../../components/StructureConstructor/Structur
 import Tasks from '../../components/Tasks/Tasks';
 import Reactions from '../../components/Reactions/Reactions';
 import Loader from '../../components/Loader/Loader';
-import Start from '../../components/Start/Start';
+import Story from '../../components/Story/Story';
 import './GameplayScreen.css';
 import { StatusApiService } from '../../services/report-api-services';
 import ReportContext from '../../contexts/ReportContext';
@@ -193,9 +193,9 @@ class GameplayScreen extends Component {
       return (
         <Loader handleClick={this.handleClick} />
       );
-    } else if (Conditionals.startMode === true) {
+    } else if (Conditionals.storyMode === true) {
       return (
-        <Start handleClick={this.handleClick} />
+        <Story handleClick={this.handleClick} />
       ); 
     } else {
       return

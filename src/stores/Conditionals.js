@@ -1,6 +1,6 @@
 export const Conditionals = { 
     disableButtons: true,
-    startMode: true,
+    storyMode: true,
     spawnMode: false,
     constructMode: false,
     taskMode: false,
@@ -38,7 +38,7 @@ export const ChangeConditions = (changing) => {
     Conditionals.loadMode = true;
   } else if (changing === 'cancel') {
     Conditionals.disableButtons = false;
-    Conditionals.startMode = false;
+    Conditionals.storyMode = false;
     Conditionals.spawnMode = false;
     Conditionals.constructMode = false;
     //taskMode

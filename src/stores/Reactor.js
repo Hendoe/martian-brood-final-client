@@ -3,12 +3,8 @@ export const Reactor = {
   total_constructing_count: 0,
 };
 
-export const Story = {
-  day1: 'Awakening from the Ice',
-  day2: 'The Drones hatch',
-  day3: 'asdfklasdkfdsf',
-  day4: 'kasdjfkldjasfljdas',
-  day5: 'asdfasdter'
+export const Page = {
+  page: 1,
 };
 
 export const ReactionsSpawning = (spawnCount) => {
@@ -17,4 +13,11 @@ export const ReactionsSpawning = (spawnCount) => {
 
 export const ReactionsConstructing = (constructCount) => {
   Reactor.total_constructing_count = constructCount;
+};
+
+export const TurnPage = (newPage) => {
+  console.log('getting ready', newPage)
+  console.log('checking', Page.page)
+  Page.page = newPage;
+  console.log('turning', Page.page)
 };

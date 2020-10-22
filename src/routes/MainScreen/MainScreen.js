@@ -13,16 +13,16 @@ class MainScreen extends Component {
         id: 1,
         brood_name: 'Grongs',
         solar_day: 1,
-        biomass: 0,
-        synapse_produced: 0,
-        synapse_required: 0,
+        biomass: 10,
+        synapse_produced: 2,
+        synapse_required: 5,
       }],
       alienInventory: [
         {
           id: 1,
           alien_name: 'Worker Drone',
           spawning_count: 0,
-          brood_count: 0,
+          brood_count: 2,
         },
         {
           id: 2,
@@ -36,14 +36,14 @@ class MainScreen extends Component {
           id: 1,
           structure_name: 'Spawning Pit',
           constructing_count: 0,
-          brood_count: 0,
+          brood_count: 1,
 
         },
         {   
           id: 2,
           structure_name: 'Synapse Clusters',
           constructing_count: 0,
-          brood_count: 0,
+          brood_count: 1,
         },
       ],
     };

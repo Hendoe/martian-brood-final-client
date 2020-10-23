@@ -5,7 +5,7 @@ import config from '../../config';
 
 class MainScreen extends Component {
   //Before anything else can happen, we'll need to make sure the database is where we want it for Quickplay
-  //To accomplish this, we use an basic state here
+  //To accomplish this, we create a basic state here 
   constructor(props) {
     super(props);
     this.state = {
@@ -14,8 +14,8 @@ class MainScreen extends Component {
         brood_name: 'Grongs',
         solar_day: 1,
         biomass: 10,
-        synapse_produced: 2,
-        synapse_required: 5,
+        synapse_produced: 5,
+        synapse_required: 2,
       }],
       alienInventory: [
         {
@@ -24,12 +24,12 @@ class MainScreen extends Component {
           spawning_count: 0,
           brood_count: 2,
         },
-        {
-          id: 2,
-          alien_name: 'Brood Master',
-          spawning_count: 0,
-          brood_count: 1,
-        },
+        // {
+        //   id: 2,
+        //   alien_name: 'Brood Master',
+        //   spawning_count: 0,
+        //   brood_count: 1,
+        // },
       ],
       structureInventory: [
         {   

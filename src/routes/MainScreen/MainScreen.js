@@ -14,15 +14,15 @@ class MainScreen extends Component {
         brood_name: 'Grongs',
         solar_day: 1,
         biomass: 10,
+        synapse_required: 0,
         synapse_produced: 5,
-        synapse_required: 2,
       }],
       alienInventory: [
         {
           id: 1,
           alien_name: 'Worker Drone',
           spawning_count: 0,
-          brood_count: 2,
+          brood_count: 0,
         },
         // {
         //   id: 2,

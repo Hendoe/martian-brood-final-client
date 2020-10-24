@@ -1,3 +1,3 @@
 module.exports = {
-  API_ENDPOINT: 'http://localhost:8080/api',
+  API_ENDPOINT: 'https://gentle-dusk-42456.herokuapp.com/api',
 };

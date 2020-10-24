@@ -2,14 +2,12 @@ export const StructureInventory = [
     {
       id: 1,
       structure_name: 'Spawning Pit',
-      constructable: true,
       constructing_count: 0,
       brood_count: 1,
     },
     {
       id: 2,
       structure_name: 'Synapse Cluster',
-      constructable: true,
       constructing_count: 0,
       brood_count: 1,
     },
@@ -25,22 +23,5 @@ export const UpdateConstructionOrders = (x, i) => {
       StructureInventory[i].constructing_count = newCount;
     } else {
       alert("constructing broke'd");
-    };
-  };
-
-  export const FinalConstructionOrders = () => {
-    let constructCount = 0;
-      for (let i = 0; i < StructureInventory.length; i++) {
-        let count = StructureInventory[i].constructing_count;
-        StructureInventory[i].brood_count += count;
-        StructureInventory[i].constructing_count = 0;
-        constructCount += count;
-        };
-    resetOrders();
-  };
-
-  function resetOrders(i) {
-    for (let i = 0; i < StructureInventory.length; i++) {
-      StructureInventory[i].constructing_count = 0;
     };
   };

@@ -1,14 +1,9 @@
-WIP
-    Create Database
+The Once Over
+ 
+MainScreen - okay
+Loader - okay (needs GET)
 
-DONE
-    Figure out components
 
+The Second Look
 
-    header
-    main screen
-    gameplay screen
-    alien builder
-    alien structures builder
-    task manager
-    reaction
+...

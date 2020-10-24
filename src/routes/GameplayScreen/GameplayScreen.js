@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Conditionals, ChangeConditions} from '../../stores/Conditionals';
 import AlienList from '../../components/AlienList/AlienList';
 import AlienSpawner from '../../components/AlienSpawner/AlienSpawner';
-import { StructureInventory } from '../../stores/ConstructionOrders';
 import StructureList from '../../components/StructureList/StructureList';
 import StructureConstructor from '../../components/StructureConstructor/StructureConstructor';
 import Tasks from '../../components/Tasks/Tasks';
 import Reactions from '../../components/Reactions/Reactions';
+import Loader from '../../components/Loader/Loader';
+import Story from '../../components/Story/Story';
 import './GameplayScreen.css';
 import { StatusApiService } from '../../services/report-api-services';
 import ReportContext from '../../contexts/ReportContext';
@@ -188,9 +189,17 @@ class GameplayScreen extends Component {
         <Reactions status={this.state.status} aliens={this.state.aliens}  structures={this.state.structures} handleClick={this.handleClick}
         />
       );
+    } else if (Conditionals.loadMode === true) {
+      return (
+        <Loader handleClick={this.handleClick} />
+      );
+    } else if (Conditionals.storyMode === true) {
+      return (
+        <Story handleClick={this.handleClick} />
+      ); 
     } else {
       return
-    }
+    };
   };
 
   //The Main Render Function

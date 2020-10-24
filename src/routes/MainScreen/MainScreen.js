@@ -5,28 +5,31 @@ import config from '../../config';
 
 class MainScreen extends Component {
   //Before anything else can happen, we'll need to make sure the database is where we want it for Quickplay
-  //To accomplish this, we use an basic state here
+  //To accomplish this, we create a basic state here 
   constructor(props) {
     super(props);
     this.state = {
       status: [{
-        aliens: 1,
-        biomass: 50,
-        brood_name: 'Grongs',
         id: 1,
+        brood_name: 'Grongs',
         solar_day: 1,
-        structures: 2,
+        biomass: 10,
         synapse_produced: 5,
-        synapse_required: 1,
+        synapse_required: 2,
       }],
       alienInventory: [
         {
           id: 1,
           alien_name: 'Worker Drone',
           spawning_count: 0,
-          brood_count: 1,
-          spawnable: true,
+          brood_count: 2,
         },
+        // {
+        //   id: 2,
+        //   alien_name: 'Brood Master',
+        //   spawning_count: 0,
+        //   brood_count: 1,
+        // },
       ],
       structureInventory: [
         {   
@@ -34,7 +37,6 @@ class MainScreen extends Component {
           structure_name: 'Spawning Pit',
           constructing_count: 0,
           brood_count: 1,
-          constructable: true,
 
         },
         {   
@@ -42,8 +44,6 @@ class MainScreen extends Component {
           structure_name: 'Synapse Clusters',
           constructing_count: 0,
           brood_count: 1,
-          constructable: true,
-
         },
       ],
     };
@@ -111,11 +111,11 @@ class MainScreen extends Component {
   render() {
     return(
       <section className='main-style'>
-        <Link to='/create'><h1>Create</h1></Link>
+        <h1><Link to='/create'>Create</Link></h1>
         <br />
-        <Link to='/continue'><h1>Continue</h1></Link>
+        <h1><Link to='/continue'>Continue</Link></h1>
         <br />
-        <Link to='/gameplay'><h1>Quickplay</h1></Link>
+        <h1><Link to='/gameplay'>Quickplay</Link></h1>
       </section>
     );
   };

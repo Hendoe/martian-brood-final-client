@@ -11,6 +11,7 @@
   display: flex;
   flex: 3;
   flex-direction: row;
+  height: 22rem;
 }
 
 .top-aliens {
@@ -50,6 +51,7 @@
   flex: 1;
   flex-direction: row;
   justify-content: space-evenly;
+  margin-top: auto;
 }
 
 ul {

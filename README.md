@@ -28,7 +28,11 @@ The most complicated thing here is keeping track of all the data being shifted a
 
 ## Stretch Goals
 1- Add validation for Biomass and Synapse
+
 2- Add Gathering functionality
+
 3- Work in the Story Component
+
 4- Create functions and serverside Endpoints for both the 'Continue' and 'Create' Routes
+
 5- Add in the 'Brood Master' Alien

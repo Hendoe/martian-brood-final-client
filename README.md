@@ -1,18 +1,18 @@
 Martian Brood Final Client
 
 Published 10/16/2020
-Updated 10/24/2020
+Updated 10/25/2020
 
 Link to Deployment: https://vercel.com/hendoe/martian-brood-final-client
 
 This is part of Steven Henderson's 2-Week Capstone-1 Project for the staff at Thinkful and their Engineering Program.
 
 ## Table of contents
-*[General Information](#general-info)
+[General Information](#general-info)
 
-*[Technical](#technical)
+[Technical](#technical)
 
-*[Stretch Goals](#stretch-goals)
+[Stretch Goals](#stretch-goals)
 
 ## General Information
 Martian Brood is a Text Based Game made in React. It allows players to manage the growth of a brood of aliens on Mars. The player must ensure that their brood has adequate biomass to "spawn" additional aliens, as well as providing enough synapse. Without these resources the player won't be able to grow out their brood!

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { StructureInventory } from '../../stores/ConstructionOrders';
 import ReportContext from '../../contexts/ReportContext';
 import './StructureList.css';
 import { Conditionals } from '../../stores/Conditionals';

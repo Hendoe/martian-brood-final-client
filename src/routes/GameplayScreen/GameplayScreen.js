@@ -139,17 +139,17 @@ class GameplayScreen extends Component {
   //If anything that creates a Builder Box is active then all the buttons that open new Builder Boxes must be made disabled
   renderSpawnerButton() {
     if (Conditionals.disableButtons === true) {
-      return (<button className='build-aliens-button' disabled>Spawn Aliens</button>);
+      return (<button className='spawn-aliens-button' disabled>Spawn Aliens</button>);
     } else {
-      return (<button className='build-aliens-button' onClick={() => this.handleClick('spawning')}>Spawn Aliens</button>);
+      return (<button className='spawn-aliens-button' onClick={() => this.handleClick('spawning')}>Spawn Aliens</button>);
     };
   };
 
   renderConstructorButton() {
     if (Conditionals.disableButtons === true) {
-      return (<button className='build-structures-button' disabled>Build Alien Stuctures</button>);
+      return (<button className='construct-structures-button' disabled>Build Alien Structures</button>);
     } else {
-      return (<button className='build-structures-button' onClick={() => this.handleClick('constructing')}>Build Alien Stuctures</button>);
+      return (<button className='construct-structures-button' onClick={() => this.handleClick('constructing')}>Build Alien Structures</button>);
     };
   };
 
@@ -213,7 +213,7 @@ class GameplayScreen extends Component {
     };
 
     return (
-      <div>
+      <div className='App-Game'>
         <li key={report.id} >
           <header className='status-bar'>
             <div className='status-bar-major' >

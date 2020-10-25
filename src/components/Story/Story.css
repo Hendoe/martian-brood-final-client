@@ -1,11 +1,11 @@
 .story-box {
   position: absolute;
-  top: 0; right: 0; bottom: 0; left: 40rem;
+  top: 0; right: 0; bottom: 0; left: 14vw;
   background-color: black;
   border-style: solid;
-  margin-top: 2rem;
-  width: 40rem;
-  height: 25rem;
+  margin-top: 1%;
+  height: 60vh;
+  width: 75vw;
 }
 
 .story-button {

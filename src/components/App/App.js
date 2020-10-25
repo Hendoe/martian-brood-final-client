@@ -40,11 +40,11 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <header className='App-header'>
+        <header className='App-Header'>
           <Header />
         </header>
         <main className='App-Main'>{this.renderMainRoutes()}</main>
-        <footer>{this.renderFooterRoutes()}</footer>
+        <footer className='App-Footer'>{this.renderFooterRoutes()}</footer>
       </div>
     );
   };

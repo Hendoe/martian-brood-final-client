@@ -1,7 +1,37 @@
+.App {
+  display: flex;
+  flex: 8;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  font-size: 50%;
+}
+
+.App-Header {
+  flex: 1;
+  height: 20vh;
+}
+
+.App-Main {
+  flex: 4;
+  height: 60vh;
+}
+
+.App-Footer {
+  flex: 1;
+  height: 20vh
+}
+
 .main-footer {
   border-style: solid;
   border-width: 4px 2px 0px 2px;
   display: flex;
   flex: 1;
   justify-content: center;
+}
+
+@media only screen and (min-width: 900px) {
+  .App {
+    font-size: 100%
+  }
 }

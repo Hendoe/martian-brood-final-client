@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { AlienInventory } from '../../stores/AlienInventory';
 import ReportContext from '../../contexts/ReportContext';
 import './AlienList.css';
 import { Conditionals } from '../../stores/Conditionals';
@@ -26,7 +25,7 @@ class AlienList extends Component {
             </ul>
           </div>
           <div className='middle-column-aliens'>
-            <span className='top-aliens'><h4>Brood Count</h4></span>
+            <span className='top-aliens'><h4>In Brood</h4></span>
             <ul> 
               {filteredAliens.map(alien => (
                 <li key={alien.id} className='alien'>{alien.brood_count}</li>

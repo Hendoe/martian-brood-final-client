@@ -1,3 +1,11 @@
+.App-Game {
+  flex: 1;
+}
+
+.status-bar {
+  margin-top: -4%;
+}
+
 .status-bar-major {
   display: flex;
   flex: 1;
@@ -76,7 +84,7 @@
   justify-content: center;
   flex-direction: row;
   margin-top: 1%;
-  margin-bottom: 5rem;
+  margin-bottom: 2%;
 }
 
 .reaction-mode {
@@ -93,37 +101,28 @@
   flex: 1;
   justify-content: space-evenly;
   flex-direction: row;
+  margin-top: 15%;
 }
-
-
 
 .task-button {
-  margin-top: 3rem;
-  height: 5rem;
-  width: 10rem;
+  margin-top: 15%;
+  height: 5vh;
+  width: 28vw;
+  font-size: 90%;
 }
 
-
-
-.alien-structures-box {
-  flex: 3;
-  text-align: center;
-  border-style: solid;
-  margin-left: 10%;
-  margin-right: 5%;
-  height: 30rem;
+.spawn-aliens-button {
+  margin-top: 15%;
+  height: 5vh;
+  width: 24vw;
+  font-size: 90%;
 }
 
-.build-aliens-button {
-  margin-top: 45%;
-  height: 3rem;
-  width: 10rem;
-}
-
-.build-structures-button {
-  margin-top: 45%;
-  height: 3rem;
-  width: 10rem;
+.construct-structures-button {
+  margin-top: 15%;
+  height: 5vh;
+  width: 24vw;
+  font-size: 90%;
 }
 
 ul {
@@ -140,4 +139,37 @@ li {
 
 .gold {
   color: #FFC800;
+}
+
+@media only screen and (min-width: 900px) {
+  .status-bar {
+    margin-top: 0%;
+  }
+
+  .gameplay-style {
+    margin-top: 0%;
+    margin-bottom: 2%;
+  }
+
+  .game-footer {
+    margin-top: 0%;
+  }
+
+  .task-button {
+    margin-top: 8%;
+    height: 6vh;
+    width: 25vw;
+  }
+  
+  .spawn-aliens-button {
+    margin-top: 15%;
+    height: 6vh;
+    width: 20vh;
+  }
+  
+  .construct-structures-button {
+    margin-top: 15%;
+    height: 6vh;
+    width: 20vh;
+  }
 }

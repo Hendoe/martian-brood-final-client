@@ -16,7 +16,7 @@ class Tasks extends Component {
       let requiredSynapse = this.findRequiredSynapse(type);
       this.context.updateBroodCounts(type);
       this.context.masterStatusUpdater(finalBiomassCost, producedSynapse, requiredSynapse);
-      this.props.handleClick('loading')
+      this.props.handleClick('loading');
       this.props.resetCosts(type);
   };
 

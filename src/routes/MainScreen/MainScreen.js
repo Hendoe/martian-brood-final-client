@@ -108,13 +108,14 @@ class MainScreen extends Component {
     };
   };
 
+  //The Create and Continue Features are disabled as they are unincorportated Stretch Goals
   render() {
     return(
       <section className='main-style'>
-        <h1><Link to='/create'>Create</Link></h1>
+        {/* <h1><Link to='/create'>Create</Link></h1>
         <br />
         <h1><Link to='/continue'>Continue</Link></h1>
-        <br />
+        <br /> */}
         <h1><Link to='/gameplay'>Quickplay</Link></h1>
       </section>
     );

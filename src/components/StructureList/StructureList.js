@@ -38,7 +38,7 @@ class StructureList extends Component {
             </ul>
           </div>
           <div className='middle-column-structures'>
-            <span className='top-structures'><h4>Brood Count</h4></span>
+            <span className='top-structures'><h4>In Brood</h4></span>
             <ul> 
               {filteredStructures.map(structure => (
                 <li key={structure.id} className='structure'>{structure.brood_count}</li>
@@ -88,7 +88,7 @@ class StructureList extends Component {
     let filteredStructures = this.filterInBrood();
 
     return (
-      <div className='right alien-structures-box'>
+      <div className='right structures-box'>
         <h2>Structures</h2>
           <div className='lower-left'>
             {this.renderStructureList(filteredStructures)}

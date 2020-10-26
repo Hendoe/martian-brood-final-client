@@ -9,7 +9,7 @@ class StructureConstructor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      constructables: [],
+      constructables: StructureInventory,
       current: 0,
       structureCost: 0,
       structuresToConstruct: 0,
@@ -19,14 +19,12 @@ class StructureConstructor extends Component {
 
   static contextType = ReportContext
 
-  //Before any Structures can be constructed, first it must be determined what is eligible for constructing
-  componentDidMount() {
-    let newConstructables = this.context.structures.filter(structure => structure.constructable === true);
-    let badConstructables = this.context.structures.filter(structure => structure.constructable === false);
-    console.log('constructables', newConstructables);
-    console.log('bad stuff', badConstructables);
-    this.setState({ constructables: newConstructables});
-  };
+  // //Before any Structures can be constructed, first it must be determined what is eligible for constructing
+  // componentDidMount() {
+  //   let newConstructables = this.context.structures.filter(structure => structure.constructable === true);
+  //   let badConstructables = this.context.structures.filter(structure => structure.constructable === false);
+  //   this.setState({ constructables: newConstructables});
+  // };
 
   //This tallies up the total amount of a structure the Brood plans to construct
   generateConstructing() {

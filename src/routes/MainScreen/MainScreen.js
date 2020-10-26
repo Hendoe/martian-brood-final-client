@@ -13,8 +13,8 @@ class MainScreen extends Component {
         id: 1,
         brood_name: 'Grongs',
         solar_day: 1,
-        biomass: 10,
-        synapse_required: 0,
+        biomass: 50,
+        synapse_required: 2,
         synapse_produced: 5,
       }],
       alienInventory: [
@@ -22,7 +22,7 @@ class MainScreen extends Component {
           id: 1,
           alien_name: 'Worker Drone',
           spawning_count: 0,
-          brood_count: 0,
+          brood_count: 2,
         },
         // {
         //   id: 2,

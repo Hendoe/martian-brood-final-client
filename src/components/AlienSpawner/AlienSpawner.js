@@ -19,25 +19,25 @@ class AlienSpawner extends Component {
   static contextType = ReportContext
 
   generateSpawning() {
-    return AlienInventory[0].spawning_count;
+    return this.context.alienInventory[0].spawning_count;
   };
 
   generateCost() {
-    let spawning =  AlienInventory[0].spawning_count;
+    let spawning =  this.context.alienInventory[0].spawning_count;
     let cost = Aliens[0].biomass_cost
     let alienCost = (spawning * cost)
     return alienCost;
   };
 
   generateSynapse() {
-    let spawning = AlienInventory[0].spawning_count;
+    let spawning = this.context.alienInventory[0].spawning_count;
     let synapse =  Aliens[0].synapse_required;
     let synapseRequired = (spawning * synapse);
     return synapseRequired;
   };
 
   handleUpdateSpawning = (x) => {
-    UpdateSpawning(x);
+    this.context.updateSpawning(x);
     this.forceUpdate();
   };
 

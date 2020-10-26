@@ -6,9 +6,11 @@ import { Conditionals } from '../../stores/Conditionals';
 class AlienList extends Component {
   static contextType = ReportContext
 
+  //Currently this function has it's main purpose commented out as the Broodmaster Alien is not functioning yet. Because of that we need to display everything
   filterInBrood = () => {
     const { alienInventory } = this.context;
-    let filteredAliens = alienInventory.filter(alien => alien.brood_count > 0);
+    //let filteredAliens = alienInventory.filter(alien => alien.brood_count > 0);
+    let filteredAliens = alienInventory.filter(alien => alien.brood_count >= 0);
     return filteredAliens
   };
 

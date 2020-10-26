@@ -70,10 +70,16 @@ class GameplayScreen extends Component {
   };
 
   //Whenever a Player finalizes their Spawning Plans or Construction Orders the Biomass Cost and Synapse Distribution must then be calculated
-  resetCosts = () => {
-    this.resetAliensBiomass();
-    this.resetStructuresBiomass();
-    this.resetSynapses();
+  resetCosts = (type) => {
+    if (type === 'spawning') {
+      this.resetAliensBiomass();
+      this.resetSynapses(type);
+    } else if (type === 'constructing') {
+      this.resetStructuresBiomass();
+      this.resetSynapses(type);
+    } else if (type === 'gathering') {
+      console.log('no costs');
+    };
   };
 
   setAliensBiomass = (biomass) => {
@@ -121,8 +127,19 @@ class GameplayScreen extends Component {
     this.setState({structuresSynapse: synapse});
   };
 
-  resetSynapses() {
+  resetSynapses(type) {
+    if (type === 'spawning') {
+      this.resetAliensSynapse();
+    } else if (type === 'constructing') {
+      this.resetStructuresSynapse();
+    };
+  };
+
+  resetAliensSynapse() {
     this.setState({aliensSynapse: 0});
+  };
+
+  resetStructuresSynapse() {
     this.setState({structuresSynapse: 0});
   };
 

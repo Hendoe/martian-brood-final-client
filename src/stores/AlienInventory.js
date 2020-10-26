@@ -23,9 +23,9 @@ export const UpdateSpawning = (x) => {
 export const FinalSpawning = () => {
   let spawnCount = AlienInventory[0].spawning_count;
   AlienInventory[0].brood_count += spawnCount;
-  resetSpawns();
+  ResetSpawns();
 };
 
-function resetSpawns() {
+export const ResetSpawns = () => {
   AlienInventory[0].spawning_count = 0;
 };

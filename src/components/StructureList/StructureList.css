@@ -5,7 +5,7 @@
   margin-top: 2%;
   margin-left: 5%;
   margin-right: 5%;
-  height: 60vh;
+  height: 100%;
 }
 
 .list-box-structures {
@@ -54,19 +54,10 @@
   justify-content: space-evenly;
   margin-top: auto;
 }
-  
-ul {
-  justify-content: left;
-}
 
 @media only screen and (min-width: 900px) {
   .structures-box {
-    flex: 3;
-    text-align: center;
-    border-style: solid;
     margin-left: 10%;
-    margin-right: 5%;
-    height: 58vh;
 }
 
   .list-box-structures {

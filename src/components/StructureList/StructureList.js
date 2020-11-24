@@ -4,12 +4,12 @@ import './StructureList.css';
 import { Conditionals } from '../../stores/Conditionals';
 
 class StructureList extends Component {
-  static contextType = ReportContext
+  static contextType = ReportContext;
 
   filterInBrood = () => {
     const { structureInventory } = this.context;
     let filteredStructures = structureInventory.filter(structure => structure.brood_count > 0);
-    return filteredStructures
+    return filteredStructures;
   };
 
   renderStructureList = (filteredStructures) => {
@@ -18,7 +18,7 @@ class StructureList extends Component {
         <div className='list-box-structures'>
           <div className='left-column-structures'>
             <span className='top-structures'><h4>Name</h4></span>
-            <ul className='right-list'>
+            <ul className='left-list'>
               {filteredStructures.map(structure => (
                 <li key={structure.id} className='structure'>{structure.structure_name}</li>
               ))}
@@ -38,7 +38,7 @@ class StructureList extends Component {
           </div>
           <div className='middle-column-structures'>
             <span className='top-structures'><h4>In Brood</h4></span>
-            <ul> 
+            <ul className='middle-list'> 
               {filteredStructures.map(structure => (
                 <li key={structure.id} className='structure'>{structure.brood_count}</li>
               ))}
@@ -46,7 +46,7 @@ class StructureList extends Component {
           </div>
           <div className='right-column-structures'>
             <span className='top-structures'><h4>Constructing</h4></span>
-            <ul>
+            <ul className='right-list'>
               {filteredStructures.map(structure => (
                 <li key={structure.id} className='structure'>{structure.constructing_count}</li>
               ))}

@@ -9,7 +9,6 @@ import Reactions from '../../components/Reactions/Reactions';
 import Loader from '../../components/Loader/Loader';
 import Story from '../../components/Story/Story';
 import './GameplayScreen.css';
-import { StatusApiService } from '../../services/report-api-services';
 import ReportContext from '../../contexts/ReportContext';
 
 class GameplayScreen extends Component {
@@ -26,28 +25,6 @@ class GameplayScreen extends Component {
   };
 
   static contextType = ReportContext
-
-  //Once the Component Mounts the game will need access to all the information about the player
-  //Thus, we call on 3 GET requests to fetch the info from the server
-  //An attempt is being made to simplify this process with Promise.all
-  //Lastly, the page updates to be sure it's displaying proper data
-  componentDidMount() {
-    StatusApiService.getStatus()
-      .then(this.context.setStatus)
-    StatusApiService.getAliens()
-      .then(this.context.setAliens)
-    StatusApiService.getAlienInventory()
-      .then(this.context.setAlienInventory)
-    StatusApiService.getStructures()
-      .then(this.context.setStructures)
-    StatusApiService.getStructureInventory()
-      .then(this.context.setStructureInventory)
-    // StatusApiService.GETmaster()
-      // .then(this.context.setStatus)
-      // .then(this.context.setAliens)
-      // .then(this.context.setStructures) 
-    this.forceUpdate();
-  };
   
   //Clicks are sent here from the components
   //Then a message is sent to the Conditionals
@@ -124,6 +101,7 @@ class GameplayScreen extends Component {
   };
 
   setStructuresSynapse = (synapse) => {
+    console.log('whats incoming synapse', synapse)
     this.setState({structuresSynapse: synapse});
   };
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import config from '../../config';
 import ReportContext from '../../contexts/ReportContext';
+import { StatusApiService } from '../../services/report-api-services';
 import './Loader.css';
 
 //The Loader is responsible for handling the transaction between the Client and Server
@@ -9,8 +10,12 @@ import './Loader.css';
 class Loader extends Component {
   static contextType = ReportContext;
 
-  
-  componentWillUnmount() {
+  //REDO THIS COMMENT
+  //Once the Component Mounts the game will need access to all the information about the player
+  //Thus, we call on 3 GET requests to fetch the info from the server
+  //An attempt is being made to simplify this process with Promise.all
+  //Lastly, the page updates to be sure it's displaysing proper data
+  componentDidMount() {
     this.context.status.map(newStatus => (
       fetch(config.API_ENDPOINT + `/commit/status`, {
         method: 'PATCH',
@@ -66,6 +71,28 @@ class Loader extends Component {
           console.error(error)
         })
     };
+  };
+
+  //Once the Component Mounts the game will need access to all the information about the player
+  //Thus, we call on 3 GET requests to fetch the info from the server
+  //An attempt is being made to simplify this process with Promise.all
+  //Lastly, the page updates to be sure it's displaying proper data
+  componentWillMount() {
+    StatusApiService.getStatus()
+      .then(this.context.setStatus)
+    StatusApiService.getAliens()
+      .then(this.context.setAliens)
+    StatusApiService.getAlienInventory()
+      .then(this.context.setAlienInventory)
+    StatusApiService.getStructures()
+      .then(this.context.setStructures)
+    StatusApiService.getStructureInventory()
+      .then(this.context.setStructureInventory)
+    // StatusApiService.GETmaster()
+      // .then(this.context.setStatus)
+      // .then(this.context.setAliens)
+      // .then(this.context.setStructures) 
+    this.forceUpdate();
   };
 
   //In order to display the 'Loading Screen' we use this timer()

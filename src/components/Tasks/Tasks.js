@@ -61,7 +61,7 @@ class Tasks extends Component {
   //All of the line breaks <br /> are a neccessary evil until the CSS is improved
   render() {
     return(
-      <div className="builder-box-tasks">
+      <section className='builder-box'>
         <h3>Task List</h3>
           <h4 className='subtitle'>The Brood can only focus on one task a day.</h4>
             <div className='task-column-1'>
@@ -96,7 +96,7 @@ class Tasks extends Component {
           <br />
         <button className='builder-button' onClick={() => this.clickCommit()}>COMMIT</button>
         <button className='builder-button' onClick={() => this.props.handleClick('cancelTasks')}>CANCEL</button>
-      </div>
+      </section>
     );
   };
 };

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AlienInventory, ResetSpawns} from '../stores/AlienInventory';
+import { ResetSpawns} from '../stores/AlienInventory';
 import { StructureInventory } from '../stores/ConstructionOrders';
 import { ReactionsSpawning, ReactionsConstructing } from '../stores/Reactor';
 
@@ -17,6 +17,7 @@ const ReportContext = React.createContext({
   masterStatusUpdater: () => {},
   updateBroodCounts: () => {},
   updateSpawning: () => {},
+  updateConstructing: () => {},
 })
 export default ReportContext
 
@@ -160,32 +161,57 @@ export class ReportProvider extends Component {
     };
   };
 
-  updateConstructing = (x, i) => {
-    let constructCount = this.state.structureInventory[i].constructing_count;
-    let 
+  updateConstructing = (x, s) => {
+    let constructCount = this.state.structureInventory[s].constructing_count;
+    let newStructureInventory = [];
     if (x === 1) {
       let newCount = (constructCount += 1);
-      this.state.structureInventory[i].constructing_count = newCount;
-      let newStructure = {
-        id: this.state.structureInventory[i].id,
-        structure_name: this.state.structureInventory[i].structure_name,
-        constructing_count: newCount
-        brood_count: this.state.structureInventory[i].id
-      };
-      else {
-        let newStructure = {
-          id: this.state.structureInventory[i].id,
-          structure_name: this.state.structureInventory[i].structure_name,
-          constructing_count: StructureInventory[i].constructing_count,
-          brood_count: newStructureBroodCount
+      for (let i = 0; i < this.state.structureInventory.length; i++) {
+        if (i === s) {
+          let newStructure = {
+            id: this.state.structureInventory[i].id,
+            structure_name: this.state.structureInventory[i].structure_name,
+            constructing_count: newCount,
+            brood_count: this.state.structureInventory[i].brood_count
+          };
+          newStructureInventory.push(newStructure);
+        } else {
+          let newStructure = {
+            id: this.state.structureInventory[i].id,
+            structure_name: this.state.structureInventory[i].structure_name,
+            constructing_count: this.state.structureInventory[i].constructing_count,
+            brood_count: this.state.structureInventory[i].brood_count
+          };
+          newStructureInventory.push(newStructure);
         };
-      ;}
+      };
+      this.setStructureInventory(newStructureInventory);
     } else if (x === 0) {
-      let newCount = (constructCount -= 1);
-      this.state.structureInventory[i].constructing_count = newCount;
+      let newCount = (constructCount += 1);
+      for (let i = 0; i < this.state.structureInventory.length; i++) {
+        if (i === s) {
+          let newStructure = {
+            id: this.state.structureInventory[i].id,
+            structure_name: this.state.structureInventory[i].structure_name,
+            constructing_count: newCount,
+            brood_count: this.state.structureInventory[i].brood_count
+          };
+          newStructureInventory.push(newStructure);
+        } else {
+          let newStructure = {
+            id: this.state.structureInventory[i].id,
+            structure_name: this.state.structureInventory[i].structure_name,
+            constructing_count: this.state.structureInventory[i].constructing_count,
+            brood_count: this.state.structureInventory[i].brood_count
+          };
+          newStructureInventory.push(newStructure);
+        };
+      };
+      this.setStructureInventory(newStructureInventory);
     } else {
-      alert("constructing broke'd");
+        alert("constructing broke'd");
     };
+
   };
   
   render() {
@@ -203,6 +229,7 @@ export class ReportProvider extends Component {
       masterStatusUpdater: this.masterStatusUpdater,
       updateBroodCounts: this.updateBroodCounts,
       updateSpawning: this.updateSpawning,
+      updateConstructing: this.updateConstructing,
     }
     return (
       <ReportContext.Provider value={value}>

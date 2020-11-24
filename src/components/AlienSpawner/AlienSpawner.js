@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Alien from '../Alien/Alien';
 import Aliens from '../../stores/Aliens';
-import { AlienInventory, UpdateSpawning } from '../../stores/AlienInventory';
+import { AlienInventory } from '../../stores/AlienInventory';
 import './AlienSpawner.css';
 import ReportContext from '../../contexts/ReportContext';
 
@@ -16,7 +16,7 @@ class AlienSpawner extends Component {
     };
   };
 
-  static contextType = ReportContext
+  static contextType = ReportContext;
 
   generateSpawning() {
     return this.context.alienInventory[0].spawning_count;
@@ -56,7 +56,7 @@ class AlienSpawner extends Component {
     };
 
     return (
-      <div className='builder-box'>
+      <section className='builder-box'>
         <h2>Alien Spawner</h2>
         <hr />
           {/* {aliens.map(alien => (           */}
@@ -86,7 +86,7 @@ class AlienSpawner extends Component {
           <button className='builder-button' onClick={() => this.props.handleClick('cancel')}>CANCEL</button>
           <button className='arrow-button' onClick={() => this.props.handleMoveRight()} disabled>RIGHT</button>
         </div>
-      </div>
+      </section>
     );
   };
 };

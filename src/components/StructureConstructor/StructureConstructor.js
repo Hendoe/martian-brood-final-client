@@ -29,13 +29,13 @@ class StructureConstructor extends Component {
   //This tallies up the total amount of a structure the Brood plans to construct
   generateConstructing() {
     let i = this.state.current;
-    return StructureInventory[i].constructing_count;
+    return this.context.structureInventory[i].constructing_count;
   };
 
   //This will generate the cost for constructing so many of such and such Structure
   generateCost() {
     let i = this.state.current;
-    let constructing =  StructureInventory[i].constructing_count;
+    let constructing =  this.context.structureInventory[i].constructing_count;
     let cost = Structures[i].biomass_cost
     let structureCost = (constructing * cost)
     return structureCost;
@@ -44,10 +44,9 @@ class StructureConstructor extends Component {
   //We need this to figure out what to display on the Structure List for our total costs
   //It's also used to calculate how much Biomass to subtract from our Final Status
   generateTotalCost() {
-    let constructing = this.state.constructables
     let totalCost = 0;
-    for (let x = 0; x < constructing.length; x++) {
-      let cost = (constructing[x].constructing_count * Structures[x].biomass_cost);
+    for (let i = 0; i < this.context.structureInventory.length; i++) {
+      let cost = (this.context.structureInventory[i].constructing_count * Structures[i].biomass_cost);
       totalCost += cost;
      };
     return totalCost;
@@ -56,7 +55,7 @@ class StructureConstructor extends Component {
   //This calculates how much Synapse the Brood will be producing after completing the Structures
   generateSynapse() {
     let i = this.state.current;
-    let constructing =  StructureInventory[i].constructing_count;
+    let constructing =  this.context.structureInventory[i].constructing_count;
     let synapse =  Structures[i].synapse_produced;
     let synapseProduced = (constructing * synapse);
     return synapseProduced;
@@ -65,18 +64,18 @@ class StructureConstructor extends Component {
   //We need this to figure out what to display on the Structure List for our total produced Synapse
   //It's also used to calculate how much Synapse to add to our Final Status
   generateTotalSynapse() {
-    let constructing = StructureInventory
     let totalSynapse = 0;
-    for (let x = 0; x < constructing.length; x++) {
-      let synapse = (constructing[x].constructing_count * Structures[x].synapse_produced);
+    for (let i = 0; i < this.context.structureInventory.length; i++) {
+      let synapse = (this.context.structureInventory[i].constructing_count * Structures[i].synapse_produced);
       totalSynapse += synapse;
      };
+     console.log('whats total synapse', totalSynapse)
     return totalSynapse;
   };
 
   //Everytime a new construction is planned, the Structure Inventory needs to take it into account
   handleUpdateConstructing = (x, i) => {
-    UpdateConstructionOrders(x, i);
+    this.context.updateConstructing(x, i);
     this.forceUpdate();
   };
 
@@ -135,7 +134,7 @@ class StructureConstructor extends Component {
     let i = this.state.current
 
     return (
-      <div className='builder-box'>
+      <section className='builder-box'>
         <h2>Structure Constructor</h2>
         <hr />
         <form>
@@ -163,7 +162,7 @@ class StructureConstructor extends Component {
         <button className='builder-button' onClick={() => this.props.handleClick('cancel')}>CANCEL</button>
         <button className='arrow-button' onClick={() => this.findStructure(1)}>RIGHT</button>
       </div>
-    </div>
+    </section>
     );
   };
 };

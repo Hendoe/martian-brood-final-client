@@ -28,7 +28,7 @@ class AlienList extends Component {
           </div>
           <div className='middle-column-aliens'>
             <span className='top-aliens'><h4>In Brood</h4></span>
-            <ul> 
+            <ul className='middle-list'> 
               {filteredAliens.map(alien => (
                 <li key={alien.id} className='alien'>{alien.brood_count}</li>
               ))}
@@ -36,7 +36,7 @@ class AlienList extends Component {
           </div>
           <div className='right-column-aliens'>
             <span className='top-aliens'><h4>Spawning</h4></span>
-            <ul>
+            <ul className='right-list'>
               {filteredAliens.map(alien => (
                 <li key={alien.id} className='alien'>{alien.spawning_count}</li>
               ))}

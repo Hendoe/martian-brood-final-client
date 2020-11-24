@@ -36,3 +36,7 @@ The most complicated thing here is keeping track of all the data being shifted a
 4- Create functions and serverside Endpoints for both the 'Continue' and 'Create' Routes
 
 5- Add in the 'Brood Master' Alien
+
+
+FUNCTION LIST
+

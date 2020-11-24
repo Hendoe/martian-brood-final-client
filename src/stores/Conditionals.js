@@ -1,11 +1,11 @@
 export const Conditionals = { 
     disableButtons: true,
-    storyMode: true,
+    storyMode: false,
     spawnMode: false,
     constructMode: false,
     taskMode: false,
     reactionMode: false,
-    loadMode: false,
+    loadMode: true,
 };
 
 export const ChangeConditions = (changing) => {
